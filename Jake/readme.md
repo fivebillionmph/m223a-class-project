@@ -35,6 +35,7 @@
 #### Additional files:
 - To run in Matlab requires:
   - load_bcidat
+    - Requires .mex file from Box
   - edfreadUntilDone
 - Executable should not need additional files
 
