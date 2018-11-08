@@ -4,5 +4,7 @@
 - Add a readme.md file in your directory which includes: 
   - describe what your code does
   - how to call it
+    - any inputs it requires
+    - any outputs
   - what language it's in. if python, what version is it (2 or 3)
   - any dependencies that need to be installed to make it run
