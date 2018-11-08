@@ -1,4 +1,7 @@
 ## Band Power Over Time
+#### Function Name:
+- Power_Analysis
+
 #### Outline of Function:
 - Trims input channel data to desired time interval
 - Transforms Data for each channel from time domain to frequency domain using Fast Fourier Transform
