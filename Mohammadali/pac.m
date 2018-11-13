@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Phase Amplitude Coupling (PAC) %%%%%
-function [MaxPAC, MeanPAC] = pac(filename, LowFreqs, HighFreqs)
+function [MaxPAC, MeanPAC] = pac(filename)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 isUseParallel = 0;
@@ -30,10 +30,9 @@ else
 end
 
 % % % Frequency Ranges for Low and High Oscillations
-bandNesting = LowFreqs; 
-% bandNesting = [2 14];
-bandNested = HighFreqs;
-% bandNested = [40 150];
+
+LowFreqs = [2 14];
+HighFreqs = [40 150];
 
 %%%%% Calculating PAC %%%%%
 
@@ -49,7 +48,7 @@ MeanPAC = (n);
 
 for i = m:n
 
-[sPAC, ~, ~] = bst_pac (F(i,:), sRate, bandNesting, bandNested, isUseParallel, isUseMex, numfreqs);
+[sPAC, ~, ~] = bst_pac (F(i,:), sRate, LowFreqs, HighFreqs, isUseParallel, isUseMex, numfreqs);
 
 MaxPAC (i) = max (max (max (sPAC(:,1,:,:))));
 MeanPAC (i) = mean (mean (mean (sPAC(:,1,:,:))));
