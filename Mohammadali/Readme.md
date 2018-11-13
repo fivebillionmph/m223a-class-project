@@ -36,7 +36,7 @@ bst_bandpass_fft.m
 [MaxPAC, MeanPAC] = pac ('C:\Users\alido\Desktop\2\EEG1.dat')
 
 •	The Python command would also be:
-import matlab.engine
-eng = matlab.engine.start_matlab()
-pac = eng.pac (r'C:\Users\alido\Desktop\2\EEG1.dat', nargout=2)
-print(pac)
+  import matlab.engine
+  eng = matlab.engine.start_matlab()
+  pac = eng.pac (r'C:\Users\alido\Desktop\2\EEG1.dat', nargout=2)
+  print(pac)
