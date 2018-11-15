@@ -25,17 +25,18 @@ Required Functions:
 
 Inputs:
 - File name: Including the path name, file name, and extension for the specified file.
+- Low-Frequency Band: Candidate frequency band of phase driving oscillations e.g., [1 40] Hz
+- High-Frequency Band: Candidate frequency band of nested oscillations e.g., [40 200] Hz
 
 Outputs:
 - MaxPAC: Maximum value of PAC measures
 - MeanPAC: Average value of PAC measures
 
 The MATLAB command would be:
--	[MaxPAC, MeanPAC] = pac ('C:\Users\alido\Desktop\2\EEG1.dat')
+-	[MaxPAC, MeanPAC] = pac ('C:\Users\alido\Desktop\2\EEG1.dat', [2,14], [40,150])
 
 The Python command would also be:
 -	import matlab.engine
--	eng = matlab.engine.start_matlab()
--	pac = eng.pac (r'C:\Users\alido\Desktop\2\EEG1.dat', nargout=2)
--	print(pac)
-
+- eng = matlab.engine.start_matlab()
+- pac = eng.pac (r'C:\Users\alido\Desktop\2\EEG1.dat', matlab.double([2, 14]), matlab.double([40, 150]), nargout=2)
+- print(pac)
