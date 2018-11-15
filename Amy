@@ -6,16 +6,19 @@ Output table will include identification, channels, and binary outcome (1 for go
 
 """
 import os
+import sys
 import csv
 import pandas as pd
 import scipy
 from scipy import signal
 import numpy as np
 
+#set path and where file located, first input is where EEG file is
 path = os.getcwd()
-os.chdir('/Users/alcummings/EEG/')
+os.chdir(sys.arg[1])
 
-eeg = pd.read_csv('PF32_eeg.csv')
+#set reading frame, second input is name of EEG file
+eeg = pd.read_csv(sys.arg[2])
 Only_Channels = eeg.iloc[1:,2:]
 
 #removes electric interferance
