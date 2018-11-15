@@ -35,25 +35,35 @@ class Visualization(HasTraits):
 		#image_data = nib.load("/Users/jamesgo/Projects/python/m277a-1/data/test/T1.bse.nii.gz")
 		image_data = nib.load("/Users/jamesgo/Projects/python/m277a-1/data/standard-brain.bse.nii.gz")
 		self.plot = self.scene.mlab.contour3d(image_data.get_data(), color=(1.0, .4, 0.7), opacity=0.2)
+		self.last_electrode = None
 		self.click_pos = None
 		self.electrodes = electrodes
 		self.electrode_names = []
 		self.init_names()
-		self.mayavi_electrodes = set()
+		self.mayavi_electrodes = []
 		self.refresh_electrodes()
 
 	def refresh_electrodes(self):
-		for x in self.mayavi_electrodes:
-			x.stop()
-		self.mayavi_electrodes.clear()
-		for i in range(len(self.electrodes)):
-			if i == self.select_electrode:
-				color = (1, 0, 0)
-			else:
-				color = (0, 0, 1)
-			coord = self.electrodes[i]
-			x = self.scene.mlab.points3d([coord[0]], [coord[1]], [coord[2]], [2], scale_factor = 5, color=color)
-			self.mayavi_electrodes.add(x)
+		if len(self.mayavi_electrodes) == 0:
+			for i in range(len(self.electrodes)):
+				if i == self.select_electrode:
+					color = (1, 0, 0)
+				else:
+					color = (0, 0, 1)
+				coord = self.electrodes[i]
+				x = self.scene.mlab.points3d([coord[0]], [coord[1]], [coord[2]], [2], scale_factor = 2, color=color)
+				self.mayavi_electrodes.append(x)
+		else:
+			self.mayavi_electrodes[self.select_electrode].stop()
+			self.mayavi_electrodes[self.last_electrode].stop()
+
+			coord = self.electrodes[self.select_electrode]
+			self.mayavi_electrodes[self.select_electrode] = self.scene.mlab.points3d([coord[0]], [coord[1]], [coord[2]], [2], scale_factor = 2, color = (1, 0, 0))
+
+			coord = self.electrodes[self.last_electrode]
+			self.mayavi_electrodes[self.last_electrode] = self.scene.mlab.points3d([coord[0]], [coord[1]], [coord[2]], [2], scale_factor = 2, color = (0, 0, 1))
+
+		self.last_electrode = self.select_electrode
 
 	def init_names(self):
 		for i in range(len(self.electrodes)):
@@ -77,7 +87,6 @@ class Visualization(HasTraits):
 				new_index = 0
 			if new_index >= 0 and new_index < len(self.electrodes):
 				self.select_electrode = new_index
-				self.update_plot()
 		except Exception as e:
 			print(e)
 
