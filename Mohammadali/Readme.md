@@ -32,10 +32,10 @@ Outputs:
 - MaxPAC: Maximum value of PAC measures
 - MeanPAC: Average value of PAC measures
 
-The MATLAB command would be:
+The MATLAB command:
 -	[MaxPAC, MeanPAC] = pac ('C:\Users\alido\Desktop\2\EEG1.dat', [2,14], [40,150])
 
-The Python command would also be:
+The Python command:
 -	import matlab.engine
 - eng = matlab.engine.start_matlab()
 - pac = eng.pac (r'C:\Users\alido\Desktop\2\EEG1.dat', matlab.double([2, 14]), matlab.double([40, 150]), nargout=2)
