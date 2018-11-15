@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Phase Amplitude Coupling (PAC) %%%%%
-function [MaxPAC, MeanPAC] = pac(filename)
+function [MaxPAC, MeanPAC] = pac(filename, LowFreqs, HighFreqs)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 isUseParallel = 0;
@@ -31,8 +31,8 @@ end
 
 % % % Frequency Ranges for Low and High Oscillations
 
-LowFreqs = [2 14];
-HighFreqs = [40 150];
+% LowFreqs = [2 14];
+% HighFreqs = [40 150];
 
 %%%%% Calculating PAC %%%%%
 
