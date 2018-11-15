@@ -2,6 +2,7 @@ Signal Classification - Phase Amplitude Coupling (PAC)
 
 
 Programming Language: MATLAB
+(There is also a Python Command to run the MATLAB function that has been uploaded.)
 
 This Code seeks to show how the phase amplitude coupling (PAC) can be calculated as a part of the classification of brain signals. In fact, Modulation Index (MI) is the method being used here to calculate PAC.
 
