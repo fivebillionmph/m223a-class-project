@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Trying SimpleITK
+Trying SimpleITK for Registration
 Created on Sun Nov 11 16:53:26 2018
 
 @author: josep
@@ -76,8 +76,14 @@ def update_multires_iterations():
     multires_iterations.append(len(metric_values))     
 
 """ Read images """
-moving_image = sitk.ReadImage("CT.nii.gz")
-fixed_image = sitk.ReadImage("T1.nii.gz")
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+Tk().withdraw()
+CT_filename = askopenfilename(title = "Select CT image")
+MR_filename = askopenfilename(title = "Select MR image")
+
+moving_image = sitk.ReadImage(CT_filename)
+fixed_image = sitk.ReadImage(MR_filename)
 
 interact(display_images, fixed_image_z=(0,fixed_image.GetSize()[2]-1), moving_image_z=(0,moving_image.GetSize()[2]-1), fixed_npa = fixed(sitk.GetArrayViewFromImage(fixed_image)), moving_npa=fixed(sitk.GetArrayViewFromImage(moving_image)));
 
