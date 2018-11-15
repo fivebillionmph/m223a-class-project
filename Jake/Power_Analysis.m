@@ -1,4 +1,4 @@
-function [OutputData] = Power_Analysis(file,startTime,stopTime,startFrequency,stopFrequency)
+function [] = Power_Analysis(file,startTime,stopTime,startFrequency,stopFrequency)
 
 %%%input file, time interval, and frequency interval
 %%%file includes location, name, and extension
@@ -111,5 +111,15 @@ OutputData = (PowerBand - min(PowerBand));
 OutputData = (OutputData)./max(OutputData);
 
 %%%Writes the data to a csv of the same name and file location as input
-%csvfile = strcat(filepath,name,'.csv')
-%csvwrite(csvfile,PowerBand); %generates a csv file as an output
+csvfile = strcat(filepath,'\',name,'.csv');
+csvwrite(csvfile,OutputData); %generates a csv file as an output
+    
+    
+
+
+
+
+
+
+
+
