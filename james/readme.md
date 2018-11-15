@@ -7,7 +7,7 @@ opens a GUI window with the brain and electrodes for the user to label eletrodes
 `./james/src/main.py`
 
 ## inputs and outputs
-no inputs or outputs, it calls and writes to the database
+takes subject id (sid) to pull coordinates from "channels" table.  writes channel value to channels table.
 
 ## dependecies
 - nibabel (python library)
