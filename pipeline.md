@@ -8,3 +8,7 @@
 - CT to MR registration (Joseph), depends on skull stripping, writes to `channels` table
 - ECOG labeling (James), depends on skull stripping, CT to MR registration, writes to `channels` table
 - heatmap plotting (Zhaoqiang), depends on everything
+
+## files to be prepopulated in the database
+- Standard MR data file, for EEG subjects
+- EEG coordinates csv file, for EEG subjects
