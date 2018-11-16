@@ -40,7 +40,7 @@ def _channelDataToElectrodes(channel_data):
 		electrodes.append([int(cd["x"]), int(cd["y"]), int(cd["z"])])
 	return electrodes
 
-def run(subject_id, filename):
+def run(subject_id, filename, brain_file):
 	channel_data = _readfile(subject_id, filename)
 	electrodes = _channelDataToElectrodes(channel_data)
 
@@ -53,8 +53,7 @@ def run(subject_id, filename):
 
 		def __init__(self, electrodes):
 			HasTraits.__init__(self)
-			#image_data = nib.load("/Users/jamesgo/Projects/python/m277a-1/data/test/T1.bse.nii.gz")
-			image_data = nib.load("/Users/jamesgo/Projects/python/m277a-1/data/standard-brain.bse.nii.gz")
+			image_data = nib.load(brain_file)
 			self.plot = self.scene.mlab.contour3d(image_data.get_data(), color=(1.0, .4, 0.7), opacity=0.2)
 			self.last_electrode = None
 			self.click_pos = None
@@ -115,4 +114,7 @@ def run(subject_id, filename):
 	visualization.configure_traits()
 
 if __name__ == "__main__":
-	run(1, "../data/test_file.csv")
+	csv_file = "../data/test_file.csv"
+	brain_file = "/Users/jamesgo/Projects/python/m277a-1/data/standard-brain.bse.nii.gz"
+	#brain_file = "/Users/jamesgo/Projects/python/m277a-1/data/test/T1.bse.nii.gz"
+	run(1, csv_file, brain_file)
