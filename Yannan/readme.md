@@ -6,14 +6,12 @@
   
 #### Output
 - Skull-stripped NIfTI file
+- Use the one ending with "_cerebrum.mask.nii.gz" 
 
 #### Language:
-- Python 2.7
+- Python 2.7 or 3.7
 
 #### Required Python Packages
-- psycopg2
-- nibabel
-- xlrd
 - os
 
 #### Requried Software
