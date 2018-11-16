@@ -2,11 +2,14 @@
 #Author Name: Yannan Lin
 #Purpose: Skull-stripping through BrainSuite
 
-#run brainsuite to get skull-stripped mr data
+#run brainsuite through command line
 import os
 
-#os.system(path of cortical_extraction.sh space path of mr data file)
+#For MAC
 os.system("/Applications/BrainSuite18a/bin/cortical_extraction.sh /Users/yannanlin/Desktop/T1.nii.gz")
 
-#output file same path as filename.nii
+#For Windows
+os.system(r'''"C:\Program Files\BrainSuite18a\bin\cortical_extraction.cmd" C:\Users\aa\Desktop\T1.nii.gz''')
 
+
+#output skull-stripped mr data file has the same path as filename.nii.gz
