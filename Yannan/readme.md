@@ -1,24 +1,11 @@
-## Skull-stripping and Channel Plotting
+## Skull-stripping 
 
-#### Components:
-- Skull-stripping_EEG.py
-- Skull-stripping_ECoG.py
-- EEG_Channel_Plotting.py
-- ECoG_Channel_Plotting.py
-
-#### Inputs:
-- Skull-stripping
- - File: MR Image data file
- - File format: NIfTI 
-- Channel plotting 
- - File: Coordinates of electrodes
- - File format: Excel
+#### Input
+- MR Image data file
+- File format: NIfTI 
   
-#### Outputs:
-- Skull-stripping
- - Skull-stripped NIfTI file
-- Channel plotting
- - Brain mask with electrodes on the surface
+#### Output
+- Skull-stripped NIfTI file
 
 #### Language:
 - Python 2.7
@@ -26,7 +13,6 @@
 #### Required Python Packages
 - psycopg2
 - nibabel
-- mayavi
 - xlrd
 - os
 
@@ -34,4 +20,5 @@
 - BrainSuite 18a
 
 #### Additional Notes
-- Once Skull-stripping_EEG.py or Skull_stripping_ECoG.py runs, it will take more than 5 minutes to finish as skull-stripping through BrainSuite can take up to 20 minutes depending on the input file. During skull-stripping, a handful of files will be generated and the only one will be used for channel plotting is filename_cerebrum.mask.nii.gz. This file will generate shortly (usually less than one minute) after running the python script. 
+- Once BrainSuite runs, it will take more than 5 minutes to finish as skull-stripping through BrainSuite can take up to 20 minutes depending on the input file. During skull-stripping, a handful of files will be generated and the only one will be used for channel plotting is filename_cerebrum.mask.nii.gz. This file will generate shortly (usually less than one minute) after running the python script. 
+- EEG electrode coordinates also need to be uploaded to database beforehand.
