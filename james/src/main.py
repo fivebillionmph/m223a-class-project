@@ -40,9 +40,33 @@ def _channelDataToElectrodes(channel_data):
 		electrodes.append([int(cd["x"]), int(cd["y"]), int(cd["z"])])
 	return electrodes
 
+def _saveElectrodeNames(filename, subject_id, electrode_names):
+	rows = []
+
+	with open(filename, "r") as f:
+		reader = csv.reader(f)
+		for row in reader:
+			row = list(row)
+			rows.append(row)
+
+	name_counter = 0
+	for i in range(len(rows)):
+		try:
+			if int(rows[i][0]) == subject_id:
+				rows[i][1] = electrode_names[name_counter]
+				name_counter += 1
+		except:
+			pass
+
+	with open(filename, "w") as f:
+		writer = csv.writer(f)
+		for row in rows:
+			writer.writerow(row)
+
 def run(subject_id, filename, brain_file):
 	channel_data = _readfile(subject_id, filename)
 	electrodes = _channelDataToElectrodes(channel_data)
+	electrode_names = []
 
 	class Visualization(HasTraits):
 		scene = Instance(MlabSceneModel, ())
@@ -58,7 +82,6 @@ def run(subject_id, filename, brain_file):
 			self.last_electrode = None
 			self.click_pos = None
 			self.electrodes = electrodes
-			self.electrode_names = []
 			self.init_names()
 			self.mayavi_electrodes = []
 			self.refresh_electrodes()
@@ -87,12 +110,12 @@ def run(subject_id, filename, brain_file):
 
 		def init_names(self):
 			for i in range(len(self.electrodes)):
-				self.electrode_names.append("")
+				electrode_names.append("")
 
 		@on_trait_change("select_electrode")
 		def update_plot(self):
 			self.refresh_electrodes()
-			self.electrode_name = self.electrode_names[self.select_electrode]
+			self.electrode_name = electrode_names[self.select_electrode]
 
 		@on_trait_change("confirm")
 		def confirm_event(self):
@@ -101,7 +124,7 @@ def run(subject_id, filename, brain_file):
 
 				if len(self.electrode_name) > 0:
 					self.electrode_name = str(int(self.electrode_name))
-				self.electrode_names[self.select_electrode] = self.electrode_name
+				electrode_names[self.select_electrode] = self.electrode_name
 				new_index = self.select_electrode + index_change
 				if new_index >= len(self.electrodes):
 					new_index = 0
@@ -112,6 +135,8 @@ def run(subject_id, filename, brain_file):
 
 	visualization = Visualization(electrodes)
 	visualization.configure_traits()
+
+	_saveElectrodeNames(filename, subject_id, electrode_names)
 
 if __name__ == "__main__":
 	csv_file = "../data/test_file.csv"
