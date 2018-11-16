@@ -15,3 +15,4 @@ python3.6 (python3.7 doesn't work because mayavi requires vtk which is not avail
 ## dependecies
 - nibabel (python library)
 - mayavi (python library)
+- PyQt5 (python library)
