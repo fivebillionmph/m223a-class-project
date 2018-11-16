@@ -1,13 +1,15 @@
 ## pipeline
-- channel scores for EEG (David), independent, writes to `scores` table
-- skull stripping (Yannan), independent, writes to `subjects` table
-- speech correlation (Ge), independent, write to `scores` table
-- bad channel identification (Amy), independent
-- phase amplitude coupling (Mohammadali), independent, writes to `scores` table
-- power analysis/signal processing (Jake), independent, writes to `scores` table
-- CT to MR registration (Joseph), depends on skull stripping, writes to `channels` table
-- ECOG labeling (James), depends on skull stripping, CT to MR registration, writes to `channels` table
-- heatmap plotting (Zhaoqiang), depends on everything
+component | student | dependencies | sql table
+--- | --- | --- | ---
+channel scores for EEG | David | none | scores
+skull stripping | Yannan | none | subjects
+speech correlation | Ge | none | scores
+bad channel identification | Amy | none | 
+phase amplitude coupling | Mohammadali | none | scores
+power analysis/signal processing | Jake | none | scores
+CT to MR registration | Joseph | skull stripping | channels
+ECOG labeling | James | skull stripping, CT to MR registration | channels
+heatmap plotting | Zhaoqiang | everything |
 
 ## files to be prepopulated in the database
 - Standard MR data file, for EEG subjects
