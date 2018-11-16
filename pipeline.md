@@ -10,5 +10,5 @@
 - heatmap plotting (Zhaoqiang), depends on everything
 
 ## files to be prepopulated in the database
-- Standard MR data file, for EEG subjects
-- EEG coordinates csv file, for EEG subjects
+- Standard MR data file, for EEG subjects (Yannan)
+- EEG coordinates csv file, for EEG subjects (Yannan)
