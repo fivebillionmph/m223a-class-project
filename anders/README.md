@@ -7,6 +7,7 @@
 #### dependencies: postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config
 
 #### database specifics:
+    - host='localhost'
     - dbname='brain_db'
     - user='postgres'
     - password='pass'
