@@ -1,25 +1,38 @@
 ## database integration
 
-  - establish database structure
-  
-  - requirements: postgresql, python 3
-  - dependencies: psycopg2, psycopg2.extras, psycopg2.extensions
+#### purpose: establish database structure
 
-    - establish I/O for each component (in development)
-  		- initial content to load into db:
-  			- mri
-  			- ct
-  			- signal files
-  			- eeg channel coordinates (hard coded)
-		- pull from db:
-  			- mri
-  			- ct
-  			- smr
-  			- signal files
-  			- channel coordinates
-  			- channel scores
-  		- push to db:
-  			- stripped skull (smr)
-  			- eeg coordinates
-  			- ecog coordinates
-  			- channel scores
+
+#### language: python 3.6
+#### dependencies: postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config
+
+#### database specifics:
+    - dbname='brain_db'
+    - user='postgres'
+    - password='pass'
+
+#### initial inputs:
+    - eeg channel coordinates (hard coded .csv)
+    - UI should request file locations from user for:
+        - mri (NIFTI)
+        - ct (NIFTI)
+        - eeg signal files (BCI2000)
+        - ecog signal files (BCI2000, EDF)
+    	- ecog channel map (JPG)
+
+#### outputs:
+    - provide file location for: 
+        - mri (NIFTI)
+        - ct (NIFTI)
+        - smr (NIFTI)
+        - signal files (BCI2000, EDF)
+    	- ecog channel map (JPG) 
+    - provide data direct from db:
+    	- ecog channel coordinates (.csv)
+    	- eeg channel coordinates (.csv)
+    	- channel scores (.csv)
+
+#### intermediary inputs:
+    - file location of smr
+    - ecog channel coordinates (.csv)
+    - channel scores (.csv)
