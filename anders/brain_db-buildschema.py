@@ -10,13 +10,13 @@ cursor=conn.cursor()
 # create 5 tables: subjects, signals, channels, scores, eeg
 # create "subjects" table to house imaging file paths
 subjects="""CREATE TABLE subjects(
-        sid serial primary key,
-        name varchar(255) not null,
-        type varchar(255) not null,
-        ct_path varchar(255),
-        mr_path varchar(255),
-        rct_path varchar(255),
-        smr_path varchar(255))"""
+        sid serial primary key,         # subject ID
+        name varchar(255) not null,     # subject name/code
+        type varchar(255) not null,     # data type
+        ct_path varchar(255),           # path of CT
+        mr_path varchar(255),           # path of MR
+        rct_path varchar(255),          # path of registered CT
+        smr_path varchar(255))"""       # path of stripped skull MR
 cursor.execute(subjects)
 
 # create "signals" table to house signal file paths
