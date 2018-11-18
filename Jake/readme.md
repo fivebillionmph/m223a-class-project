@@ -1,6 +1,6 @@
 ## Band Power Over Time
 #### Function Name:
-- Power_Analysis
+- Power_Analysis.exe
 
 #### Outline of Function:
 - Trims input channel data to desired time interval
