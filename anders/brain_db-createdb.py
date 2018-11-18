@@ -1,4 +1,5 @@
 # create database brain_db 
+# run on installation (only once)
 
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
