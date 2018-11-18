@@ -1,10 +1,10 @@
 import psycopg2
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+#from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 name=input("Please enter subject name.")
 
-conn=psycopg2.connect(user='postgres',password='pass')
-conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+conn=psycopg2.connect(dbname='brain_db',user='postgres',password='pass')
+#conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cursor=conn.cursor()
 
 sql = """SELECT sid from subjects WHERE name=%s"""
