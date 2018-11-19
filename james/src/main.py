@@ -1,4 +1,5 @@
-import csv
+import psycopg2
+import psycopg2.extras
 import nibabel as nib
 from mayavi import mlab
 from traits.api import HasTraits, on_trait_change, Range, Instance, Str, Button
@@ -15,24 +16,9 @@ to dos:
 
 _HEADER = ["sid", "channel", "eid", "x", "y", "z"]
 
-def _readfile(subject_id, filename):
-	results = []
-	with open(filename, "r") as f:
-		reader = csv.reader(f)
-		for row in reader:
-			row = list(row)
-			result = {}
-			for i in range(len(_HEADER)):
-				if i < len(row):
-					result[_HEADER[i]] = row[i]
-				else:
-					result[_HEADER[i]] = ""
-			try:
-				if int(result["sid"]) == subject_id:
-					results.append(result)
-			except:
-				pass
-	return results
+def _readdb(cursor, subject_id):
+	cursor.execute("select * from channels where sid = %s", (subject_id,))
+	return cursor.fetchall()
 
 def _channelDataToElectrodes(channel_data):
 	electrodes = []
@@ -40,31 +26,19 @@ def _channelDataToElectrodes(channel_data):
 		electrodes.append([int(cd["x"]), int(cd["y"]), int(cd["z"])])
 	return electrodes
 
-def _saveElectrodeNames(filename, subject_id, electrode_names):
-	rows = []
-
-	with open(filename, "r") as f:
-		reader = csv.reader(f)
-		for row in reader:
-			row = list(row)
-			rows.append(row)
-
-	name_counter = 0
-	for i in range(len(rows)):
+def _saveElectrodeNames(cursor, channel_data, electrode_names):
+	for i in range(len(channel_data)):
 		try:
-			if int(rows[i][0]) == subject_id:
-				rows[i][1] = electrode_names[name_counter]
-				name_counter += 1
+			eni = int(electrode_names[i])
+			cursor.execute("update channels set channel = %s where sid = %s and eid = %s", (eni, channel_data["sid"], channel_data["eid"]))
 		except:
-			pass
+			sys.stderr.write("failed to update channel: sid %d, channel %d, eid %d" % (channel_data["sid"], channel_data["channel"], channel_data["eid"]))
 
-	with open(filename, "w") as f:
-		writer = csv.writer(f)
-		for row in rows:
-			writer.writerow(row)
+def run(subject_id, brain_file):
+	cxn = psycopg2.connect(dbname = "brain_db", user = "postgres", host = "localhost", password = "pass")
+	cursor = cxn.cursor(cursor_factory = psycopg2.extras.DictCursor)
 
-def run(subject_id, filename, brain_file):
-	channel_data = _readfile(subject_id, filename)
+	channel_data = _readdb(cursor, subject_id)
 	electrodes = _channelDataToElectrodes(channel_data)
 	electrode_names = []
 
@@ -136,10 +110,11 @@ def run(subject_id, filename, brain_file):
 	visualization = Visualization(electrodes)
 	visualization.configure_traits()
 
-	_saveElectrodeNames(filename, subject_id, electrode_names)
+	_saveElectrodeNames(cursor, channel_data, electrode_names)
+	cxn.commit()
+	cxn.close()
 
 if __name__ == "__main__":
-	csv_file = "../data/test_file.csv"
 	brain_file = "/Users/jamesgo/Projects/python/m277a-1/data/standard-brain.bse.nii.gz"
 	#brain_file = "/Users/jamesgo/Projects/python/m277a-1/data/test/T1.bse.nii.gz"
-	run(1, csv_file, brain_file)
+	run(1, brain_file)
