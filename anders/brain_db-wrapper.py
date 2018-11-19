@@ -4,7 +4,7 @@
 import psycopg2
 import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, Yannan
+from mod import config, Yannan, Jake
 
 # request subject name from user.
 name=input("Please enter subject name. ")
@@ -73,5 +73,8 @@ mr_path = subject_row["mr_path"]
 
 # run each individual user's scripts
 Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+
+if config.is_windows:
+	Jake.run("test", "0", "100", "0", "100")
 
 cursor.close()
