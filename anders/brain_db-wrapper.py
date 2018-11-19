@@ -1,20 +1,24 @@
-# requests initial file inputs from the user, as well as subject name and type
+# requests subject name and populates subject table.
+# requests initial file inputs from the user.
 
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, Yannan
 
+# request subject name from user.
 name=input("Please enter subject name. ")
 
+# connect to brain_db and establish cursor connection.
 conn=psycopg2.connect(dbname='brain_db',user='postgres',password='pass')
 conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cursor=conn.cursor()
 
+# query brain_db for existing subject name and select subject.
 select_subject = """SELECT sid from subjects WHERE name=%s"""
 cursor.execute(select_subject, (name,))
-
 subject_names = cursor.fetchall()
 
+# if subject name does not exist, request name, type, 
 if len(subject_names) == 0:
     expt_type=input("Please enter experiment type (EEG/ECoG). ")
     # add a 'while' loop to demand only EEG or ECOG as input.
@@ -45,12 +49,19 @@ else:
 # commit the transaction
 conn.commit()
 
-# developing signal insertion: 
+# request first signal file path: 
+signal_path1 = input("Please enter the first signal file path. ")
 
-# insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s) RETURNING sid;"""
-# cursor.execute(insert_signals, (sid,signal_path))
+# in development: request second signal file path:
+#sig2 = input("Do you have another signal file? (y/n) ")
+#if sig2 == "y":
+#    signal_path2 = input("Please enter the second signal file path. ")
 
+insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s) RETURNING sid;"""
+cursor.execute(insert_signals, (sid,signal_path1))
 
+# commit the transaction
+conn.commit()
 
 # close the database communication
 cursor.execute("SELECT * FROM subjects WHERE sid = %s", (sid,))
