@@ -2,6 +2,7 @@
 
 import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+from mod import config, Yannan
 
 name=input("Please enter subject name. ")
 
@@ -52,6 +53,11 @@ conn.commit()
 
 
 # close the database communication
+cursor.execute("SELECT * FROM subjects WHERE sid = %s", (sid,))
+subject_row = cursor.fetchall()[0]
 cursor.close()
 
 print(sid)
+
+mr_path = subject_row[4]
+Yannan.run(config.brainsuite_cortical_extraction_script, mr_path)
