@@ -77,4 +77,10 @@ Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 if config.is_windows:
 	Jake.run("test", "0", "100", "0", "100")
 
+# Jake has two methods: one for EDF and one for DAT
+    # can specify time ranges and frequency bands of expt 
+    # results in different scores (to be added as JakeMethod1a, JakeMethod1b)
+    # method name might take format: "Jake_[time sequence]_[frequency band]"
+    # will have to prompt user to specify their time ranges and frequency band
+
 cursor.close()
