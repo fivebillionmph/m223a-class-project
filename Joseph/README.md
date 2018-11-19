@@ -17,6 +17,7 @@ Dependencies:
 pip install SimpleITK
 
 
+*** Not complete yet ***
 Electrode Detection
 
 Outline of Function:
