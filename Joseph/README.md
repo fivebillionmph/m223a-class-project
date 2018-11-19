@@ -15,3 +15,22 @@ Python 3.7.0
 
 Dependencies:
 pip install SimpleITK
+
+
+Electrode Detection
+
+Outline of Function:
+Finds electrode locations from the registered CT-MR image produced above using simple thresholding and finding centroids of connected components.
+
+Inputs:
+Registered CT-MR Nifti file
+
+Outputs:
+Electrode locations
+
+Language:
+Python 3.7.0
+
+Dependencies:
+pip install SimpleITK
+
