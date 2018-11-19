@@ -5,6 +5,28 @@ function [] = Power_Analysis(file,startTime,stopTime,startFrequency,stopFrequenc
 %%%Outputs vector of Relative Power for all channels over specified time
 %%%and frequency intervals
 
+if (isnumeric(startTime))
+else
+    startTime =str2double(startTime);
+end
+
+if (isnumeric(stopTime))
+else
+    stopTime = str2double(stopTime);
+end
+
+if (isnumeric(startFrequency))
+else
+    startFrequency = str2double(startFrequency);
+end
+
+if (isnumeric(stopFrequency))
+else
+    stopFrequency = str2double(stopFrequency);
+end
+
+
+
 %%%Determines the file type of the input file
 [filepath,name,ext] = fileparts(file);
 if (strcmp (ext,'.dat'))
@@ -12,7 +34,13 @@ if (strcmp (ext,'.dat'))
     samplingFrequency = parameters.SamplingRate.NumericValue;
 elseif (strcmp (ext,'.edf'))
    %filename = strcat(name,ext);
-   [parameters,Data] = edfreadUntilDone(file);
+   [parameters] = edfreadUntilDone(file);
+   [j,k] = size(parameters.frequency);
+   b = 1;
+   while ( b <= k)
+        [~,Data(b,:)] = edfreadUntilDone(file,'targetSignals',b);
+        b = b+1;
+   end
    samplingFrequency = parameters.frequency(1,1);
    Data = Data'; %transpose the data so it matches the bci type
 else 
@@ -115,7 +143,6 @@ csvfile = strcat(filepath,'\',name,'.csv');
 csvwrite(csvfile,OutputData); %generates a csv file as an output
     
     
-
 
 
 
