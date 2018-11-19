@@ -14,4 +14,4 @@ Language:
 Python 3.7.0
 
 Dependencies:
-pip install SimpeITK
+pip install SimpleITK
