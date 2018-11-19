@@ -75,7 +75,7 @@ mr_path = subject_row["mr_path"]
 Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 
 if config.is_windows:
-	Jake.run("test", "0", "100", "0", "100")
+    Jake.run("test", "0", "100", "0", "100")
 
 # Jake has two methods: one for EDF and one for DAT
     # can specify time ranges and frequency bands of expt 
