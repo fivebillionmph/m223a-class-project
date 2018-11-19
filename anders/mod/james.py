@@ -1,5 +1,3 @@
-import psycopg2
-import psycopg2.extras
 import nibabel as nib
 from mayavi import mlab
 from traits.api import HasTraits, on_trait_change, Range, Instance, Str, Button
@@ -34,10 +32,7 @@ def _saveElectrodeNames(cursor, channel_data, electrode_names):
 		except:
 			sys.stderr.write("failed to update channel: sid %d, channel %d, eid %d" % (channel_data["sid"], channel_data["channel"], channel_data["eid"]))
 
-def run(subject_id, brain_file):
-	cxn = psycopg2.connect(dbname = "brain_db", user = "postgres", host = "localhost", password = "pass")
-	cursor = cxn.cursor(cursor_factory = psycopg2.extras.DictCursor)
-
+def run(cursor, subject_id, brain_file):
 	channel_data = _readdb(cursor, subject_id)
 	electrodes = _channelDataToElectrodes(channel_data)
 	electrode_names = []
@@ -111,8 +106,6 @@ def run(subject_id, brain_file):
 	visualization.configure_traits()
 
 	_saveElectrodeNames(cursor, channel_data, electrode_names)
-	cxn.commit()
-	cxn.close()
 
 if __name__ == "__main__":
 	brain_file = "/Users/jamesgo/Projects/python/m277a-1/data/standard-brain.bse.nii.gz"
