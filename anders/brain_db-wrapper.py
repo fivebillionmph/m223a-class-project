@@ -2,6 +2,7 @@
 # requests initial file inputs from the user.
 
 import psycopg2
+import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, Yannan
 
@@ -11,7 +12,7 @@ name=input("Please enter subject name. ")
 # connect to brain_db and establish cursor connection.
 conn=psycopg2.connect(dbname='brain_db',user='postgres',password='pass')
 conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-cursor=conn.cursor()
+cursor=conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
 
 # query brain_db for existing subject name and select subject.
 select_subject = """SELECT sid from subjects WHERE name=%s"""
@@ -41,10 +42,10 @@ if len(subject_names) == 0:
     insert_subject = """INSERT INTO subjects(name,type,mr_path,ct_path) VALUES(%s,%s,%s,%s) RETURNING sid;"""
     cursor.execute(insert_subject, (name,expt_type,mr_path,ct_path))        
     # get subject ID
-    sid = cursor.fetchone()[0]
+    sid = cursor.fetchone()["sid"]
 
 else:
-    sid = subject_names[0][0]
+    sid = subject_names[0]["sid"]
     
 # commit the transaction
 conn.commit()
@@ -66,9 +67,11 @@ conn.commit()
 # close the database communication
 cursor.execute("SELECT * FROM subjects WHERE sid = %s", (sid,))
 subject_row = cursor.fetchall()[0]
-cursor.close()
 
 print(sid)
+mr_path = subject_row["mr_path"]
 
-mr_path = subject_row[4]
-Yannan.run(config.brainsuite_cortical_extraction_script, mr_path)
+# run each individual user's scripts
+Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+
+cursor.close()
