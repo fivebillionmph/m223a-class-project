@@ -4,7 +4,7 @@
 import psycopg2
 import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, Yannan, Jake
+from mod import config, Yannan, Jake, Joseph
 
 # request subject name from user.
 name=input("Please enter subject name. ")
@@ -70,12 +70,15 @@ subject_row = cursor.fetchall()[0]
 
 print(sid)
 mr_path = subject_row["mr_path"]
+ct_path = subject_row["ct_path"]
 
 # run each individual user's scripts
 Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 
 if config.is_windows:
-    Jake.run("test", "0", "100", "0", "100")
+    Jake.run(cursor, "test", "0", "100", "0", "100")
+
+Joseph.run(cursor, sid, ct_path, mr_path)
 
 # Jake has two methods: one for EDF and one for DAT
     # can specify time ranges and frequency bands of expt 
