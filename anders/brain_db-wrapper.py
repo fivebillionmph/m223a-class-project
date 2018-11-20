@@ -4,7 +4,7 @@
 import psycopg2
 import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, Yannan, Jake, Joseph, David
+from mod import config, Yannan, Jake, Joseph, David, Amy
 
 # request subject name from user.
 name=input("Please enter subject name. ")
@@ -81,8 +81,8 @@ if config.is_windows:
     Jake.run(cursor, "test", "0", "100", "0", "100")
 
 Joseph.run(cursor, sid, ct_path, mr_path)
-
 David.run(cursor, sid, eeg_file)
+Amy.run(cursor, sid, eeg_file)
 
 # Jake has two methods: one for EDF and one for DAT
     # can specify time ranges and frequency bands of expt 
