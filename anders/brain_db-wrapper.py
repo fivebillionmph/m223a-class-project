@@ -24,10 +24,12 @@ if len(subject_names) == 0:
     expt_type=input("Please enter experiment type (EEG/ECoG). ")
     # add a 'while' loop to demand only EEG or ECOG as input.
     
-    # hard coded path to standard brain MR
-    mr_path = "/data/T1.nii.gz"    
+    # hard coded path to standard brain MR, standard brain SMR, standard EEG, blank CT
+    mr_path = "data/standard.nii"
+    smr_path = "data/standard.cerebrum.mask.nii.gz"
     ct_path = ""
-    
+    eeg_file = "data/EEG_10X20.csv"
+
     if expt_type == "ECoG":
         mr=input("Do you have an MR file for this subject? (y/n) ")
         if mr == "y":
