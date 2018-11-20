@@ -44,9 +44,7 @@ def bin_power(X, Band, Fs):
     Power_Ratio = Power / sum(Power)
     return Power, Power_Ratio
 
-#prints channels that don't pass
+#prints channel values
 for x in range(0,32,1):
-    if ((bin_power(Y[:,x], [0.5,30], 256))[1][0]) < 0.8:
-        print(x) 
+    print([x],[((bin_power(Y[:,x], [0.5,30], 256))[1][0])
 
-#print to database (need to complete, will use csv module)
