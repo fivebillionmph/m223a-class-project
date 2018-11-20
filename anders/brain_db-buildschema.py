@@ -32,7 +32,7 @@ cursor.execute(signals)
 # create "eeg" table to house eeg channel names and coordinates
 # this data will be hard-coded (does not change across subjects)
 eeg="""CREATE TABLE eeg(
-        eid integer primary key,
+        eid serial primary key,
         eeg_name varchar(3) not null,
         x integer,
         y integer,
