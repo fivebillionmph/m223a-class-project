@@ -4,7 +4,7 @@
 import psycopg2
 import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, Yannan, Jake, Joseph
+from mod import config, Yannan, Jake, Joseph, David
 
 # request subject name from user.
 name=input("Please enter subject name. ")
@@ -53,6 +53,8 @@ conn.commit()
 # request first signal file path: 
 signal_path1 = input("Please enter the first signal file path. ")
 
+eeg_file = input("Please enter the first EEG file path. ")
+
 # in development: request second signal file path:
 #sig2 = input("Do you have another signal file? (y/n) ")
 #if sig2 == "y":
@@ -79,6 +81,8 @@ if config.is_windows:
     Jake.run(cursor, "test", "0", "100", "0", "100")
 
 Joseph.run(cursor, sid, ct_path, mr_path)
+
+David.run(cursor, sid, eeg_file)
 
 # Jake has two methods: one for EDF and one for DAT
     # can specify time ranges and frequency bands of expt 
