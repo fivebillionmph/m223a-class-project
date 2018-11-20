@@ -1,6 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Phase Amplitude Coupling (PAC) %%%%%
-function [MaxPAC, MeanPAC] = pac(filename, LowFreqs, HighFreqs)
+% function [MaxPAC, MeanPAC] = pac(filename, LowFreqs, HighFreqs)
+function [MaxPAC] = pac(filename, LowFreqs, HighFreqs)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 isUseParallel = 0;
@@ -9,7 +10,7 @@ numfreqs = 0;
 
 %%%%% Input Data %%%%%
 
-[~, ~, ext] = fileparts(filename);
+[filepath, name, ext] = fileparts(filename);
 
 if strcmpi(ext, '.dat')
     % % % EEG&ECOG
@@ -44,14 +45,14 @@ n = 1;
 % z = n-m+1;
 
 MaxPAC = (n);
-MeanPAC = (n);
+% MeanPAC = (n);
 
 for i = m:n
 
 [sPAC, ~, ~] = bst_pac (F(i,:), sRate, LowFreqs, HighFreqs, isUseParallel, isUseMex, numfreqs);
 
 MaxPAC (i) = max (max (max (sPAC(:,1,:,:))));
-MeanPAC (i) = mean (mean (mean (sPAC(:,1,:,:))));
+% MeanPAC (i) = mean (mean (mean (sPAC(:,1,:,:))));
 
 %%%%% Ploting the PAC (not necessary for the project) %%%%%
 
@@ -73,10 +74,13 @@ end
 %%%%% Output Data %%%%%
 
 MaxPAC = transpose (MaxPAC);
-MeanPAC = transpose (MeanPAC);
+% MeanPAC = transpose (MeanPAC);
 
-csvwrite('Max_PAC.dat',MaxPAC);
-csvwrite('Mean_PAC.dat',MeanPAC);
+% csvwrite('Max_PAC.dat',MaxPAC);
+% csvwrite('Mean_PAC.dat',MeanPAC);
+
+csvfile = strcat(filepath,'\',name,'.csv');
+csvwrite(csvfile,MaxPAC);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
