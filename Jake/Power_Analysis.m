@@ -34,13 +34,13 @@ if (strcmp (ext,'.dat'))
     samplingFrequency = parameters.SamplingRate.NumericValue;
 elseif (strcmp (ext,'.edf'))
    %filename = strcat(name,ext);
-   [parameters] = edfreadUntilDone(file);
-   [j,k] = size(parameters.frequency);
-   b = 1;
-   while ( b <= k)
-        [~,Data(b,:)] = edfreadUntilDone(file,'targetSignals',b);
-        b = b+1;
-   end
+   [parameters,Data] = edfreadUntilDone(file);
+   %[j,k] = size(parameters.frequency);
+   %b = 1;
+   %while ( b <= j)
+   %     [~,Data(b,:)] = edfreadUntilDone(file,'targetSignals',b);
+   %     b = b+1;
+   %end
    samplingFrequency = parameters.frequency(1,1);
    Data = Data'; %transpose the data so it matches the bci type
 else 
