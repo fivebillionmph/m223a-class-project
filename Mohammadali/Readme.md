@@ -2,7 +2,7 @@ Signal Classification - Phase Amplitude Coupling (PAC)
 
 
 Programming Language: MATLAB
-(There is also a Python Command to run the MATLAB function that has been uploaded.)
+(There is also a Python Command to run the MATLAB function.)
 
 This Code seeks to show how the phase amplitude coupling (PAC) can be calculated as a part of the classification of brain signals. In fact, Modulation Index (MI) is the method being used here to calculate PAC.
 
@@ -34,10 +34,10 @@ Outputs:
 - MeanPAC: Average value of PAC measures
 
 The MATLAB command:
--	[MaxPAC, MeanPAC] = pac ('C:\Users\alido\Desktop\2\EEG1.dat', [2,14], [40,150])
+-	[MaxPAC, MeanPAC] = pac ('file', [2,14], [40,150])
 
 The Python command:
 -	import matlab.engine
 - eng = matlab.engine.start_matlab()
-- pac = eng.pac (r'C:\Users\alido\Desktop\2\EEG1.dat', matlab.double([2, 14]), matlab.double([40, 150]), nargout=2)
+- pac = eng.pac (r'file', matlab.double([2, 14]), matlab.double([40, 150]), nargout=2)
 - print(pac)
