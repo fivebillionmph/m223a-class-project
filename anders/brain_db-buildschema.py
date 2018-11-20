@@ -1,8 +1,8 @@
-# establish database schema
+# establish database schema and add standard coords to eeg relation
 # run on installation (only once)
 
-import psycopg2
 import csv
+import psycopg2
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 conn=psycopg2.connect(dbname='brain_db',user='postgres',password='pass')
@@ -67,18 +67,18 @@ scores="""CREATE TABLE scores(
             on update cascade on delete cascade)"""
 cursor.execute(scores)
 
-# commit the transaction
+# commit the transaction to establish brain_db relations
 conn.commit()
 
-with open('/Users/yannanlin/Desktop/homework/BE 223A/BE223A data/EEG_10X20.csv', 'r') as f:
-    reader = csv.reader(f)
+# insert eeg_coords into eeg relation from eeg_coords .csv
+insert_eeg_coords = """INSERT INTO eeg(eeg_name,x,y,z) VALUES(%s,%s,%s,%s);"""
+
+with open('data/EEG_10-20.csv') as eeg_csv:
+    reader = csv.reader(eeg_csv)
     next(reader)  # Skip the header row.
     for row in reader:
-        cursor.execute(
-            "INSERT INTO eeg(eeg_name,x,y,z) VALUES (%s, %s, %s, %s)",
-            row
-        )
-conn.commit()
+        cursor.execute(insert_eeg_coords, row)
 
 # close the database communication
 cursor.close()
+
