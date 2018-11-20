@@ -59,7 +59,7 @@ cursor.execute(channels)
 scores="""CREATE TABLE scores(
         sid integer not null,
         channel integer not null,
-        method integer not null,
+        method varchar(255) not null,
         score numeric,
         foreign key (sid)
             references subjects (sid)
