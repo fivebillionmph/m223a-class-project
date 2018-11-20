@@ -2,6 +2,7 @@
 # run on installation (only once)
 
 import psycopg2
+import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
 conn=psycopg2.connect(dbname='brain_db',user='postgres',password='pass')
@@ -68,5 +69,16 @@ cursor.execute(scores)
 
 # commit the transaction
 conn.commit()
+
+with open('/Users/yannanlin/Desktop/homework/BE 223A/BE223A data/EEG_10X20.csv', 'r') as f:
+    reader = csv.reader(f)
+    next(reader)  # Skip the header row.
+    for row in reader:
+        cursor.execute(
+            "INSERT INTO eeg(eeg_name,x,y,z) VALUES (%s, %s, %s, %s)",
+            row
+        )
+conn.commit()
+
 # close the database communication
 cursor.close()
