@@ -19,17 +19,18 @@ select_subject = """SELECT sid from subjects WHERE name=%s"""
 cursor.execute(select_subject, (name,))
 subject_names = cursor.fetchall()
 
-# if subject name does not exist, request name, type, 
+# if subject name does not exist, request name, experiment type, and image paths.
 if len(subject_names) == 0:
     expt_type=input("Please enter experiment type (EEG/ECoG). ")
     # add a 'while' loop to demand only EEG or ECOG as input.
     
-    # hard coded path to standard brain MR, standard brain SMR, standard EEG, blank CT
+    # hard coded path to standard brain MR, standard brain SMR, standard EEG, blank CT.
     mr_path = "data/standard.nii"
     smr_path = "data/standard.cerebrum.mask.nii.gz"
     ct_path = ""
-    eeg_coords = "data/EEG_10X20.csv"
+    eeg_coords = "data/EEG_10-20.csv"
 
+    # acquire file paths based on experiment type and available images.
     if expt_type == "ECoG":
         mr=input("Do you have an MR file for this subject? (y/n) ")
         if mr == "y":
@@ -40,7 +41,8 @@ if len(subject_names) == 0:
             ct_path = input("What is the CT file path? ")
         else:
             ct_path = input("What is the excel file path with electrode coords? ")
-        
+    
+    # insert subject data into subjects relation based on acquisitions from user.
     insert_subject = """INSERT INTO subjects(name,type,mr_path,ct_path) VALUES(%s,%s,%s,%s) RETURNING sid;"""
     cursor.execute(insert_subject, (name,expt_type,mr_path,ct_path))        
     # get subject ID
@@ -55,7 +57,7 @@ conn.commit()
 # request first signal file path: 
 signal_path1 = input("Please enter the first signal file path. ")
 
-eeg_file = input("Please enter the first EEG file path. ")
+eeg_file = input("Please enter the first EEG signal file path. ")
 
 # in development: request second signal file path:
 #sig2 = input("Do you have another signal file? (y/n) ")
@@ -68,7 +70,7 @@ cursor.execute(insert_signals, (sid,signal_path1))
 # commit the transaction
 conn.commit()
 
-# close the database communication
+
 cursor.execute("SELECT * FROM subjects WHERE sid = %s", (sid,))
 subject_row = cursor.fetchall()[0]
 
@@ -92,4 +94,5 @@ Amy.run(cursor, sid, eeg_file)
     # method name might take format: "Jake_[time sequence]_[frequency band]"
     # will have to prompt user to specify their time ranges and frequency band
 
+# close the database communication
 cursor.close()
