@@ -56,10 +56,9 @@ conn.commit()
 
 # request first signal file path: 
 signal_path1 = input("Please enter the first signal file path. ")
-
 eeg_file = input("Please enter the first EEG signal file path. ")
 
-# in development: request second signal file path:
+##### IN DEVELOPMENT: request second signal file path:
 #sig2 = input("Do you have another signal file? (y/n) ")
 #if sig2 == "y":
 #    signal_path2 = input("Please enter the second signal file path. ")
@@ -68,25 +67,37 @@ insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s) RETURNING
 cursor.execute(insert_signals, (sid,signal_path1))
 
 
+##### IN DEVELOPMENT: filling channel table
+# can eventually move up to "else" statement of ECoG inputs above
+
 # fill channel table
-if expt_type == EEG
+if expt_type == EEG:
     # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
-    channel_names = "subject_data/EEG_channel_names.csv"
+    with open('subject_data/EEG_channel_names.csv') as eeg_names:
+        eeg_names = csv.reader(eeg_names)
+        
     eeg_names_custom = input("Do you have a file with specific EEG channel names for this subject? (y/n) ")
     if eeg_names_custom == "y":
-        channel_names = input("Please enter the path to the .csv containing EEG channel names for your subject. ")
+        eeg_names = input("Please enter the path to the .csv containing EEG channel names for your subject. ")
+    
+    with open(eeg_names) as eeg_names:
+        eeg_names = csv.reader(eeg_names)
+
+    # armed with the subject eeg channel names, add SID, channel, eid, x, y, z to channel table
+        # match channel name (ex: CPz, CP2) to coords in eeg table
+        # select on eid from eeg table for channel-name 
+        
+
+
+# insert channel coords into channel relation based on acquisitions from user.
+# insert_channels = """INSERT INTO channels(sid,channel,eid,x,y,z) VALUES(%s,%s,%s,%s,%s,%s);"""
+# cursor.execute(insert_channels, (sid,channel,eid,x,y,z))
 
 
 # commit the transaction
 conn.commit()
 
 
-cursor.execute("SELECT * FROM subjects WHERE sid = %s", (sid,))
-subject_row = cursor.fetchall()[0]
-
-print(sid)
-mr_path = subject_row["mr_path"]
-ct_path = subject_row["ct_path"]
 
 # run each individual user's scripts
 Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
@@ -104,5 +115,7 @@ Amy.run(cursor, sid, eeg_file)
     # method name might take format: "Jake_[time sequence]_[frequency band]"
     # will have to prompt user to specify their time ranges and frequency band
 
-# close the database communication
+
+# close the cursor and database communication
 cursor.close()
+conn.close()
