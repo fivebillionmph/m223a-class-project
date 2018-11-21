@@ -3,6 +3,7 @@
 
 import psycopg2
 import psycopg2.extras
+import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, Yannan, Jake, Joseph, David, Amy
 
@@ -51,10 +52,10 @@ if len(subject_names) == 0:
 else:
     sid = subject_names[0]["sid"]
     
-# commit the transaction
+# commit the transaction to add content to subject relation.
 conn.commit()
 
-
+#### ACQUIRE SIGNAL FILE PATHS
 # request first signal file path: 
 signal_path1 = input("Please enter the first signal file path. ")
 signal_path2 = input("Do you have another signal file? (y/n) ")
@@ -82,23 +83,30 @@ for path in signal_paths:
 # fill channel table
 if expt_type == "EEG":
     # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
-    with open('subject_data/EEG_channel_names.csv') as eeg_names:
-        eeg_names = csv.reader(eeg_names)
+    with open('subject_data/EEG_channel_names.csv') as subject_eeg:
+        eeg_names = csv.reader(subject_eeg)
         
-    eeg_names_custom = input("Do you have a file with specific EEG channel names for this subject? (y/n) ")
-    if eeg_names_custom == "y":
-        eeg_names = input("Please enter the path to the .csv containing EEG channel names for your subject. ")
-    
-    with open(eeg_names) as eeg_names:
-        eeg_names = csv.reader(eeg_names)
-        
-        # this just prints the user defined EEG channel names -- for testing purposes only.
-        for row in eeg_names:
-            print (row)
+#    eeg_names_custom = input("Do you have a file with specific EEG channel names for this subject? (y/n) ")
+#    if eeg_names_custom == "y":
+#        eeg_names = input("Please enter the path to the .csv containing EEG channel names for your subject. ")
+#        with open(eeg_names) as eeg_names:
+#            eeg_names = csv.reader(eeg_names)
+            
+        select_eeg_channel = """SELECT eid, x, y, z FROM eeg WHERE eeg_name=%s"""
+        insert_eeg_channel = """INSERT INTO channels(sid, channel, eid, x, y, z) VALUES(%s,%s,%s,%s,%s)"""
 
-    # armed with the subject eeg channel names, add SID, channel, eid, x, y, z to channel table
+        for row in eeg_names:
+            eeg_coords = cursor.execute(select_eeg_channel, (row[1]))
+            eeg_row = cursor.fetchall()[0]
+
+            
+    # now, armed with the subject eeg channel names, add SID, channel, eid, x, y, z to channel table
         # match channel name (ex: CPz, CP2) to coords in eeg table
         # select on eid from eeg table for channel-name 
+
+        # must match channel name b/t eeg table and subject eeg channel names
+        # then, extract eeg coords (x, y, z) and eid from eeg table for each eeg channel name
+        # then, insert sid, channel, eid, x, y, z to channels table
         
 
 # insert channel coords into channel relation based on acquisitions from user.
