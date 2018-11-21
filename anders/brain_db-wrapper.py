@@ -54,24 +54,33 @@ else:
 # commit the transaction
 conn.commit()
 
+
 # request first signal file path: 
 signal_path1 = input("Please enter the first signal file path. ")
-eeg_file = input("Please enter the first EEG signal file path. ")
+signal_path2 = input("Do you have another signal file? (y/n) ")
+if signal_path2 == "y":
+    signal_path2 = input("Please enter the second signal file path. ")
+eeg_signal_path = input("Do you have an EEG signal file? (y/n) ")
+if eeg_signal_path == "y":
+    eeg_signal_path = input("Please enter EEG signal file path. ")
+eeg_signal_path2 = input("Do you have another EEG signal file? (y/n) ")
+if eeg_signal_path2 == "y":
+    eeg_signal_path2 = input("Please enter the second EEG signal file path. ")
 
-##### IN DEVELOPMENT: request second signal file path:
-#sig2 = input("Do you have another signal file? (y/n) ")
-#if sig2 == "y":
-#    signal_path2 = input("Please enter the second signal file path. ")
+signal_paths = [signal_path1, signal_path2, eeg_signal_path, eeg_signal_path2]
+insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
 
-insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s) RETURNING sid;"""
-cursor.execute(insert_signals, (sid,signal_path1))
+# insert user-provded signal paths into signals table.
+for path in signal_paths:
+    cursor.execute(insert_signals, (sid,path))
+
 
 
 ##### IN DEVELOPMENT: filling channel table
 # can eventually move up to "else" statement of ECoG inputs above
 
 # fill channel table
-if expt_type == EEG:
+if expt_type == "EEG":
     # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
     with open('subject_data/EEG_channel_names.csv') as eeg_names:
         eeg_names = csv.reader(eeg_names)
@@ -82,12 +91,15 @@ if expt_type == EEG:
     
     with open(eeg_names) as eeg_names:
         eeg_names = csv.reader(eeg_names)
+        
+        # this just prints the user defined EEG channel names -- for testing purposes only.
+        for row in eeg_names:
+            print (row)
 
     # armed with the subject eeg channel names, add SID, channel, eid, x, y, z to channel table
         # match channel name (ex: CPz, CP2) to coords in eeg table
         # select on eid from eeg table for channel-name 
         
-
 
 # insert channel coords into channel relation based on acquisitions from user.
 # insert_channels = """INSERT INTO channels(sid,channel,eid,x,y,z) VALUES(%s,%s,%s,%s,%s,%s);"""
