@@ -67,6 +67,16 @@ eeg_file = input("Please enter the first EEG signal file path. ")
 insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s) RETURNING sid;"""
 cursor.execute(insert_signals, (sid,signal_path1))
 
+
+# fill channel table
+if expt_type == EEG
+    # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
+    channel_names = "subject_data/EEG_channel_names.csv"
+    eeg_names_custom = input("Do you have a file with specific EEG channel names for this subject? (y/n) ")
+    if eeg_names_custom == "y":
+        channel_names = input("Please enter the path to the .csv containing EEG channel names for your subject. ")
+
+
 # commit the transaction
 conn.commit()
 
