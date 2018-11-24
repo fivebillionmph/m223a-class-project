@@ -5,25 +5,6 @@ import psycopg2
 import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-conn=psycopg2.connect(user='postgres',password='pass')
-conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-cursor=conn.cursor()
-
-# drop brain_db database if exists and recreate
-cursor.execute('DROP DATABASE IF EXISTS brain_db')
-cursor.execute('CREATE DATABASE brain_db')
-
-# grant all permissions to user postgres
-cursor.execute('GRANT ALL ON DATABASE brain_db TO postgres')
-cursor.execute('GRANT ALL ON DATABASE brain_db TO public')
-
-# commit the transaction
-conn.commit()
-
-# close the cursor and database communication
-cursor.close()
-conn.close()
-
 conn=psycopg2.connect(dbname='brain_db',user='postgres',password='pass')
 conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cursor=conn.cursor()
@@ -76,12 +57,14 @@ channels="""CREATE TABLE channels(
 cursor.execute(channels)
 
 # create "scores" table to house scores, based on method used
+# adding 100 scores columns for multiple time points per channel
 scores="""CREATE TABLE scores(
         sid integer not null,
         channel integer not null,
-        method varchar(255) not null,
-        score numeric,
-        foreign key (sid)
+        method varchar(255) not null,"""
+for i in range(100):
+    scores += "score{} numeric,".format(i)
+scores += """foreign key (sid)
             references subjects (sid)
             on update cascade on delete cascade)"""
 cursor.execute(scores)
