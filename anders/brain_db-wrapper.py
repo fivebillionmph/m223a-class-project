@@ -56,22 +56,22 @@ else:
 conn.commit()
 
 #### ACQUIRE SIGNAL FILE PATHS
-# request first signal file path: 
+# request signal file paths and insert them into brain_db. 
 signal_path1 = input("Please enter the first signal file path. ")
-signal_path2 = input("Do you have another signal file? (y/n) ")
-if signal_path2 == "y":
+signal2 = input("Do you have another signal file? (y/n) ")
+if signal2 == "y":
     signal_path2 = input("Please enter the second signal file path. ")
-eeg_signal_path = input("Do you have an EEG signal file? (y/n) ")
-if eeg_signal_path == "y":
+eeg_signal = input("Do you have an EEG signal file? (y/n) ")
+if eeg_signal == "y":
     eeg_signal_path = input("Please enter EEG signal file path. ")
-eeg_signal_path2 = input("Do you have another EEG signal file? (y/n) ")
-if eeg_signal_path2 == "y":
+eeg_signal2 = input("Do you have another EEG signal file? (y/n) ")
+if eeg_signal2 == "y":
     eeg_signal_path2 = input("Please enter the second EEG signal file path. ")
 
 signal_paths = [signal_path1, signal_path2, eeg_signal_path, eeg_signal_path2]
 insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
 
-# insert user-provded signal paths into signals table.
+# insert user-provided signal paths into signals table.
 for path in signal_paths:
     cursor.execute(insert_signals, (sid,path))
 
@@ -81,15 +81,8 @@ for path in signal_paths:
 # fill channel table
 if expt_type == "EEG":
     # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
-    with open('subject_data/EEG_channel_names.csv') as subject_eeg:
+    with open('data/EEG_channel_names.csv') as subject_eeg:
         eeg_names = csv.reader(subject_eeg)
-#        for row in eeg_names:
-#            print (type(row[1]))
-#    eeg_names_custom = input("Do you have a file with specific EEG channel names for this subject? (y/n) ")
-#    if eeg_names_custom == "y":
-#        eeg_names = input("Please enter the path to the .csv containing EEG channel names for your subject. ")
-#        with open(eeg_names) as eeg_names:
-#            eeg_names = csv.reader(eeg_names)
             
         select_eeg_channel = """SELECT * FROM eeg WHERE LOWER(eeg_name)=LOWER(%s);"""
         insert_eeg_channel = """INSERT INTO channels(sid, channel, eid) VALUES(%s,%s,%s);"""
@@ -102,8 +95,6 @@ if expt_type == "EEG":
 
 # commit the transaction
 conn.commit()
-
-
 
 # run each individual user's scripts
 Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
