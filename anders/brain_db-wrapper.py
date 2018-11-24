@@ -76,42 +76,28 @@ for path in signal_paths:
     cursor.execute(insert_signals, (sid,path))
 
 
-
 ##### IN DEVELOPMENT: filling channel table
-# can eventually move up to "else" statement of ECoG inputs above
 
 # fill channel table
 if expt_type == "EEG":
     # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
     with open('subject_data/EEG_channel_names.csv') as subject_eeg:
         eeg_names = csv.reader(subject_eeg)
-        
+#        for row in eeg_names:
+#            print (type(row[1]))
 #    eeg_names_custom = input("Do you have a file with specific EEG channel names for this subject? (y/n) ")
 #    if eeg_names_custom == "y":
 #        eeg_names = input("Please enter the path to the .csv containing EEG channel names for your subject. ")
 #        with open(eeg_names) as eeg_names:
 #            eeg_names = csv.reader(eeg_names)
             
-        select_eeg_channel = """SELECT eid, x, y, z FROM eeg WHERE eeg_name=%s"""
-        insert_eeg_channel = """INSERT INTO channels(sid, channel, eid, x, y, z) VALUES(%s,%s,%s,%s,%s)"""
-
-        for row in eeg_names:
-            eeg_coords = cursor.execute(select_eeg_channel, (row[1]))
-            eeg_row = cursor.fetchall()[0]
-
-            
-    # now, armed with the subject eeg channel names, add SID, channel, eid, x, y, z to channel table
-        # match channel name (ex: CPz, CP2) to coords in eeg table
-        # select on eid from eeg table for channel-name 
-
-        # must match channel name b/t eeg table and subject eeg channel names
-        # then, extract eeg coords (x, y, z) and eid from eeg table for each eeg channel name
-        # then, insert sid, channel, eid, x, y, z to channels table
+        select_eeg_channel = """SELECT * FROM eeg WHERE LOWER(eeg_name)=LOWER(%s);"""
+        insert_eeg_channel = """INSERT INTO channels(sid, channel, eid) VALUES(%s,%s,%s);"""
         
-
-# insert channel coords into channel relation based on acquisitions from user.
-# insert_channels = """INSERT INTO channels(sid,channel,eid,x,y,z) VALUES(%s,%s,%s,%s,%s,%s);"""
-# cursor.execute(insert_channels, (sid,channel,eid,x,y,z))
+        for row in eeg_names:
+            eeg_coords = cursor.execute(select_eeg_channel, (row[1],))
+            eeg_row = cursor.fetchall()[0]            
+            cursor.execute(insert_eeg_channel, (sid, row[0],eeg_row[0]))
 
 
 # commit the transaction
