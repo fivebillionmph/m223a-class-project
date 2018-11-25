@@ -57,23 +57,26 @@ conn.commit()
 
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
-signal_path1 = input("Please enter the first signal file path. ")
-signal2 = input("Do you have another signal file? (y/n) ")
-if signal2 == "y":
-    signal_path2 = input("Please enter the second signal file path. ")
-eeg_signal = input("Do you have an EEG signal file? (y/n) ")
-if eeg_signal == "y":
-    eeg_signal_path = input("Please enter EEG signal file path. ")
-eeg_signal2 = input("Do you have another EEG signal file? (y/n) ")
-if eeg_signal2 == "y":
-    eeg_signal_path2 = input("Please enter the second EEG signal file path. ")
+signals = []
+signal = input("Please enter the first EEG or ECoG signal file path. ")
+signals.append(signal)
 
-signal_paths = [signal_path1, signal_path2, eeg_signal_path, eeg_signal_path2]
+while signal != 'q':
+    # request another signal file path from the user.
+    signal = input("Please enter another signal file path, or enter 'q': ")
+
+    # add the signal file path to the list.
+    if signal != 'q':
+        signals.append(signal)
+
 insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
 
 # insert user-provided signal paths into signals table.
 for path in signal_paths:
     cursor.execute(insert_signals, (sid,path))
+
+
+
 
 
 ##### IN DEVELOPMENT: filling channel table
