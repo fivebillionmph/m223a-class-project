@@ -20,6 +20,8 @@ select_subject = """SELECT sid from subjects WHERE name=%s"""
 cursor.execute(select_subject, (name,))
 subject_names = cursor.fetchall()
 
+
+#### ACQUIRE SUBJECT NAME, EXPT TYPE, FILE INPUTS
 # if subject name does not exist, request name, experiment type, and image paths.
 if len(subject_names) == 0:
     expt_type=input("Please enter experiment type (EEG/ECoG). ")
@@ -35,13 +37,13 @@ if len(subject_names) == 0:
     if expt_type == "ECoG":
         mr=input("Do you have an MR file for this subject? (y/n) ")
         if mr == "y":
-            mr_path = input("What is the MR file path? ")
+            mr_path = input("Please enter the MR file path: ")
 
         ct=input("Do you have a CT file for this subject? (y/n) ")   
         if ct == "y":
-            ct_path = input("What is the CT file path? ")
+            ct_path = input("Please enter the CT file path: ")
         else:
-            ct_path = input("What is the excel file path with electrode coords? ")
+            ct_path = input("Please enter the file path with ECoG electrode coordinates: ")
     
     # insert subject data into subjects relation based on acquisitions from user.
     insert_subject = """INSERT INTO subjects(name,type,mr_path,ct_path) VALUES(%s,%s,%s,%s) RETURNING sid;"""
@@ -55,6 +57,7 @@ else:
 # commit the transaction to add content to subject relation.
 conn.commit()
 
+
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
 signals = []
@@ -65,7 +68,7 @@ while signal != 'q':
     # request another signal file path from the user.
     signal = input("Please enter another signal file path, or enter 'q': ")
 
-    # add the signal file path to the list.
+    # add the signal file paths to the list.
     if signal != 'q':
         signals.append(signal)
 
@@ -76,12 +79,7 @@ for path in signal_paths:
     cursor.execute(insert_signals, (sid,path))
 
 
-
-
-
-##### IN DEVELOPMENT: filling channel table
-
-# fill channel table
+#### FILL CHANNEL TABLE WITH COORDINATES FROM EEG TABLE
 if expt_type == "EEG":
     # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
     with open('data/EEG_channel_names.csv') as subject_eeg:
@@ -95,17 +93,22 @@ if expt_type == "EEG":
             eeg_row = cursor.fetchall()[0]            
             cursor.execute(insert_eeg_channel, (sid, row[0],eeg_row[0]))
 
-
 # commit the transaction
 conn.commit()
 
-# run each individual user's scripts
-Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 
+#### RUN INDIVIDUAL COMPONENT SCRIPTS
+# SKULL STRIPPING
+Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+# need to feed output file path to "smr" column of subjects table
+
+# MR/CT ELECTRODE REGISTRATION
 if config.is_windows:
     Jake.run(cursor, "test", "0", "100", "0", "100")
-
 Joseph.run(cursor, sid, ct_path, mr_path)
+
+
+# SIGNAL ANALYSIS
 David.run(cursor, sid, eeg_file)
 Amy.run(cursor, sid, eeg_file)
 
