@@ -9,12 +9,12 @@ METHOD = 1
 
 def run(cursor, subject_id, eeg_file):
     eeg = pd.read_csv(eeg_file)
-    print(eeg)
+    #print(eeg)
     
     # Indexing/subset selection
-    Channels = eeg.iloc[:, 2:]
-    Stimulus_Code = eeg.iloc[:, 0]
-    Stimulus_Type = eeg.iloc[:, 1]
+    Channels = eeg.iloc[1:, 2:]
+    Stimulus_Code = eeg.iloc[1:, 0]
+    Stimulus_Type = eeg.iloc[1:, 1]
     
     # OnsetIndices and Labels
     OnsetIndices = []
@@ -43,6 +43,7 @@ def run(cursor, subject_id, eeg_file):
         clf = RandomForestClassifier(n_estimators=100, max_features=40)
         clf.fit(X_train, Y_train)
         accuracies.append(clf.score(X_test, Y_test))
+    insert_scores = "INSERT INTO scores(sid,channel,method,score0) VALUES(%s, %s, %s, %s);"   
     for i in range(len(accuracies)):
-        cursor.execute("insert into scores values(%s, %s, %s, %s)", (subject_id, i+1, METHOD, accuracies[i]))
+        cursor.execute(insert_scores,(subject_id, i+1, METHOD, accuracies[i])) 
     #print(accuracies)
