@@ -1,14 +1,13 @@
 ## Skull-stripping & Electrode Position Correction
 
-#### Electrode Posistion Correction
+#### Electrode Position Correction
 
 #### Input
 - ECoG coordinates from CT-MR registration: request data from database channel table
 - MR iamge data: request from database subject table
 
 #### Output
-- Corrected coordinates for channel plotting
-- Upload corrected coordinates back to database
+- Corrected coordinates for channel plotting: upload corrected coordinates back to database
 
 #### Language 
 - Python 2.7
@@ -17,7 +16,8 @@
 - math
 
 #### Additional Notes
-- This script is used for preventing electrodes from floatting around the cortical surface. If any electrode was found to be not well plotting on the cortical surface, the coordinates of this electrode would be corrected automatically by this program.
+- This script is used for preventing electrodes from floating around the cortical surface. If any electrode was found to be not well plotted on the cortical surface, the coordinates of this electrode would be corrected automatically by this program.
+- Floating electrodes would not happen for EEG subjects as all the coordinates are pre-identified manually. 
 
 #### Skull-stripping
 
@@ -26,12 +26,10 @@
 - Reference: http://brainsuite.org/wp-content/uploads/2017/06/BrainSuite_Workshop_2017_Batch_David_Shattuck.pdf
 
 #### Input
-- MR Image data file
-- File format: NIfTI 
+- MR Image data file: File format: NIfTI 
   
 #### Output
-- Skull-stripped NIfTI file
-- Use the one ending with "_cerebrum.mask.nii.gz" 
+- Skull-stripped NIfTI file: Use the one ending with "_cerebrum.mask.nii.gz" 
 
 #### Language
 - Python 2.7 or 3.7
