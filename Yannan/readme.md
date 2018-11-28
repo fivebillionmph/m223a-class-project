@@ -19,7 +19,7 @@
 #### Additional Notes
 - This script is used for preventing electrodes from floatting around the cortical surface. If any electrode was found to be not well plotting on the cortical surface, the coordinates of this electrode would be corrected automatically by this program.
 
-####Skull-stripping
+#### Skull-stripping
 
 #### BrainSuite Batch Processing
 - Python calls command line to run BrainSuite 
