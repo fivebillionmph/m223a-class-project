@@ -8,6 +8,6 @@ bad channel identification | Amy | none |
 phase amplitude coupling | Mohammadali | none | scores
 power analysis/signal processing | Jake | none | scores
 CT to MR registration | Joseph | skull stripping | channels
-channel correction | Yannan | CT to MR registration | channels
+electrode position correction | Yannan | CT to MR registration | channels
 ECOG labeling | James | skull stripping, CT to MR registration | channels
 heatmap plotting | Zhaoqiang | everything |
