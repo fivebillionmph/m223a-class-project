@@ -14,6 +14,7 @@
 
 #### Required Python Packages
 - math
+- nibabel
 
 #### Additional Notes
 - This script is used for preventing electrodes from floating around the cortical surface. If any electrode was found to be not well plotted on the cortical surface, the coordinates of this electrode would be corrected automatically by this program.
