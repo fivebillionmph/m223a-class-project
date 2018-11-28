@@ -1,4 +1,25 @@
-## Skull-stripping 
+## Skull-stripping & Electrode Position Correction
+
+#### Electrode Posistion Correction
+
+#### Input
+- ECoG coordinates from CT-MR registration: request data from database channel table
+- MR iamge data: request from database subject table
+
+#### Output
+- Corrected coordinates for channel plotting
+- Upload corrected coordinates back to database
+
+#### Language 
+- Python 2.7
+
+#### Required Python Packages
+- math
+
+#### Additional Notes
+- This script is used for preventing electrodes from floatting around the cortical surface. If any electrode was found to be not well plotting on the cortical surface, the coordinates of this electrode would be corrected automatically by this program.
+
+####Skull-stripping
 
 #### BrainSuite Batch Processing
 - Python calls command line to run BrainSuite 
