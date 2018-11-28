@@ -18,7 +18,8 @@
 
 #### Additional Notes
 - This script is used for preventing electrodes from floating around the cortical surface. If any electrode was found to be not well plotted on the cortical surface, the coordinates of this electrode would be corrected automatically by this program.
-- Floating electrodes would not happen for EEG subjects as all the coordinates are pre-identified manually. 
+- Floating electrodes would not happen for EEG subjects as all the coordinates are pre-identified manually.
+- Generally takes several minutes to run for about 100 electrodes.
 
 #### Skull-stripping
 
