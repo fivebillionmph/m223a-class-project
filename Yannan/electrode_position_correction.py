@@ -30,9 +30,9 @@ x,y,z = mr_brain_mask_data.shape
 #find coordinates of all the points that make up the brain mask
 #return a list of coordinates
 coord_list = []
-for x in range(160):
-    for y in range(256):
-        for z in range(256):
+for x in range(mr_brain_mask_data.shape[0]):
+    for y in range(mr_brain_mask_data.shape[1]):
+        for z in range(mr_brain_mask_data.shape[2]):
             if mr_brain_mask_data[x,y,z] > 0:
                 coord_list.append([x,y,z])
 
