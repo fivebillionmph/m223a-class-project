@@ -80,7 +80,7 @@ end
 %%%%% Calculating PAC %%%%%
 
 % % % s: number of the first signal to calculate PAC
-% % % e:number of the last signal to calculate PAC
+% % % e: number of the last signal to calculate PAC
 if (ns == 0)
     s = 1;
     e = n;
