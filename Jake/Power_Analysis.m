@@ -1,4 +1,4 @@
-function [] = Power_Analysis(file,startTime,stopTime,startFrequency,stopFrequency)
+function [] = Power_Analysis(file,startTime,stopTime,intervals,startFrequency,stopFrequency)
 
 %%%input file, time interval, and frequency interval
 %%%file includes location, name, and extension
@@ -13,6 +13,11 @@ end
 if (isnumeric(stopTime))
 else
     stopTime = str2double(stopTime);
+end
+
+if (isnumeric(intervals))
+else
+    intervals = str2double(intervals);
 end
 
 if (isnumeric(startFrequency))
@@ -84,11 +89,24 @@ if (trueStop > sampleTime*Fs)
     trueStop = sampleTime*Fs;
 end
 
+Difference = trueStop-trueStart;
+check = 0;
+while (check < intervals)
+    if (trueStop + Difference*check > sampleTime*Fs)
+        intervals = check;
+    end
+    check = check + 1;
+end
+
+iterations = 0;
+FinalData = ones(intervals,n);
+
+while (iterations < intervals)
+trueStart = trueStart + Difference*iterations;
+trueStop = trueStop + Difference*iterations;
 %%%Trims data to within confined timepoints
 ConfinedData = (Data(trueStart:trueStop,1:n));
 [m,n] = size(ConfinedData);
-
-Data = [];   %sets matrix to empty matrix to free up memory
 
 %sampleData = (Data(:,1)); %Used to test on smaller dataset
 TransformData = fft(ConfinedData);
@@ -137,10 +155,13 @@ PowerBand = trapz(Frequency(startPoint:stopPoint,1),PowerData(startPoint:stopPoi
 %%%Normalizes the data between zero and 1. Output of the program
 OutputData = (PowerBand - min(PowerBand));
 OutputData = (OutputData)./max(OutputData);
+iterations = iterations + 1;
+FinalData(iterations,:) = OutputData;
+end
 
 %%%Writes the data to a csv of the same name and file location as input
 csvfile = strcat(filepath,'\',name,'.csv');
-csvwrite(csvfile,OutputData); %generates a csv file as an output
+csvwrite(csvfile,FinalData); %generates a csv file as an output
     
     
 
