@@ -1,6 +1,7 @@
 ## Band Power Over Time
 #### Function Name:
 - Power_Analysis.exe
+- Power_Analysis_2.exe (same as above with added interval function)
 
 #### Outline of Function:
 - Trims input channel data to desired time interval
@@ -8,6 +9,7 @@
 - Integrates over the desired frequency range
 - Normalizes data from 0 to 1
 - Returns relative power for each channel over desired time and frequency interval
+- 2nd function repeats the process for the number of specified time intervals
 
 #### Calling function:
 - Currently a Matlab script
@@ -22,13 +24,16 @@
 - Time Interval
   - Start Time
   - Stop Time
+- Number of intervals (only for Power_Analysis_2.exe)
 - Frequency Band
   - Lowest Frequency
   - Highest Frequency
   
 #### Outputs:
 - Relative Power of each channel over the desired time and frequency range
-  - [1xn] Vector
+  - [1xn] Vector for Power_Analysis.exe
+  - [mxn] Vector for Power_Analysis_2.exe
+    - m = number of time intervals
     - n = number of channels
 - Can generate a csv of the same name and location of input file
 
