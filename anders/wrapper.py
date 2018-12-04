@@ -98,18 +98,56 @@ if expt_type == "EEG":
 conn.commit()
 
 
+
+
+
+#### SIGNAL ANALYSIS
+# choose signal analysis method
+# set up so you can choose multiple or only one to run
+method = input("Please enter the signal processing method that you would like to use.")
+
+if method == 'Mohammad'
+    bandwidth_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. "2, 14"). ")
+    bandwidth_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. "40, 200"). ")
+    signal_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want all channels processed). ")
+    signal_first = input("Please enter the number of the first signal channel to be processed. ")
+    signal_last = input("Please enter the number of the last signal channel to be processed. ")
+    sigtime_total = input("Please enter the total range of time (in minutes) you would like to process (enter 0 if you want to process entire range of time). ")
+    sigtime_window = input("Please enter the short time window you would like to process (in minutes). ")
+    sigtime_step = input("Please enter the short time step you would like to process (in minutes). ")
+
 #### RUN INDIVIDUAL COMPONENT SCRIPTS
 # SKULL STRIPPING
-Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+# Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 # need to feed output file path to "smr" column of subjects table
 
 # MR/CT ELECTRODE REGISTRATION
-if config.is_windows:
-    Jake.run(cursor, "test", "0", "100", "0", "100")
-Joseph.run(cursor, sid, ct_path, mr_path)
+# if config.is_windows:
+#    Jake.run(cursor, "test", "0", "100", "0", "100")
+# Joseph.run(cursor, sid, ct_path, mr_path)
 
 
 # SIGNAL ANALYSIS
+# mohammad inputs
+# bandwidth (ranges)
+    # low (1:40 Hz)
+    # high (40:200 Hz)
+
+# 3 signal numbers
+    # number of signal channels to be processed
+        # "enter 0 if you want all channels processed"
+    # first signal channel
+    # last signal channel
+# 3 times (in minutes)
+    # total time
+        # "enter 0 if you want full range of time"
+    # time window
+    # time step
+
+
+
+Mohammad.run(cursor, sid, eeg_file, bandwidth_lo, bandwidth_hi, )
+
 David.run(cursor, sid, eeg_file)
 Amy.run(cursor, sid, eeg_file)
 
