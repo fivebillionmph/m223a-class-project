@@ -108,14 +108,14 @@ conn.commit()
 #### SIGNAL ANALYSIS
 # choose signal analysis method
 # set up so you can choose multiple or only one to run
-method = input("Please enter the signal processing method that you would like to use (1, 2, 3, or 4).")
+method = input("Enter the signal processing method that you would like to use (1, 2, 3, or 4).")
 
-if method == 'Mohammad':
-    bandwidth_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. "2, 14"). ")
-    bandwidth_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. "40, 200"). ")
-    signal_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want all channels processed). ")
-    signal_first = input("Please enter the number of the first signal channel to be processed. ")
-    signal_last = input("Please enter the number of the last signal channel to be processed. ")
+if method == '4':
+    band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. "2, 14"). ")
+    band_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. "40, 200"). ")
+    ch_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want all channels processed). ")
+    ch_first = input("Please enter the number of the first signal channel to be processed. ")
+    ch_last = input("Please enter the number of the last signal channel to be processed. ")
     sigtime_total = input("Please enter the total range of time (in minutes) you would like to process (enter 0 if you want to process entire range of time). ")
     sigtime_window = input("Please enter the short time window you would like to process (in minutes). ")
     sigtime_step = input("Please enter the short time step you would like to process (in minutes). ")
@@ -144,8 +144,8 @@ if method == 3:
     # method name might take format: "Jake_[time sequence]_[frequency band]"
     # will have to prompt user to specify their time ranges and frequency band
 if method == 4:
-    Mohammad.run(cursor, sid, eeg_file, bandwidth_lo, bandwidth_hi, signal_count, 
-        signal_first, signal_last, sigtime_total, sigtime_window, sigtime_step)
+    Mohammad.run(cursor, sid, eeg_file, band_lo, band_hi, ch_count,
+        ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
 # mohammad inputs
 # bandwidth (ranges)
     # low (1:40 Hz)
@@ -165,7 +165,7 @@ if method == 4:
 #### HEATMAP GENERATION
 # Aaron.run
 
-
 # close the cursor and database communication
 cursor.close()
 conn.close()
+
