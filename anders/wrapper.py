@@ -62,6 +62,16 @@ else:
 # commit the transaction to add content to subjects relation.
 conn.commit()
 
+#### RUN INDIVIDUAL COMPONENT SCRIPTS
+# SKULL STRIPPING
+Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+# need to feed output file path to "smr" column of subjects table
+
+# MR/CT ELECTRODE REGISTRATION
+# if config.is_windows:
+#    Jake.run(cursor, "test", "0", "100", "0", "100")
+# Joseph.run(cursor, sid, ct_path, mr_path)
+
 
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
@@ -106,17 +116,6 @@ conn.commit()
 #select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
 #insert_ecog_channel = """INSERT INTO channels(sid, channel, x, y, z) VALUES(%s,%s,%s,%s,%s);"""
 #for channel in channels:
-
-
-#### RUN INDIVIDUAL COMPONENT SCRIPTS
-# SKULL STRIPPING
-# Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
-# need to feed output file path to "smr" column of subjects table
-
-# MR/CT ELECTRODE REGISTRATION
-# if config.is_windows:
-#    Jake.run(cursor, "test", "0", "100", "0", "100")
-# Joseph.run(cursor, sid, ct_path, mr_path)
 
 
 #### SIGNAL ANALYSIS
