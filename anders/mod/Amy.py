@@ -49,4 +49,5 @@ def run(cursor, subject_id, filename):
     #prints channel values
     for x in range(0,32,1):
         print([x],[((bin_power(Y[:,x], [0.5,30], 256))[1][0])])
-        cursor.execute("insert into scores values(%s, %s, %s, %s)", (subject_id, x + 1, METHOD, (bin_power(Y[:,x], [0.5,30], 256))[1][0]))
+        insert_scores = "INSERT INTO scores(sid,channel,method,score0) VALUES(%s, %s, %s, %s);"
+        cursor.execute(insert_scores, (subject_id, x + 1, METHOD, (bin_power(Y[:,x], [0.5,30], 256))[1][0]))
