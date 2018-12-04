@@ -159,6 +159,7 @@ iterations = iterations + 1;
 FinalData(iterations,:) = OutputData;
 end
 
+FinalData = FinalData';
 %%%Writes the data to a csv of the same name and file location as input
 csvfile = strcat(filepath,'\',name,'.csv');
 csvwrite(csvfile,FinalData); %generates a csv file as an output
