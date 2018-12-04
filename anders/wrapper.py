@@ -97,16 +97,20 @@ if expt_type == "EEG":
 # commit the transaction
 conn.commit()
 
+#select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
 
+#insert_ecog_channel = """INSERT INTO channels(sid, channel, x, y, z) VALUES(%s,%s,%s,%s,%s);"""
+
+#for channel in channels:
 
 
 
 #### SIGNAL ANALYSIS
 # choose signal analysis method
 # set up so you can choose multiple or only one to run
-method = input("Please enter the signal processing method that you would like to use.")
+method = input("Please enter the signal processing method that you would like to use (1, 2, 3, or 4).")
 
-if method == 'Mohammad'
+if method == 'Mohammad':
     bandwidth_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. "2, 14"). ")
     bandwidth_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. "40, 200"). ")
     signal_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want all channels processed). ")
@@ -118,7 +122,7 @@ if method == 'Mohammad'
 
 #### RUN INDIVIDUAL COMPONENT SCRIPTS
 # SKULL STRIPPING
-# Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 # need to feed output file path to "smr" column of subjects table
 
 # MR/CT ELECTRODE REGISTRATION
@@ -127,7 +131,21 @@ if method == 'Mohammad'
 # Joseph.run(cursor, sid, ct_path, mr_path)
 
 
-# SIGNAL ANALYSIS
+#### SIGNAL ANALYSIS
+if method == 1:
+    David.run(cursor, sid, eeg_file)
+if method == 2:
+    Amy.run(cursor, sid, eeg_file)
+if method == 3:
+    Jake.run(cursor, sid, eeg_file)
+# Jake has two methods: one for EDF and one for DAT
+    # can specify time ranges and frequency bands of expt 
+    # results in different scores (to be added as JakeMethod1a, JakeMethod1b)
+    # method name might take format: "Jake_[time sequence]_[frequency band]"
+    # will have to prompt user to specify their time ranges and frequency band
+if method == 4:
+    Mohammad.run(cursor, sid, eeg_file, bandwidth_lo, bandwidth_hi, signal_count, 
+        signal_first, signal_last, sigtime_total, sigtime_window, sigtime_step)
 # mohammad inputs
 # bandwidth (ranges)
     # low (1:40 Hz)
@@ -144,18 +162,8 @@ if method == 'Mohammad'
     # time window
     # time step
 
-
-
-Mohammad.run(cursor, sid, eeg_file, bandwidth_lo, bandwidth_hi, )
-
-David.run(cursor, sid, eeg_file)
-Amy.run(cursor, sid, eeg_file)
-
-# Jake has two methods: one for EDF and one for DAT
-    # can specify time ranges and frequency bands of expt 
-    # results in different scores (to be added as JakeMethod1a, JakeMethod1b)
-    # method name might take format: "Jake_[time sequence]_[frequency band]"
-    # will have to prompt user to specify their time ranges and frequency band
+#### HEATMAP GENERATION
+# Aaron.run
 
 
 # close the cursor and database communication
