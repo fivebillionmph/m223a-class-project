@@ -6,7 +6,10 @@ import psycopg2.extras
 import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, Yannan, Jake, Joseph, David, Amy
-import mod.mohammad.pac
+try:
+    import mod.mohammad.pac
+except:
+    pass
 
 # request subject name from user.
 name=input("Please enter subject name. ")
@@ -144,9 +147,12 @@ if method == 3:
     # results in different scores (to be added as JakeMethod1a, JakeMethod1b)
     # method name might take format: "Jake_[time sequence]_[frequency band]"
     # will have to prompt user to specify their time ranges and frequency band
-if method == 4:
-    mod.mohammad.pac.run(cursor, sid, eeg_file, band_lo, band_hi, ch_count,
-                         ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
+try:
+    if method == 4:
+        mod.mohammad.pac.run(cursor, sid, eeg_file, band_lo, band_hi, ch_count,
+                             ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
+except:
+    pass
 # mohammad inputs
 # bandwidth (ranges)
     # low (1:40 Hz)
