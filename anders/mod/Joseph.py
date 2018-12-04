@@ -129,6 +129,6 @@ def run(cursor, subject_id, CT_filename, MR_filename):
     moving_resampled = sitk.Resample(moving_image, fixed_image, final_transform, sitk.sitkLinear, 0.0, moving_image.GetPixelID())
     #interact(display_images_with_alpha, image_z=(0,fixed_image.GetSize()[2]), alpha=(0.0,1.0,0.05), fixed = fixed(fixed_image), moving=fixed(moving_resampled));
     
-    rct_file = 'registered'+'.nii.gz'
+    rct_file = os.path.join(os.path.dirname(os.path.realpath(CT_filename)), 'registered'+'.nii.gz')
     sitk.WriteImage(moving_resampled, rct_file)
     cursor.execute("update subjects set rct_path = %s where sid = %s", (rct_file, subject_id))

@@ -54,11 +54,14 @@ if len(subject_names) == 0:
     cursor.execute(insert_subject, (name,expt_type,mr_path,ct_path))        
     # get subject ID
     sid = cursor.fetchone()["sid"]
+    if ct_path and mr_path:
+        Joseph.run(cursor, sid, ct_path, mr_path)
 
 else:
     sid = subject_names[0]["sid"]
     expt_type = subject_names[0]["type"]
     mr_path = subject_names[0]["mr_path"]
+    ct_path = subject_names[0]["ct_path"]
     
 # commit the transaction to add content to subjects relation.
 conn.commit()
@@ -158,7 +161,6 @@ method = input("Choice: ")
 # MR/CT ELECTRODE REGISTRATION
 # if config.is_windows:
 #    Jake.run(cursor, "test", "0", "100", "0", "100")
-# Joseph.run(cursor, sid, ct_path, mr_path)
 
 
 #### SIGNAL ANALYSIS
