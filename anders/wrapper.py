@@ -150,7 +150,7 @@ print("Enter the signal processing method that you would like to use.  Multiple 
 print("\t(1) David")
 print("\t(2) Amy")
 print("\t(3) Jake")
-print("\t(4) Mohammad")
+print("\t(4) Phase Amplitude Coupling - Mohammad")
 method = input("Choice: ")
 
 #### RUN INDIVIDUAL COMPONENT SCRIPTS
