@@ -63,11 +63,20 @@ else:
 conn.commit()
 
 ### get existing signals
-cursor.execute("SELECT signal_path FROM signals where sid = %s", (sid, ))
-existing_signals = [x["signal_path"] for x in cursor.fetchall()]
+#### RUN INDIVIDUAL COMPONENT SCRIPTS
+# SKULL STRIPPING
+Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+# need to feed output file path to "smr" column of subjects table
+
+# MR/CT ELECTRODE REGISTRATION
+# if config.is_windows:
+#    Jake.run(cursor, "test", "0", "100", "0", "100")
+# Joseph.run(cursor, sid, ct_path, mr_path)
 
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
+cursor.execute("SELECT signal_path FROM signals where sid = %s", (sid, ))
+existing_signals = [x["signal_path"] for x in cursor.fetchall()]
 signals = []
 new_signal_path = False
 if len(existing_signals) == 0:
