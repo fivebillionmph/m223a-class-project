@@ -20,7 +20,7 @@ conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cursor = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
 
 # query brain_db for existing subject name and select subject.
-select_subject = """SELECT sid, type from subjects WHERE name=%s"""
+select_subject = """SELECT * from subjects WHERE name=%s"""
 cursor.execute(select_subject, (name,))
 subject_names = cursor.fetchall()
 
@@ -58,14 +58,14 @@ if len(subject_names) == 0:
 else:
     sid = subject_names[0]["sid"]
     expt_type = subject_names[0]["type"]
+    mr_path = subject_names[0]["mr_path"]
     
 # commit the transaction to add content to subjects relation.
 conn.commit()
 
 ### get existing signals
-#### RUN INDIVIDUAL COMPONENT SCRIPTS
 # SKULL STRIPPING
-Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+#Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 # need to feed output file path to "smr" column of subjects table
 
 # MR/CT ELECTRODE REGISTRATION
@@ -146,17 +146,14 @@ conn.commit()
 #### SIGNAL ANALYSIS
 # choose signal analysis method
 # set up so you can choose multiple or only one to run
-print("Enter the signal processing method that you would like to use")
-print("(1) David")
-print("(2) Amy")
-print("(3) Jake")
-print("(4) Mohammad")
+print("Enter the signal processing method that you would like to use.  Multiple can be entered (eg 23)")
+print("\t(1) David")
+print("\t(2) Amy")
+print("\t(3) Jake")
+print("\t(4) Mohammad")
 method = input("Choice: ")
 
 #### RUN INDIVIDUAL COMPONENT SCRIPTS
-# SKULL STRIPPING
-# Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
-# need to feed output file path to "smr" column of subjects table
 
 # MR/CT ELECTRODE REGISTRATION
 # if config.is_windows:
@@ -168,11 +165,11 @@ method = input("Choice: ")
 # choose signal analysis method
 # set up so you can choose multiple or only one to run
 eeg_file = signals[0]
-if method == '1':
+if '1' in method:
     David.run(cursor, sid, eeg_file)
-if method == '2':
+if '2' in method:
     Amy.run(cursor, sid, eeg_file)
-if method == '3':
+if '3' in method:
     Jake.run(cursor, sid, eeg_file)
     # Jake has two methods: one for EDF and one for DAT
     # can specify time ranges and frequency bands of expt 
@@ -200,7 +197,7 @@ if method == '3':
     # time step
 
 try:
-    if method == '4':
+    if '4' in method:
         band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. \"2, 14\"). ")
         band_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. \"40, 200\"). ")
         ch_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want all channels processed). ")
