@@ -112,7 +112,7 @@ conn.commit()
 method = input("Enter the signal processing method that you would like to use (1, 2, 3, or 4).")
 
 if method == '4':
-    band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. "2, 14"). ")
+    band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. \"2, 14\"). ")
     band_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. "40, 200"). ")
     ch_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want all channels processed). ")
     ch_first = input("Please enter the number of the first signal channel to be processed. ")
