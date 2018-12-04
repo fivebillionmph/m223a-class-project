@@ -16,7 +16,7 @@ conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cursor=conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
 
 # query brain_db for existing subject name and select subject.
-select_subject = """SELECT sid from subjects WHERE name=%s"""
+select_subject = """SELECT sid, type from subjects WHERE name=%s"""
 cursor.execute(select_subject, (name,))
 subject_names = cursor.fetchall()
 
@@ -53,6 +53,7 @@ if len(subject_names) == 0:
 
 else:
     sid = subject_names[0]["sid"]
+    expt_type = subject_names[0]["type"]
     
 # commit the transaction to add content to subject relation.
 conn.commit()
@@ -75,7 +76,7 @@ while signal != 'q':
 insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
 
 # insert user-provided signal paths into signals table.
-for path in signal_paths:
+for path in signals:
     cursor.execute(insert_signals, (sid,path))
 
 
