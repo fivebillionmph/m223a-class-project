@@ -6,6 +6,7 @@ import psycopg2.extras
 import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, Yannan, Jake, Joseph, David, Amy
+import mod.mohammad.pac
 
 # request subject name from user.
 name=input("Please enter subject name. ")
@@ -122,7 +123,7 @@ if method == '4':
 
 #### RUN INDIVIDUAL COMPONENT SCRIPTS
 # SKULL STRIPPING
-Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+# Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 # need to feed output file path to "smr" column of subjects table
 
 # MR/CT ELECTRODE REGISTRATION
@@ -144,8 +145,8 @@ if method == 3:
     # method name might take format: "Jake_[time sequence]_[frequency band]"
     # will have to prompt user to specify their time ranges and frequency band
 if method == 4:
-    Mohammad.run(cursor, sid, eeg_file, band_lo, band_hi, ch_count,
-        ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
+    mod.mohammad.pac.run(cursor, sid, eeg_file, band_lo, band_hi, ch_count,
+                         ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
 # mohammad inputs
 # bandwidth (ranges)
     # low (1:40 Hz)
