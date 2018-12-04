@@ -62,12 +62,41 @@ else:
 # commit the transaction to add content to subject relation.
 conn.commit()
 
+### get existing signals
+cursor.execute("SELECT signal_path FROM signals where sid = %s", (sid, ))
+existing_signals = [x["signal_path"] for x in cursor.fetchall()]
 
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
 signals = []
-signal = input("Please enter the first EEG or ECoG signal file path. ")
-signals.append(signal)
+new_signal_path = False
+if len(existing_signals) == 0:
+    new_signal_path = True
+else:
+    valid = False
+    while not valid:
+        print("You currently have the following existing signal files would you like to add another or use an existing?")
+        print("\t0: (Add a new path)")
+        for i in range(len(existing_signals)):
+            print("\t%d: %s" % (i+1, existing_signals[i]))
+        select_str = input("select an option ")
+        try:
+            select = int(select_str)
+        except:
+            continue
+        if select == 0:
+            new_signal_path = True
+            valid = True
+        elif select - 1 < len(existing_signals) and select - 1 > 0:
+            new_signal_path = False
+            valid = True
+            signals.append(existing_signals[select-1])
+if new_signal_path:
+    signal = input("Please enter the first EEG or ECoG signal file path. ")
+    signals.append(signal)
+    insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
+    for path in signals:
+        cursor.execute(insert_signals, (sid,path))
 
 # optional code in case we want to request multiple signal files.
 # while signal != 'q':
@@ -79,9 +108,6 @@ signals.append(signal)
 #         signals.append(signal)
 
 # insert user-provided signal paths into signals table.
-insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
-for path in signals:
-    cursor.execute(insert_signals, (sid,path))
 
 
 #### FILL CHANNEL TABLE WITH COORDINATES FROM EEG TABLE
@@ -112,7 +138,12 @@ conn.commit()
 #### SIGNAL ANALYSIS
 # choose signal analysis method
 # set up so you can choose multiple or only one to run
-method = input("Enter the signal processing method that you would like to use (1, 2, 3, or 4).")
+print("Enter the signal processing method that you would like to use")
+print("(1) David")
+print("(2) Amy")
+print("(3) Jake")
+print("(4) Mohammad")
+method = input("Choice: ")
 
 if method == '4':
     band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. \"2, 14\"). ")
@@ -136,11 +167,12 @@ if method == '4':
 
 
 #### SIGNAL ANALYSIS
-if method == 1:
+eeg_file = signals[0]
+if method == '1':
     David.run(cursor, sid, eeg_file)
-if method == 2:
+if method == '2':
     Amy.run(cursor, sid, eeg_file)
-if method == 3:
+if method == '3':
     Jake.run(cursor, sid, eeg_file)
 # Jake has two methods: one for EDF and one for DAT
     # can specify time ranges and frequency bands of expt 
