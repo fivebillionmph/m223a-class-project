@@ -79,7 +79,7 @@ with open('data/EEG_10-20.csv') as eeg_csv:
     reader = csv.reader(eeg_csv)
     next(reader)  # Skip the header row.
     for row in reader:
-        cursor.execute(insert_eeg_coords, row)
+        cursor.execute(insert_eeg_coords, row[:4])
 
 # close the cursor and database communication
 cursor.close()
