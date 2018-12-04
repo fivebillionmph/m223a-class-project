@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%% Phase Amplitude Coupling (PAC) %%%%%
-function [MaxPAC, MeanPAC] = pac(file, LowFreqs, HighFreqs)
+function [MaxPAC, MeanPAC] = pac(file, low_freqs, high_freqs, num_sig, first_sig, last_sig, t_total, t_window, t_step)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 isUseParallel = 0;
@@ -10,21 +10,64 @@ numfreqs = 0;
 %%%%% Input Data %%%%%
 
 [filepath, name, ext] = fileparts(file);
+ns = num_sig;
 
 if strcmpi(ext, '.dat')
     % % % EEG&ECOG
     [signal, ~, parameters, ~] = load_bcidat (file);
     F = transpose (signal);
+    [a, b] = size(F);
     sRate = parameters.SamplingRate.NumericValue;
-    % % % Using just 1 min. of ECOG! (otherwise, Out of memory (OOM))
-%     F = F(:,1:576000); % % % time: [(1/9600)*X(iteration)=60s]
+    % % % Number of used signals (n) 
+    if (ns == 0)
+        n = a;
+    elseif (ns < a)
+        n = ns;
+    elseif (a == ns)
+        n = a;
+    else
+        Error ('Invalid Signal Number');
+    end
+    % % % Using just t min. of ECOG! (otherwise, Out of memory (OOM))
+    if (t_total == 0)
+        c = b;
+    else
+        c = sRate*60*t_total;
+    end
+    if (c <= b)
+        F = F(1:n, 1:c);
+    else
+        Error ('Invalid Time Request');
+    end
+
 elseif strcmpi(ext, '.edf')
      % % % .edf file format
      [hdr, record]= edfread(file);
      F = record;
+     [a, b] = size(F);
      sRate = hdr.frequency(1,1);
-     % % % Using just 2 min. of EDF!
-     F = F(:,1:240000); % % % time: [(1/2000)*X(iteration)=120s]
+     % % % Number of used signals (n)
+    if (ns == 0)
+        n = a;
+    elseif (ns < a)
+        n = ns;
+    elseif (a == ns)
+        n = a;
+    else
+        Error ('Invalid Signal Number');
+    end
+     % % % Using just t min. of EDF!
+    if (t_total == 0)
+        c = b;
+    else
+        c = sRate*60*t_total;
+    end
+    if (c <= b)
+        F = F(1:n, 1:c);
+    else
+        Error ('Invalid Time Request');
+    end
+
 else
     Error ('Invalid File Format');
 end
@@ -36,50 +79,56 @@ end
 
 %%%%% Calculating PAC %%%%%
 
-% % % m: number of the first signal to calculate MaxPAC
-m = 1;
-% % % n:number of the second signal to calculate MaxPAC
-n = 1;
-% % % z:number of used signals to calculate MaxPAC (one by one)
-% z = n-m+1;
-
-MaxPAC = (n);
-MeanPAC = (n);
-
-for i = m:n
-
-[sPAC, ~, ~] = bst_pac (F(i,:), sRate, LowFreqs, HighFreqs, isUseParallel, isUseMex, numfreqs);
-
-MaxPAC (i) = max (max (max (sPAC(:,1,:,:))));
-MeanPAC (i) = mean (mean (mean (sPAC(:,1,:,:))));
-
-%%%%% Ploting the PAC (not necessary for the project) %%%%%
-
-% subplot (2,z,i+z-n)
-% plot (F(i,:));
-% title (['Signal:', num2str(i)]);
-% xlabel ('Time');
-% ylabel ('Frequency (Hz)');
-% subplot (2,z,i+2*z-n)
-% pcolor (squeeze(sPAC));
-% colormap (jet);
-% colorbar;
-% title ({['MaxPAC=', num2str(MaxPAC)];['MeanPAC=', num2str(MeanPAC)]});
-% xlabel ('Frequency for Amplitude (Hz)');
-% ylabel ('Frequency for Phase (Hz)');
-
+% % % s: number of the first signal to calculate PAC
+% % % e: number of the last signal to calculate PAC
+if (ns == 0)
+    s = 1;
+    e = n;
+else
+    s = first_sig;
+    e = last_sig;
 end
+
+tp = sRate*60*t_window;
+ts = sRate*60*t_step;
+
+G = zeros(n, tp);
+
+if (t_total == 0)
+    nn = floor(b/(sRate*60*t_window));
+else
+    nn = floor(t_total/t_window);
+end
+
+MaxPAC = zeros(n, nn);
+MeanPAC = zeros(n, nn);
+
+for i = s:e
+    k = 1;
+    p = 1;
+    for j=tp:ts:c
+        G (i, :) = F(i, p:j);
+        [sPAC, ~, ~] = bst_pac (G(i, :), sRate, low_freqs, high_freqs, isUseParallel, isUseMex, numfreqs);
+
+        MaxPAC (i, k) = max (max (max (sPAC(:,1,:,:))));
+        MeanPAC (i, k) = mean (mean (mean (sPAC(:,1,:,:))));
+
+        p = (k * ts) + 1;
+        k = k + 1;               
+    end
+end
+
+MaxPAC = MaxPAC (s:e, :);
+MeanPAC =  MeanPAC (s:e, :);
 
 %%%%% Output Data %%%%%
 
-MaxPAC = transpose (MaxPAC);
-MeanPAC = transpose (MeanPAC);
-Output = [MaxPAC, MeanPAC];
-
-% csvwrite('Max_PAC.dat',MaxPAC);
-% csvwrite('Mean_PAC.dat',MeanPAC);
+zero = zeros ((e - s + 1), 1);
+Output = [MaxPAC zero MeanPAC];
 
 csvfile = strcat(filepath,'\',name,'.csv');
 csvwrite(csvfile, Output);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
