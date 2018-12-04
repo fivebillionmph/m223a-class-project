@@ -22,8 +22,8 @@ subject_names = cursor.fetchall()
 
 
 #### ACQUIRE SUBJECT NAME, EXPT TYPE, FILE INPUTS
-# if subject name does not exist, request name, experiment type, and image paths.
 if len(subject_names) == 0:
+    # if subject name does not exist, request name, experiment type, and image paths.
     expt_type=input("Please enter experiment type (EEG/ECoG). ")
     # add a 'while' loop to demand only EEG or ECOG as input.
     
@@ -65,17 +65,17 @@ signals = []
 signal = input("Please enter the first EEG or ECoG signal file path. ")
 signals.append(signal)
 
-while signal != 'q':
-    # request another signal file path from the user.
-    signal = input("Please enter another signal file path, or enter 'q': ")
-
-    # add the signal file paths to the list.
-    if signal != 'q':
-        signals.append(signal)
-
-insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
+# optional code in case we want to request multiple signal files.
+# while signal != 'q':
+#     # request another signal file path from the user.
+#     signal = input("Please enter another signal file path, or enter 'q': ")
+#
+#     # add the signal file paths to the list.
+#     if signal != 'q':
+#         signals.append(signal)
 
 # insert user-provided signal paths into signals table.
+insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
 for path in signals:
     cursor.execute(insert_signals, (sid,path))
 
