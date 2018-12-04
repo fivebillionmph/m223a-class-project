@@ -43,6 +43,7 @@ def run(cursor, subject_id, eeg_file):
         clf = RandomForestClassifier(n_estimators=100, max_features=40)
         clf.fit(X_train, Y_train)
         accuracies.append(clf.score(X_test, Y_test))
+        print(accuracies)
     insert_scores = "INSERT INTO scores(sid,channel,method,score0) VALUES(%s, %s, %s, %s);"   
     for i in range(len(accuracies)):
         cursor.execute(insert_scores,(subject_id, i+1, METHOD, accuracies[i])) 
