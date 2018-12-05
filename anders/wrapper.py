@@ -68,13 +68,22 @@ conn.commit()
 
 ### get existing signals
 # SKULL STRIPPING
-#Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
 # need to feed output file path to "smr" column of subjects table
+# outputs smr file path
+# get coordinates from Joseph
 
 # MR/CT ELECTRODE REGISTRATION
 # if config.is_windows:
 #    Jake.run(cursor, "test", "0", "100", "0", "100")
 # Joseph.run(cursor, sid, ct_path, mr_path)
+# output x, y, z coordinates to channel table
+# talyrach coordinates (to be completed)
+
+# Correct coordinates (Yannan - electrode_position_correction.py)
+    # require smr file path as input
+# electrode_position_correction.run(cursor, sid, smr_path)
+
 
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
