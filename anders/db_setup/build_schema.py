@@ -75,7 +75,7 @@ conn.commit()
 # insert eeg_coords into eeg relation from eeg_coords .csv
 insert_eeg_coords = """INSERT INTO eeg(eeg_name,x,y,z) VALUES(%s,%s,%s,%s);"""
 
-with open('data/EEG_10-20.csv') as eeg_csv:
+with open('../data/EEG_10-20.csv') as eeg_csv:
     reader = csv.reader(eeg_csv)
     next(reader)  # Skip the header row.
     for row in reader:
