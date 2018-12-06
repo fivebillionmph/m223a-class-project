@@ -5,7 +5,7 @@ import psycopg2
 import psycopg2.extras
 import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, util, Yannan, Jake, Joseph, David, Amy
+from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction
 try:
     import mod.mohammad.pac
 except Exception as e:
@@ -56,6 +56,9 @@ if len(subject_names) == 0:
     sid = cursor.fetchone()["sid"]
     if ct_path and mr_path:
         Joseph.run(cursor, sid, ct_path, mr_path)
+        cursor.exectute("SELECT smr_path FROM subjects WHERE sid = %s", (sid, ))
+        smr_path = cursor.fetchone()["smr_path"]
+        electrode_position_correction.run(cursor, sid, smr_path)
 
 else:
     sid = subject_names[0]["sid"]
