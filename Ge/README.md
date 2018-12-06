@@ -1,11 +1,11 @@
 Speech Correlation
-1. Finding Channel contributed to vocal cord control by bandpower analysis
+* Finding Channel contributed to vocal cord control by bandpower analysis
     input: ECOG001.dat
     output: correlation table(scores)
 
 
 Updates:
-1. uploading python files of workable functions
+* uploading python files of workable functions
 
 
 Future:
