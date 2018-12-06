@@ -15,11 +15,10 @@ Function 1: Finding Channel contributed to vocal cord control by bandpower analy
 >plot(multiple frequency): 
 >* x-axis: channel number
 >* y-axis: time-delay
-### S
+
  ## Updates
 * uploading python files of workable functions
  ## Future
-
 1. debug new functions and upload
 2. modify output file(.csv, .jpg)
 3. wrap .py into .exe
@@ -30,12 +29,12 @@ Function 1: Finding Channel contributed to vocal cord control by bandpower analy
 
 ### Python 3.6
 #### Package needed:
-numpy
-scipy.fftpack
-matplotlib.pyplot
-importlib
-sys
-os
+* numpy
+* scipy.fftpack
+* matplotlib.pyplot
+* importlib
+* sys
+* os
 
 
 
