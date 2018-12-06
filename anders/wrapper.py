@@ -8,8 +8,8 @@ from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, util, Yannan, Jake, Joseph, David, Amy
 try:
     import mod.mohammad.pac
-except:
-    pass
+except Exception as e:
+    print("Could not load Mohammad module")
 
 # request subject name from user.
 name = input("Please enter subject name. ")
