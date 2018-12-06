@@ -28,7 +28,11 @@ subject_names = cursor.fetchall()
 #### ACQUIRE SUBJECT NAME, EXPT TYPE, FILE INPUTS
 if len(subject_names) == 0:
     # if subject name does not exist, request name, experiment type, and image paths.
-    expt_type = input("Please enter experiment type (EEG/ECoG). ")
+    while True:
+        expt_type = input("Please enter experiment type (EEG/ECoG). ")
+        if expt_type in ["EEG", "ECoG"]:
+            break
+        print("Invalid experiment type")
     # add a 'while' loop to demand only EEG or ECOG as input.
     
     # hard coded path to standard brain MR, standard brain SMR, standard EEG, blank CT.
@@ -62,7 +66,7 @@ if len(subject_names) == 0:
     sid = cursor.fetchone()["sid"]
     if ct_path and mr_path:
         Joseph.run(cursor, sid, ct_path, mr_path)
-        cursor.exectute("SELECT smr_path FROM subjects WHERE sid = %s", (sid, ))
+        cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (sid, ))
         smr_path = cursor.fetchone()["smr_path"]
         electrode_position_correction.run(cursor, sid, smr_path)
 
