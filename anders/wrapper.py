@@ -60,7 +60,7 @@ if len(subject_names) == 0:
     sid = cursor.fetchone()["sid"]
     if ct_path and mr_path:
         Joseph.run(cursor, sid, ct_path, mr_path)
-        cursor.exectute("SELECT smr_path FROM subjects WHERE sid = %s", (sid, ))
+        cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (sid, ))
         smr_path = cursor.fetchone()["smr_path"]
         electrode_position_correction.run(cursor, sid, smr_path)
 
