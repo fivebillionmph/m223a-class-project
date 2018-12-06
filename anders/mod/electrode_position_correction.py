@@ -144,9 +144,9 @@ def run(cursor, subject_id, smr_path):
     ###################Update Database###################################
     #####################################################################
 
-    update_channels = "UPDATE channels set x=%s, y=%s, z=%s WHERE sid = subject_id;"
+    update_channels = "UPDATE channels set x=%s, y=%s, z=%s WHERE sid = %s;"
 
     for i in range(len(update_coord)):
         cursor.execute(update_channels, (int(update_coord.iloc[:,0][i]),
                                          int(update_coord.iloc[:,1][i]),
-                                         int(update_coord.iloc[:,2][i])))
+                                         int(update_coord.iloc[:,2][i]), subject_id))
