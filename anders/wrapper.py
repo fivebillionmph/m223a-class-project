@@ -248,10 +248,12 @@ if '4' in method:
         x=0
         band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. \"2, 14\"). ")
         band_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. \"40, 200\"). ")
-        ch_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want all channels processed). ")
+        ch_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want to "
+                         "process all channels). ")
         ch_first = input("Please enter the number of the first signal channel to be processed. ")
         ch_last = input("Please enter the number of the last signal channel to be processed. ")
-        sigtime_total = input("Please enter the total range of time (in minutes) you would like to process (enter 0 if you want to process entire range of time). ")
+        sigtime_total = input("Please enter the total range of time (in minutes) you would like to process (enter 0 if "
+                              "you want to process entire range of time). ")
         sigtime_window = input("Please enter the short time window you would like to process (in minutes). ")
         sigtime_step = input("Please enter the short time step you would like to process (in minutes). ")
         mod.mohammad.pac.run(cursor, sid, eeg_file, band_lo, band_hi, ch_count,
