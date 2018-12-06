@@ -42,13 +42,19 @@ if len(subject_names) == 0:
         mr = input("Do you have an MR file for this subject? (y/n) ")
         if mr == "y":
             mr_path = util.inputFilepath("Please enter the MR file path: ")
+            # SKULL STRIPPING
+            Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+            # need to feed output file path to "smr" column of subjects table
+            # outputs smr file path (standard.cerebrum.mask.nii)
+            # TO DO: have rest of the script pick up after 2 minutes, or when desired file is detected
 
         ct = input("Do you have a CT file for this subject? (y/n) ")
         if ct == "y":
             ct_path = util.inputFilepath("Please enter the CT file path: ")
         else:
             ct_path = util.inputFilepath("Please enter the file path with ECoG electrode coordinates: ")
-    
+
+
     # insert subject data into subjects relation based on acquisitions from user.
     insert_subject = """INSERT INTO subjects(name,type,mr_path,ct_path) VALUES(%s,%s,%s,%s) RETURNING sid;"""
     cursor.execute(insert_subject, (name,expt_type,mr_path,ct_path))        
@@ -70,15 +76,15 @@ else:
 conn.commit()
 
 ### get existing signals
-# SKULL STRIPPING
-Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
-# need to feed output file path to "smr" column of subjects table
-# outputs smr file path
-# get coordinates from Joseph
+
+
+
+# then, get coordinates from Joseph
+
+
 
 # MR/CT ELECTRODE REGISTRATION
 # if config.is_windows:
-#    Jake.run(cursor, "test", "0", "100", "0", "100")
 # Joseph.run(cursor, sid, ct_path, mr_path)
 # output x, y, z coordinates to channel table
 # talyrach coordinates (to be completed)
@@ -273,7 +279,19 @@ if '4' in method:
         print(e)
 
 #### HEATMAP GENERATION
-# Aaron.run
+select_scores = """SELECT * FROM scores WHERE sid=%s"""
+# make multiple versions per method
+cursor.execute(select_scores, (sid,))
+scores = cursor.fetchall()
+
+select_coords = """SELECT * FROM channels WHERE sid=%s"""
+cursor.execute(select_coords, (sid,))
+coords = cursor.fetchall()
+
+# Aaron.run(cursor, sid)
+
+
+
 # need to provide coordinates of electrodes
 # need to provide smr_path (nii.gz)
 # provide channel scores
