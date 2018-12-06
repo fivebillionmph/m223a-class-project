@@ -161,15 +161,13 @@ conn.commit()
 print("Enter the signal processing method that you would like to use.  Multiple can be entered (eg 23)")
 print("\t(1) David")
 print("\t(2) Amy")
-print("\t(3) Jake")
+print("\t(3) Band Power Over Time - Jake")
 print("\t(4) Phase Amplitude Coupling - Mohammad")
 method = input("Choice: ")
 
 #### RUN INDIVIDUAL COMPONENT SCRIPTS
 
 # MR/CT ELECTRODE REGISTRATION
-# if config.is_windows:
-#    Jake.run(cursor, "test", "0", "100", "0", "100")
 
 
 #### SIGNAL ANALYSIS
@@ -181,7 +179,32 @@ if '1' in method:
 if '2' in method:
     Amy.run(cursor, sid, eeg_file)
 if '3' in method:
-    Jake.run(cursor, sid, eeg_file)
+    method = 3
+    startTime = input("Please enter the start time in seconds. ")
+    stopTime = input("Please enter the stop time in seconds. ")
+    interval = input("Please enter the number of intervals of this time range. ")
+    startFrequency = input("Please enter the minimum frequency for the analysis. ")
+    stopFrequency = input("Please enter the maximum frequency for the analysis. ")
+    if config.is_windows:
+        Jake.run(cursor, eeg_file, startTime, stopTime, interval, startFrequency, stopFrequency)
+        # outputs .csv with scores for each time interval per channel
+
+    with open('../data/jake.csv') as jakecsv:
+        reader = csv.reader(jakecsv)
+        for row in reader:
+            columns = len(row)
+    # insert scores into scores table from jakecsv
+    insert_scores = """INSERT INTO scores(sid,channel,method,"""
+    for i in range(columns):
+        scores += "score{}".format(i)
+    scores += """) VALUES(%s, %s, %s,"""+ ",".join(["%s" for _ in range(columns)]) + """);"""
+
+    for row in reader:
+        l = [sid, x + 1, method]
+        l.extend(row)
+        cursor.execute(insert_scores, l)
+
+
     # Jake has two methods: one for EDF and one for DAT
     # can specify time ranges and frequency bands of expt 
 
