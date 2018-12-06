@@ -180,7 +180,7 @@ if '2' in method:
     Amy.run(cursor, sid, eeg_file)
 if '3' in method:
     try:
-            method = 3
+        method = 3
         x=0
         startTime = input("Please enter the start time in seconds. ")
         stopTime = input("Please enter the stop time in seconds. ")
@@ -271,6 +271,14 @@ if '4' in method:
 
 #### HEATMAP GENERATION
 # Aaron.run
+# need to provide coordinates of electrodes
+# need to provide smr_path (nii.gz)
+# provide channel scores
+
+# how do we deal with multiple scoring methods?
+    # multiple interfaces to pop up?
+    # show each output sequentially?
+    # ask user which one they want to view?
 
 # close the cursor and database communication
 cursor.close()
