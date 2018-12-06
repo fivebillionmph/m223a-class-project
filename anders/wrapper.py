@@ -47,12 +47,6 @@ if len(subject_names) == 0:
         if mr == "y":
             mr_path = util.inputFilepath("Please enter the MR file path: ")
 
-            # SKULL STRIPPING
-            Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
-            # need to feed output file path to "smr" column of subjects table
-            # outputs smr file path (standard.cerebrum.mask.nii)
-            # TO DO: have rest of the script pick up after 2 minutes, or when desired file is detected
-
         ct = input("Do you have a CT file for this subject? (y/n) ")
         if ct == "y":
             ct_path = util.inputFilepath("Please enter the CT file path: ")
@@ -65,6 +59,14 @@ if len(subject_names) == 0:
     cursor.execute(insert_subject, (name,expt_type,mr_path,ct_path))        
     # get subject ID
     sid = cursor.fetchone()["sid"]
+
+    if expt_type == "ECoG" and mr == "y":
+        # SKULL STRIPPING
+        Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+        # need to feed output file path to "smr" column of subjects table
+        # outputs smr file path (standard.cerebrum.mask.nii)
+        # TO DO: have rest of the script pick up after 2 minutes, or when desired file is detected
+
     if ct_path and mr_path:
         Joseph.run(cursor, sid, ct_path, mr_path)
         cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (sid, ))
