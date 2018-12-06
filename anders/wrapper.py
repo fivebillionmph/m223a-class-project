@@ -5,11 +5,11 @@ import psycopg2
 import psycopg2.extras
 import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, Yannan, Jake, Joseph, David, Amy
+from mod import config, util, Yannan, Jake, Joseph, David, Amy
 try:
     import mod.mohammad.pac
-except:
-    pass
+except Exception as e:
+    print("Could not load Mohammad module")
 
 # request subject name from user.
 name = input("Please enter subject name. ")
@@ -41,13 +41,13 @@ if len(subject_names) == 0:
     if expt_type == "ECoG":
         mr = input("Do you have an MR file for this subject? (y/n) ")
         if mr == "y":
-            mr_path = input("Please enter the MR file path: ")
+            mr_path = util.inputFilepath("Please enter the MR file path: ")
 
         ct = input("Do you have a CT file for this subject? (y/n) ")
         if ct == "y":
-            ct_path = input("Please enter the CT file path: ")
+            ct_path = util.inputFilepath("Please enter the CT file path: ")
         else:
-            ct_path = input("Please enter the file path with ECoG electrode coordinates: ")
+            ct_path = util.inputFilepath("Please enter the file path with ECoG electrode coordinates: ")
     
     # insert subject data into subjects relation based on acquisitions from user.
     insert_subject = """INSERT INTO subjects(name,type,mr_path,ct_path) VALUES(%s,%s,%s,%s) RETURNING sid;"""
