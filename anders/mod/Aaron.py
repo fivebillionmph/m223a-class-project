@@ -12,8 +12,6 @@ from mayavi.core.ui.api import MayaviScene, SceneEditor, MlabSceneModel
 
 import pandas as pd
 
-import ecogcorr as ecCorr
-
 
 NO_READIN = 0
 YES_READIN = 1
@@ -56,7 +54,7 @@ def askUserForMethod(cursor, subject_id):
     while True:
         for i in range(len(methods)):
             print("%d: %s" % (i, methods[i]))
-        user_choice = input("Select a method or q to quit")
+        user_choice = input("Select a method or q to quit ")
         if user_choice == "q":
             return False
         try:
@@ -85,12 +83,13 @@ def readScore(cursor, subject_id, method):
         if scores[0]["score" + str(i)] is None:
             break
         greatest_score_index = i
-    scores_array = np.array(shape=(len(scores), greatest_score_index + 1))
+    scores_array = np.zeros(shape=(len(scores), greatest_score_index + 1))
     for i in range(len(scores)):
         row = scores[i]
         for j in range(greatest_score_index + 1):
-            scores_array[i][j] = row["score" + str(i)]
-    scoreNorm = [s/(scores_array.max)*50000 for s in scores_array] #Normalize the score
+            scores_array[i][j] = row["score" + str(j)]
+    #scoreNorm = [s/(scores_array.max)*50000 for s in scores_array] #Normalize the score
+    scoreNorm = (scores_array / scores_array.max()) * 50000 #Normalize the score
     return scoreNorm, len(scores), greatest_score_index + 1
 
 def readPos(cursor, subject_id):
@@ -106,7 +105,8 @@ def readPos(cursor, subject_id):
     return x,y,z
 
 def getSkullStrippedBrainFile(cursor, subject_id):
-    return # file of brain
+    cursor.execute("select mr_path from subjects where sid = %s", (subject_id,))
+    return cursor.fetchone()["mr_path"] # file of brain
 
 def locateElectron(space3d,score1d,X,Y,Z):
     # space3d: 3d numpy array
@@ -148,7 +148,7 @@ class HeatMap:
         print('Load Electrodes positions successfully')
 
         # score is m channel x n time numpy array
-        self.Score, self.ChannelNum, self.timestep = readScore(cursor, subject_id)
+        self.Score, self.ChannelNum, self.timestep = readScore(cursor, subject_id, scoring_method)
         self.SCORE_FLAG = YES_READIN
         print('Load Scores successfully')
 
@@ -256,10 +256,10 @@ class MyModel(HasTraits):
         pass
 
     
-def run(cursor, subject_id)
+def run(cursor, subject_id):
     while True:
-        scoring_method = askForUserMethod(cursor, subject_id)
-        if !scoring_method:
+        scoring_method = askUserForMethod(cursor, subject_id)
+        if not scoring_method:
             return
         Test = HeatMap(cursor, subject_id, scoring_method)
         Test.generateHeatmap()

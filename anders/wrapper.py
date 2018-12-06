@@ -5,7 +5,7 @@ import psycopg2
 import psycopg2.extras
 import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction
+from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron
 try:
     import mod.mohammad.pac
 except Exception as e:
@@ -118,7 +118,7 @@ else:
         if select == 0:
             new_signal_path = True
             valid = True
-        elif select - 1 < len(existing_signals) and select - 1 > 0:
+        elif select - 1 < len(existing_signals) and select - 1 >= 0:
             new_signal_path = False
             valid = True
             signals.append(existing_signals[select-1])
@@ -291,7 +291,7 @@ select_coords = """SELECT * FROM channels WHERE sid=%s"""
 cursor.execute(select_coords, (sid,))
 coords = cursor.fetchall()
 
-# Aaron.run(cursor, sid)
+Aaron.run(cursor, sid)
 
 
 
