@@ -179,31 +179,35 @@ if '1' in method:
 if '2' in method:
     Amy.run(cursor, sid, eeg_file)
 if '3' in method:
-    method = 3
-    startTime = input("Please enter the start time in seconds. ")
-    stopTime = input("Please enter the stop time in seconds. ")
-    interval = input("Please enter the number of intervals of this time range. ")
-    startFrequency = input("Please enter the minimum frequency for the analysis. ")
-    stopFrequency = input("Please enter the maximum frequency for the analysis. ")
-    if config.is_windows:
-        Jake.run(cursor, eeg_file, startTime, stopTime, interval, startFrequency, stopFrequency)
-        # outputs .csv with scores for each time interval per channel
+    try:
+            method = 3
+        x=0
+        startTime = input("Please enter the start time in seconds. ")
+        stopTime = input("Please enter the stop time in seconds. ")
+        interval = input("Please enter the number of intervals of this time range. ")
+        startFrequency = input("Please enter the minimum frequency for the analysis. ")
+        stopFrequency = input("Please enter the maximum frequency for the analysis. ")
+        if config.is_windows:
+            Jake.run(cursor, eeg_file, startTime, stopTime, interval, startFrequency, stopFrequency)
+            # outputs .csv with scores for each time interval per channel
 
-    with open('../data/jake.csv') as jakecsv:
-        reader = csv.reader(jakecsv)
+        with open('../data/jake.csv') as jakecsv:
+            reader = csv.reader(jakecsv)
+            for row in reader:
+                columns = len(row)
+        # insert scores into scores table from jakecsv
+        insert_scores = """INSERT INTO scores(sid,channel,method,"""
+        for i in range(columns):
+            scores += "score{}".format(i)
+        scores += """) VALUES(%s, %s, %s,"""+ ",".join(["%s" for _ in range(columns)]) + """);"""
+
         for row in reader:
-            columns = len(row)
-    # insert scores into scores table from jakecsv
-    insert_scores = """INSERT INTO scores(sid,channel,method,"""
-    for i in range(columns):
-        scores += "score{}".format(i)
-    scores += """) VALUES(%s, %s, %s,"""+ ",".join(["%s" for _ in range(columns)]) + """);"""
-
-    for row in reader:
-        l = [sid, x + 1, method]
-        l.extend(row)
-        cursor.execute(insert_scores, l)
-
+            x += 1
+            l = [sid, x, method]
+            l.extend(row)
+            cursor.execute(insert_scores, l)
+    except Exception as e:
+        print(e)
 
     # Jake has two methods: one for EDF and one for DAT
     # can specify time ranges and frequency bands of expt 
@@ -230,8 +234,10 @@ if '3' in method:
     # time window
     # time step
 
-try:
-    if '4' in method:
+if '4' in method:
+    try:
+        method = 4
+        x=0
         band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. \"2, 14\"). ")
         band_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. \"40, 200\"). ")
         ch_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want all channels processed). ")
@@ -242,8 +248,26 @@ try:
         sigtime_step = input("Please enter the short time step you would like to process (in minutes). ")
         mod.mohammad.pac.run(cursor, sid, eeg_file, band_lo, band_hi, ch_count,
                              ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
-except:
-    pass
+
+        with open('../data/mohammad.csv') as mocsv:
+            reader = csv.reader(mocsv)
+            for row in reader:
+                columns = len(row)
+
+        # insert scores into scores table from mocsv
+        insert_scores = """INSERT INTO scores(sid,channel,method,"""
+        for i in range(columns):
+            scores += "score{}".format(i)
+        scores += """) VALUES(%s, %s, %s,""" + ",".join(["%s" for _ in range(columns)]) + """);"""
+
+        for row in reader:
+            x += 1
+            l = [sid, x, method]
+            l.extend(row)
+            cursor.execute(insert_scores, l)
+
+    except Exception as e:
+        print(e)
 
 #### HEATMAP GENERATION
 # Aaron.run
