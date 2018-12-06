@@ -46,6 +46,7 @@ if len(subject_names) == 0:
         mr = input("Do you have an MR file for this subject? (y/n) ")
         if mr == "y":
             mr_path = util.inputFilepath("Please enter the MR file path: ")
+
             # SKULL STRIPPING
             Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
             # need to feed output file path to "smr" column of subjects table
@@ -78,12 +79,6 @@ else:
     
 # commit the transaction to add content to subjects relation.
 conn.commit()
-
-### get existing signals
-
-
-
-# then, get coordinates from Joseph
 
 
 
