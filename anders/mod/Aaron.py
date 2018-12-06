@@ -88,7 +88,6 @@ def readScore(cursor, subject_id, method):
         row = scores[i]
         for j in range(greatest_score_index + 1):
             scores_array[i][j] = row["score" + str(j)]
-    #scoreNorm = [s/(scores_array.max)*50000 for s in scores_array] #Normalize the score
     scoreNorm = (scores_array / scores_array.max()) * 50000 #Normalize the score
     return scoreNorm, len(scores), greatest_score_index + 1
 
@@ -105,8 +104,8 @@ def readPos(cursor, subject_id):
     return x,y,z
 
 def getSkullStrippedBrainFile(cursor, subject_id):
-    cursor.execute("select mr_path from subjects where sid = %s", (subject_id,))
-    return cursor.fetchone()["mr_path"] # file of brain
+    cursor.execute("select smr_path from subjects where sid = %s", (subject_id,))
+    return cursor.fetchone()["smr_path"] # file of brain
 
 def locateElectron(space3d,score1d,X,Y,Z):
     # space3d: 3d numpy array
@@ -209,7 +208,6 @@ class MyModel(HasTraits):
         self.vmax = vmax
 
         self.timeBoundary = timeBoundary
-
         self.electrode = ELECTRODE_OFF
 
 
@@ -220,7 +218,7 @@ class MyModel(HasTraits):
             heatmap = self.Heatmap[self.time]
         else:
             heatmap = self.Heatmap[self.timeBoundary-1]
-
+        
         if self.plot is None:
             background = self.scene.mlab.pipeline.scalar_field(self.brain)
             self.scene.mlab.pipeline.iso_surface(background,vmin=0,vmax=1,opacity=1.0,colormap='gray',figure=self.scene.mayavi_scene)
