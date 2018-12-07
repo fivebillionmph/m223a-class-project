@@ -9,6 +9,7 @@ from traitsui.api import View, Item, Group, VGroup, HGroup
 
 from mayavi.core.api import PipelineBase
 from mayavi.core.ui.api import MayaviScene, SceneEditor, MlabSceneModel
+from tvtk.pyface.scene_editor import SceneEditor
 
 import pandas as pd
 
