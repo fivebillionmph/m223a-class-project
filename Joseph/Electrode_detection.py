@@ -4,7 +4,6 @@ Created on Mon Nov 12 11:01:04 2018
 
 @author: josep
 """
-# Call a GUI for user to select image
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 import SimpleITK as sitk
@@ -15,24 +14,16 @@ Tk().withdraw()
 filename = askopenfilename(title = "Select registered image")
 image = sitk.ReadImage(filename)
 
-"""
 # fix up some image characteristics
 image.SetOrigin((0,0,0))
 image.SetDirection([1,0,0,0,1,0,0,0,1])
 image.SetSpacing([1,1,1])
-"""
+
 
 # Cast/normalize to an image with a 0-255 range
 image_255 = sitk.Cast(sitk.RescaleIntensity(image), sitk.sitkUInt8)
 
-"""
-# Can try using sitk.LabelIntensityStatisticsImageFilter() to get intensity_stats
-intensity = sitk.LabelIntensityStatisticsImageFilter()
-intensity.Execute(image_255()
-    
-intensity_stats = [intensity(l) for l in stats.GetLabels() if l != 1]
-
-# Try iterating through the loop and displaying histogram data
+# Get information on image intensity distribution
 intensities = []
 
 for i in range(image.GetWidth()):
@@ -46,19 +37,17 @@ plt.xlabel("Pixel intensity")
 plt.ylabel("Number of pixels")
 plt.hist(intensities)
 plt.show()
-"""
+print("Done getting intensities")
 
 # Hard-coded threshold based on intensity histogram results
 thresholded_image = image_255 > 250
-# sitk.WriteImage(thresholded_image, 'thresholded_image'+'.nii.gz')
 
-# Try a different kind of Gaussian blurring
+# Gaussian blurring to take out high-resolution noise
 gaussian = sitk.SmoothingRecursiveGaussianImageFilter()
 gaussian_blurred = gaussian.Execute(thresholded_image)
 # Cast/normalize to an image with a 0-255 range
 gaussian_blurred_255 = sitk.Cast(sitk.RescaleIntensity(gaussian_blurred), sitk.sitkUInt8)
-# sitk.WriteImage(gaussian_blurred, 'gaussian_blurred_image' + '.nii.gz')
-print("done blurring")
+print("Done blurring")
 
 # Display connected component sizes
 stats = sitk.LabelShapeStatisticsImageFilter()
@@ -71,29 +60,49 @@ plt.title("Distribution of Object Sizes")
 plt.xlabel("Size in Pixels")
 plt.ylabel("Number of Objects")
 
-# output electrode locations
-# 91 fell in the range of 200-400
-# 116 fell in the range of 100-1000
-# looked off when Yannan plotted in mayavi
+# output electrode locations s tuples
 electrodes = []
 for l in stats.GetLabels():
     if (100 < stats.GetNumberOfPixels(l) < 1000):
         electrodes.append(stats.GetCentroid(l))
-print(len(electrodes)) 
+n = len(electrodes)
+print(str(n) + " electrodes found")
 
-# Direction cosine matrix as a 1D array in row-major form
-# Origin in physical space
-# Physical size of each pixel
-print(gaussian_blurred_255.GetDirection())
-print(gaussian_blurred_255.GetOrigin())
-print(gaussian_blurred_255.GetSpacing())
-print("Done getting Direction, Origin, & Spacing.")
+# modify electrode coordinates here:
+x = []
+y = []
+z = []
+
+# first switch x and z axes to convert from SimpleITK format to numpy array format
+for i in range(len(electrodes)):
+    x.append(float(electrodes[i][2]))
+    y.append(float(electrodes[i][1]))
+    z.append(float(electrodes[i][0]))
+
+import numpy as np
+attempt = np.column_stack([x,y,z])
+
+# rotate by 90 degrees towards the xy plane and 45 degrees towards yz plane
+theta = np.radians(90)
+c,s = np.cos(theta), np.sin(theta)
+rotation_matrix = np.array([[c,0,s], [0,1,0], [-s, 0, c]])
+rotated = np.dot(attempt, rotation_matrix)
+
+"""
+# rotate yz plane clockwise 45 degrees
+yz_tempt = rotated[:,[1,2]]
+theta = np.radians(45)
+c,s = np.cos(theta), np.sin(theta)
+rotation_matrix = np.array([[c,-s], [s,c]])
+yz_rotated = np.dot(yz_tempt, rotation_matrix)
+rotated[:,[1,2]] = yz_rotated
+"""
+
+rotated[:, 0] += image.GetWidth()/2
 
 # save electrode locations in csv format
 import csv
-with open('electrode_coordinates_after_fixing_origin_and_direction.csv', mode='w', newline='') as electrode_coordinates:
+with open('electrode_coordinates.csv', mode='w', newline='') as electrode_coordinates:
     writer = csv.writer(electrode_coordinates)
-    writer.writerows(electrodes)
+    writer.writerows(rotated)
 print('csv done')
-
-# When visualizing with mayavi which uses numpy arrays, need to switch x and z coordinates.
