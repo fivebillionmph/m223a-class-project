@@ -84,7 +84,12 @@ conn.commit()
 
 
 
-# MR/CT ELECTRODE REGISTRATION
+# ELECTRODE REGISTRATION: Talairach ECoG
+# ECoG, don't have CT or MR, need to use Talairach
+    # read standard Talairach brain
+    # then goes to web to convert to another format called MNI
+    # then plot that on standard brain
+
 # if config.is_windows:
 # Joseph.run(cursor, sid, ct_path, mr_path)
 # output x, y, z coordinates to channel table
@@ -97,7 +102,7 @@ conn.commit()
 
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
-cursor.execute("SELECT signal_path FROM signals where sid = %s", (sid, ))
+cursor.execute("SELECT signal_path FROM signals WHERE sid = %s", (sid, ))
 existing_signals = [x["signal_path"] for x in cursor.fetchall()]
 signals = []
 new_signal_path = False
