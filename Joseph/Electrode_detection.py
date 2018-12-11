@@ -4,14 +4,14 @@ Created on Mon Nov 12 11:01:04 2018
 
 @author: josep
 """
-from tkinter import Tk
-from tkinter.filedialog import askopenfilename
+# from tkinter import Tk
+# from tkinter.filedialog import askopenfilename
 import SimpleITK as sitk
 # from skimage import measure
 from matplotlib import pyplot as plt
 
-Tk().withdraw()
-filename = askopenfilename(title = "Select registered image")
+# Tk().withdraw()
+# filename = askopenfilename(title = "Select registered image")
 image = sitk.ReadImage(filename)
 
 # fix up some image characteristics
