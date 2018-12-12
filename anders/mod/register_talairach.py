@@ -9,11 +9,12 @@ Created on Wed Nov 14 00:04:29 2018
 
 # read Talairach coordinates from CSV into a list called Temp
 import csv
-from tkinter import Tk
-from tkinter.filedialog import askopenfilename
-
-Tk().withdraw()
-file = askopenfilename(title = "Select Talairach coordinates file")
+import .util
+# from tkinter import Tk
+# from tkinter.filedialog import askopenfilename
+# 
+# Tk().withdraw()
+file = util.inputFilepath("Select Talairach coordinates file ")
 
 temp = []    
 x = []
@@ -77,11 +78,11 @@ driver.close()
 
 # Read-in MNI coordinates now
 import csv
-from tkinter import Tk
-from tkinter.filedialog import askopenfilename
-
-Tk().withdraw()
-file = askopenfilename(title = "Select MNI coordinates file")
+# from tkinter import Tk
+# from tkinter.filedialog import askopenfilename
+# 
+# Tk().withdraw()
+file = util.inputFilepath("Select MNI coordinates file ")
 
 temp = []    
 x = []
@@ -105,12 +106,12 @@ print("Done getting MNI coordinates")
 import nibabel as nib
 from mayavi import mlab
 
-from tkinter import Tk
-from tkinter.filedialog import askopenfilename
+# from tkinter import Tk
+# from tkinter.filedialog import askopenfilename
 
 # Use MNI atlas to do visualization
-Tk().withdraw()
-file = askopenfilename(title = "Select MNI Template")
+# Tk().withdraw()
+file = util.inputFilepath("Select MNI Template ")
 
 image = nib.load(file)
 image_data = image.get_fdata()
