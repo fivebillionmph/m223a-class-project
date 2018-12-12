@@ -20,7 +20,7 @@ def _readDBChannels(cursor, subject_id):
 
 def _readDBBrainFile(cursor, subject_id):
     cursor.execute("select smr_path from subjects where sid = %s", (subject_id, ))
-    return cursor.fetchall()["smr_path"]
+    return cursor.fetchone()["smr_path"]
 
 def _channelDataToElectrodes(channel_data):
     electrodes = []
