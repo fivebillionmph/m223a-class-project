@@ -6,10 +6,7 @@ import psycopg2.extras
 import csv
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron
-try:
-    import mod.mohammad.pac
-except Exception as e:
-    print("Could not load Mohammad module")
+from mod.mohammad import pac
 
 # request subject name from user.
 name = input("Please enter subject name. ")
@@ -93,7 +90,7 @@ conn.commit()
 # if config.is_windows:
 # Joseph.run(cursor, sid, ct_path, mr_path)
 # output x, y, z coordinates to channel table
-# talyrach coordinates (to be completed)
+# talairach coordinates (to be completed)
 
 # Correct coordinates (Yannan - electrode_position_correction.py)
     # require smr file path as input
@@ -153,7 +150,7 @@ if expt_type == "EEG":
     # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
     with open('data/EEG_channel_names.csv') as subject_eeg:
         eeg_names = csv.reader(subject_eeg)
-            
+        ##### TO DO: setup so it UPDATES instead of INSERTS if that SID already has channel coordinates
         select_eeg_channel = """SELECT * FROM eeg WHERE LOWER(eeg_name)=LOWER(%s);"""
         insert_eeg_channel = """INSERT INTO channels(sid, channel, eid) VALUES(%s,%s,%s);"""
         
@@ -205,16 +202,17 @@ if '3' in method:
         if config.is_windows:
             Jake.run(cursor, eeg_file, startTime, stopTime, interval, startFrequency, stopFrequency)
             # outputs .csv with scores for each time interval per channel
+            # file will have same name as input file, with .csv extension
 
-        with open('../data/jake.csv') as jakecsv:
+        with open(eeg_file + '-3.csv') as jakecsv:
             reader = csv.reader(jakecsv)
             for row in reader:
                 columns = len(row)
         # insert scores into scores table from jakecsv
-        insert_scores = """INSERT INTO scores(sid,channel,method,"""
+        insert_scores = """INSERT INTO scores(sid,channel,method"""
         for i in range(columns):
-            scores += "score{}".format(i)
-        scores += """) VALUES(%s, %s, %s,"""+ ",".join(["%s" for _ in range(columns)]) + """);"""
+            insert_scores += ",score{}".format(i)
+        insert_scores += """) VALUES(%s, %s, %s,"""+ ",".join(["%s" for _ in range(columns)]) + """);"""
 
         for row in reader:
             x += 1
@@ -253,29 +251,30 @@ if '4' in method:
     try:
         method = 4
         x=0
-        band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. \"2, 14\"). ")
-        band_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. \"40, 200\"). ")
-        ch_count = input("Please enter the number of signal channels you would like to process (enter 0 if you want to "
-                         "process all channels). ")
-        ch_first = input("Please enter the number of the first signal channel to be processed. ")
-        ch_last = input("Please enter the number of the last signal channel to be processed. ")
-        sigtime_total = input("Please enter the total range of time (in minutes) you would like to process (enter 0 if "
-                              "you want to process entire range of time). ")
-        sigtime_window = input("Please enter the short time window you would like to process (in minutes). ")
-        sigtime_step = input("Please enter the short time step you would like to process (in minutes). ")
-        mod.mohammad.pac.run(cursor, sid, eeg_file, band_lo, band_hi, ch_count,
-                             ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
+        band_lo = input("Please enter the desired low bandwidth range between 1 and 40 Hz (e.g. \"2 14\"). ")
+        band_lo = [float(i) for i in band_lo.split()]
+        band_hi = input("Please enter the desired low bandwidth range between 40 and 200 Hz (e.g. \"40 200\"). ")
+        band_hi = [float(i) for i in band_hi.split()]
+        ch_count = float(input("Please enter the number of signal channels you would like to process (enter 0 if you want to "
+                         "process all channels). "))
+        ch_first = float(input("Please enter the number of the first signal channel to be processed. "))
+        ch_last = float(input("Please enter the number of the last signal channel to be processed. "))
+        sigtime_total = float(input("Please enter the total range of time (in minutes) you would like to process (enter 0 if "
+                              "you want to process entire range of time). "))
+        sigtime_window = float(input("Please enter the short time window you would like to process (in minutes). "))
+        sigtime_step = float(input("Please enter the short time step you would like to process (in minutes). "))
+        pac.run(eeg_file, band_lo, band_hi, ch_count, ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
 
-        with open('../data/mohammad.csv') as mocsv:
+        with open(eeg_file + '-4.csv') as mocsv:
             reader = csv.reader(mocsv)
             for row in reader:
                 columns = len(row)
 
         # insert scores into scores table from mocsv
-        insert_scores = """INSERT INTO scores(sid,channel,method,"""
+        insert_scores = """INSERT INTO scores(sid,channel,method"""
         for i in range(columns):
-            scores += "score{}".format(i)
-        scores += """) VALUES(%s, %s, %s,""" + ",".join(["%s" for _ in range(columns)]) + """);"""
+            insert_scores += ",score{}".format(i)
+        insert_scores += """) VALUES(%s, %s, %s,""" + ",".join(["%s" for _ in range(columns)]) + """);"""
 
         for row in reader:
             x += 1
@@ -287,6 +286,7 @@ if '4' in method:
         print(e)
 
 #### HEATMAP GENERATION
+# database selections occur within Aaron.py
 select_scores = """SELECT * FROM scores WHERE sid=%s"""
 # make multiple versions per method
 cursor.execute(select_scores, (sid,))
