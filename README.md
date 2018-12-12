@@ -1,6 +1,7 @@
 # BE 223A Course Project
 
 Course name: Bioengineering 223A - Programming Laboratory for Medical and Imaging Informatics I
+
 Instructor: William Speier 
 
 This course project aims to develop an application that automatically generates 3D brain surfaces with color labeling based on underlying neurological signals. 
@@ -11,11 +12,13 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+- BrainSuite 18a 
+    - Download the most recent version of BrainSuite from their websit: http://forums.brainsuite.org/download/
+    - Login required for downloading
+- Python 2.7 or above
+    - Download Python from their website: https://www.python.org/downloads/
+    - Dependencies
+        - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, nibabel, mayavi, PyQt5, SimpleITK, math, traits
 
 ### Installing
 
@@ -55,36 +58,14 @@ Explain what these tests test and why
 Give an example
 ```
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
 ## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+We thank Dr. Speier for his guidacne during the course of building this program.  
