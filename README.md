@@ -13,7 +13,7 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 - BrainSuite 18a 
-    - Download the most recent version of BrainSuite from their websit: http://forums.brainsuite.org/download/
+    - Download the most recent version of BrainSuite from their website: http://forums.brainsuite.org/download/
     - Login required for downloading
 - Python 2.7 or above
     - Download Python from their website: https://www.python.org/downloads/
@@ -60,7 +60,7 @@ Give an example
 
 ## Authors
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+All contributors have worked collaboratively on this project.  
 
 ## License
 
@@ -68,4 +68,4 @@ See also the list of [contributors](https://github.com/your/project/contributors
 
 ## Acknowledgments
 
-We thank Dr. Speier for his guidacne during the course of building this program.  
+We thank Dr. Speier for his guidacne during the course of building this application.  
