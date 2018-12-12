@@ -17,7 +17,7 @@ def run(cursor, subject_id, smr_path):
     #####################################################################
 
     # get coordiante data from database - channel table
-    cursor.execute("""select * from channels where sid = %s""", (subject_id, ))
+    cursor.execute("""SELECT * FROM channels WHERE sid = %s""", (subject_id, ))
     coord_data = cursor.fetchall()
 
     # get channel
