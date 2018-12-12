@@ -126,7 +126,7 @@ MeanPAC =  MeanPAC (s:e, :);
 zero = zeros ((e - s + 1), 1);
 Output = [MaxPAC zero MeanPAC];
 
-csvfile = strcat(filepath,'\',name,'.csv');
+csvfile = strcat(filepath,'\',name, ext, '-4.csv');
 csvwrite(csvfile, Output);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
