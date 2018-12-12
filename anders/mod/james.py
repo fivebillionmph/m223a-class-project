@@ -14,9 +14,13 @@ to dos:
 
 _HEADER = ["sid", "channel", "eid", "x", "y", "z"]
 
-def _readdb(cursor, subject_id):
-	cursor.execute("select * from channels where sid = %s", (subject_id,))
+def _readDBChannels(cursor, subject_id):
+	cursor.execute("select * from channels where sid = %s", (subject_id, ))
 	return cursor.fetchall()
+
+def _readDBBrainFile(cursor, subject_id):
+	cursor.execute("select smr_path from subjects where sid = %s", (subject_id, ))
+	return cursor.fetchall()["smr_path"]
 
 def _channelDataToElectrodes(channel_data):
 	electrodes = []
@@ -32,8 +36,9 @@ def _saveElectrodeNames(cursor, channel_data, electrode_names):
 		except:
 			sys.stderr.write("failed to update channel: sid %d, channel %d, eid %d" % (channel_data["sid"], channel_data["channel"], channel_data["eid"]))
 
-def run(cursor, subject_id, brain_file):
-	channel_data = _readdb(cursor, subject_id)
+def run(cursor, subject_id):
+	channel_data = _readDBChannels(cursor, subject_id)
+	brain_file = _readDBBrainFile(cursor, subject_id)
 	electrodes = _channelDataToElectrodes(channel_data)
 	electrode_names = []
 
