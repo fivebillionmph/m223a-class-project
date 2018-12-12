@@ -1,4 +1,4 @@
-function [] = Power_Analysis(sid,file,startTime,stopTime,intervals,startFrequency,stopFrequency)
+function [] = Power_Analysis(file,startTime,stopTime,intervals,startFrequency,stopFrequency)
 
 %%%input file, time interval, and frequency interval
 %%%file includes location, name, and extension
