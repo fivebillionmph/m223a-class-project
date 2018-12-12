@@ -11,6 +11,7 @@ Created on Sun Nov 11 16:53:26 2018
 # from skimage import measure
 import SimpleITK as sitk
 from matplotlib import pyplot as plt
+import os
 
 """ Read images """
 def run(cursor, subject_id, CT_filename, MR_filename):
