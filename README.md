@@ -60,6 +60,9 @@ These instructions will help you get the application up and running on your loca
     - Band power over time
         - Input:
         - Output:
+    - Phase amplitude coupling (PAC)
+        - Input:
+        - Output:
         
 - Electrode localization
     - CT->MR registration
