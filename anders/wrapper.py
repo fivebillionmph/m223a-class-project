@@ -116,16 +116,16 @@ MR/CT ELECTRODE REGISTRATION
 3. Coordinate Correction (Yannan)
     # Yannan - electrode_position_correction.py
     # require smr file path as input
-
 '''
+
 # CT/MR ECoG registration (part 1)
-# Joseph.run(cursor, sid, ct_path, mr_path)
+Joseph.run(cursor, sid, ct_path, mr_path)
 
 # Talairach ECoG registration (part 2)
-# register_talairach.run(cursor, sid, ct_path, mr_path)
+register_talairach.run(cursor, sid, ct_path, mr_path)
 
 # Coordination correction (part 3)
-# electrode_position_correction.run(cursor, sid, smr_path)
+electrode_position_correction.run(cursor, sid, smr_path)
 
 
 # select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
@@ -174,9 +174,6 @@ if new_signal_path:
 
 # commit the transaction to add content to signals relation.
 conn.commit()
-
-
-
 
 '''
 SIGNAL ANALYSIS
