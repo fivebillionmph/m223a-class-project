@@ -35,20 +35,21 @@ EEG data files can be handled well. However, ECOG and EDF files are too large an
   - first_sig: Number of the first signal to calculate PAC.
   - last_sig: Number of the last signal to calculate PAC.
   - t_total: The total time period that you want to calculate PAC for each signal.
-    - Note:
+    - Note: Use 0 if you want to consider the whole length of the chosen signals!
   - t_window: The short time period window that you want to calculate PAC for each signal.
   - t_step: The time step between The short time period windows
 
 - Outputs:
   - MaxPAC: Maximum value of PAC measures
+  or/and
   - MeanPAC: Average value of PAC measures
 
 - The MATLAB command:
-  - [MaxPAC, MeanPAC] = pac(file, low_freqs, high_freqs, num_sig, first_sig, last_sig, t_total, t_window, t_step)
-    - e.g. [MaxPAC, MeanPAC] = pac ('file', [2,14], [40,150], 5, 2, 4, 2, 1, 0.5)
+  - [MaxPAC] = pac(file, low_freqs, high_freqs, num_sig, first_sig, last_sig, t_total, t_window, t_step)
+    - e.g. [MaxPAC] = pac ('file', [2,14], [40,150], 5, 2, 4, 2, 1, 0.5)
 
 - The Python command:
   - import matlab.engine
   - eng = matlab.engine.start_matlab()
-  - pac = eng.pac (r'file', matlab.double([2, 14]), matlab.double([40, 150]), float(5), float(2), float(4), float(2), float(1), float(0.5), nargout=2)
+  - pac = eng.pac (r'file', matlab.double([2, 14]), matlab.double([40, 150]), float(5), float(2), float(4), float(2), float(1), float(0.5), nargout=1)
   - print(pac)
