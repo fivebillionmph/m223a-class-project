@@ -81,6 +81,28 @@ else:
 # commit the transaction to add content to subjects relation.
 conn.commit()
 
+# FILL CHANNEL TABLE WITH COORDINATES FROM EEG TABLE
+# TO DO: setup so it UPDATES instead of INSERTS if that SID already has channel coordinates
+if expt_type == "EEG":
+    # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
+    eeg_channel_names = "data/EEG_channel_names.csv"
+    eeg_channels = input("Do you have a subject-specific EEG channel file for this subject? (y/n) ")
+    if eeg_channels == "y":
+        eeg_channel_names = util.inputFilepath("Please enter the subject-specific EEG channel names file path: ")
+    with open(eeg_channel_names) as subject_eeg:
+        eeg_names = csv.reader(subject_eeg)
+        select_eeg_channel = """SELECT * FROM eeg WHERE LOWER(eeg_name)=LOWER(%s);"""
+        insert_eeg_channel = """INSERT INTO channels(sid, channel, eid) VALUES(%s,%s,%s);"""
+
+        for row in eeg_names:
+            eeg_coords = cursor.execute(select_eeg_channel, (row[1],))
+            eeg_row = cursor.fetchall()[0]
+            cursor.execute(insert_eeg_channel, (sid, row[0], eeg_row[0]))
+
+# commit the transaction to add content to channels table.
+conn.commit()
+
+
 # ELECTRODE REGISTRATION: Talairach ECoG
 # ECoG, don't have CT or MR, need to use Talairach
 # read standard Talairach brain
@@ -95,6 +117,8 @@ conn.commit()
 # Yannan - electrode_position_correction.py
 # require smr file path as input
 # electrode_position_correction.run(cursor, sid, smr_path)
+
+
 
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
@@ -136,26 +160,6 @@ if new_signal_path:
 # commit the transaction to add content to signals relation.
 conn.commit()
 
-# FILL CHANNEL TABLE WITH COORDINATES FROM EEG TABLE
-# TO DO: setup so it UPDATES instead of INSERTS if that SID already has channel coordinates
-if expt_type == "EEG":
-    # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
-    eeg_channel_names = "data/EEG_channel_names.csv"
-    eeg_channels = input("Do you have a subject-specific EEG channel file for this subject? (y/n) ")
-    if eeg_channels == "y":
-        eeg_channel_names = util.inputFilepath("Please enter the subject-specific EEG channel names file path: ")
-    with open(eeg_channel_names) as subject_eeg:
-        eeg_names = csv.reader(subject_eeg)
-        select_eeg_channel = """SELECT * FROM eeg WHERE LOWER(eeg_name)=LOWER(%s);"""
-        insert_eeg_channel = """INSERT INTO channels(sid, channel, eid) VALUES(%s,%s,%s);"""
-
-        for row in eeg_names:
-            eeg_coords = cursor.execute(select_eeg_channel, (row[1],))
-            eeg_row = cursor.fetchall()[0]
-            cursor.execute(insert_eeg_channel, (sid, row[0], eeg_row[0]))
-
-# commit the transaction to add content to channels table.
-conn.commit()
 
 # select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
 # insert_ecog_channel = """INSERT INTO channels(sid, channel, x, y, z) VALUES(%s,%s,%s,%s,%s);"""
