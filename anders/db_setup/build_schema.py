@@ -61,7 +61,7 @@ cursor.execute(channels)
 scores="""CREATE TABLE scores(
         sid integer not null,
         channel integer not null,
-        method varchar(255) not null,"""
+        method integer not null,"""
 for i in range(100):
     scores += "score{} numeric,".format(i)
 scores += """foreign key (sid)
