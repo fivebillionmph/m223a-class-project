@@ -23,20 +23,73 @@ These instructions will help you get the application up and running on your loca
 ### Installing
 
 
-Say what the step will be
 
 ```
-Give the example
-```
-
-And repeat
 
 ```
-until finished
+
+
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+```
 
+### Running the program
+
+
+```
+
+```
+
+
+```
+
+```
+
+### Formats of input and output files
+
+- Signal processing 
+    - Channel importance
+        - Input:
+        - Output: 
+    - Channel-qc
+        - Input:
+        - Output:
+    - Speech correlation
+        - Input:
+        - Output:
+    - Band power over time
+        - Input:
+        - Output:
+        
+- Electrode localization
+    - CT->MR registration
+        - Input:
+        - Output:
+    - Electrode detection
+        - Input:
+        - Output:
+    - Talairach->MR registration
+        - Input:
+        - Output:
+
+- Surface reconstruction
+    - Skull-stripping (only for ECoG subjects)
+        - Input: Preop head MRI in NIfTI format
+        - Output: Skull-stripped cerebrum mask in NIfTI foramt
+    - Eletrode position correction (only for ECoG subjects)
+        - Input: Pull electrode coordinates from the channles table in the database 
+        - Output: Update the database with the corrected coordiantes
+    - ECoG labeling:
+        - Input:
+        - Output:
+    - Heat map:
+        - Input:
+        - Output:
+
+Notes:
+1. EEG subjects will use the cerebrum mask from a standard subject to plot. The data has been prestored in the database. 
+2. Electrode coordinates for EEG subjects are predetermined and are prestored in the database. 
+    
 ## Authors
 
 All contributors have worked collaboratively on this project.  
