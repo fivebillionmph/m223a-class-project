@@ -6,7 +6,7 @@ PROJECT COMPONENT AND DATABASE INTEGRATION
 import csv
 import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron
+from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron, james
 from mod.mohammad import pac
 
 '''
@@ -273,6 +273,8 @@ if '4' in method:
 
 # commit score additions to database
 conn.commit()
+
+james.run(cursor, sid)
 
 '''
 HEATMAP GENERATION
