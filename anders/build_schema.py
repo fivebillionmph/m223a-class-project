@@ -43,7 +43,7 @@ cursor.execute(eeg)
 # create "channels" table to house ecog channel coordinates
 channels="""CREATE TABLE channels(
         sid integer not null,
-        channel integer not null,
+        channel integer,
         eid integer,
         x integer,
         y integer,
