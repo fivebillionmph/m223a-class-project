@@ -41,7 +41,7 @@ EEG data files can be handled well. However, ECOG and EDF files are too large an
 
 - Outputs:
   - MaxPAC: Maximum value of PAC measures
-  or/and
+  (or/and)
   - MeanPAC: Average value of PAC measures
 
 - The MATLAB command:
