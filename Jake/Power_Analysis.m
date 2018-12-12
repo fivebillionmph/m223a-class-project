@@ -1,4 +1,4 @@
-function [] = Power_Analysis(file,startTime,stopTime,intervals,startFrequency,stopFrequency)
+function [] = Power_Analysis(sid,file,startTime,stopTime,intervals,startFrequency,stopFrequency)
 
 %%%input file, time interval, and frequency interval
 %%%file includes location, name, and extension
@@ -161,14 +161,5 @@ end
 
 FinalData = FinalData';
 %%%Writes the data to a csv of the same name and file location as input
-csvfile = strcat(filepath,'\',name,'.csv');
+csvfile = strcat(filepath,'\',name,ext,'-3.csv');
 csvwrite(csvfile,FinalData); %generates a csv file as an output
-    
-    
-
-
-
-
-
-
-
