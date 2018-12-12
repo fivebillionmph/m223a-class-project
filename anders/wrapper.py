@@ -143,7 +143,11 @@ conn.commit()
 #### FILL CHANNEL TABLE WITH COORDINATES FROM EEG TABLE
 if expt_type == "EEG":
     # hard coded path to EEG_channel_names.csv (from Box, converted from xlsx).
-    with open('data/EEG_channel_names.csv') as subject_eeg:
+    eeg_channel_names = "data/EEG_channel_names.csv"
+    eeg_channels = input("Do you have a subject-specific EEG channel file for this subject? (y/n) ")
+    if eeg_channels == "y":
+        eeg_channel_names = util.inputFilepath("Please enter the subject-specific EEG channel names file path: ")
+    with open(eeg_channel_names) as subject_eeg:
         eeg_names = csv.reader(subject_eeg)
         ##### TO DO: setup so it UPDATES instead of INSERTS if that SID already has channel coordinates
         select_eeg_channel = """SELECT * FROM eeg WHERE LOWER(eeg_name)=LOWER(%s);"""
@@ -292,8 +296,6 @@ cursor.execute(select_coords, (sid,))
 coords = cursor.fetchall()
 
 Aaron.run(cursor, sid)
-
-
 
 # need to provide coordinates of electrodes
 # need to provide smr_path (nii.gz)
