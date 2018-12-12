@@ -42,9 +42,38 @@ with open('talairach_coordinates.csv', 'w', newline='') as file:
         writer.writerow([x[i], y[i], z[i]])
 print("Done writing Talairach coordinates csv.")
 
-# Batch convert Talairach to MNI coordinates using this app: http://sprout022.sprout.yale.edu/mni2tal/mni2tal.html
+# Batch convert Talairach to MNI coordinates mni2tal from Yale
 # "TAL -> MNI Batch Convert"
 # Output is in file 'converted.csv' and in columns E,F,G
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+
+driver = webdriver.Chrome('C:\\Users\\josep\\Python\\chromedriver.exe')
+driver.get("http://www.google.com/")
+
+#open tab
+driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 't') 
+
+# Load a page 
+driver.get('https://bioimagesuiteweb.github.io/webapp/mni2tal')
+
+# Tab through
+for i in range(16):
+    driver.find_element_by_tag_name('body').send_keys(Keys.TAB)
+driver.find_element_by_tag_name('body').send_keys(u'\ue007')
+
+# click button
+python_button = driver.find_element_by_id('batch2')
+python_button.click()
+ 
+# type text
+import os
+elm = driver.find_element_by_xpath("//input[@type='file']")
+elm.send_keys(os.getcwd() + "\\talairach_coordinates.csv")
+
+# close the tab
+driver.find_element_by_tag_name('body').send_keys(Keys.CONTROL + 'w') 
+driver.close()
 
 # Read-in MNI coordinates now
 import csv
@@ -73,5 +102,44 @@ for i in range(len(temp)):
     z.append(float(temp[i][6]))
 print("Done getting MNI coordinates")
 
+import nibabel as nib
+from mayavi import mlab
+
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
+
 # Use MNI atlas to do visualization
-# Before visualizing with Mayavi (which uses numpy arrays), need to switch x and z coordinates
+Tk().withdraw()
+file = askopenfilename(title = "Select MNI Template")
+
+image = nib.load(file)
+image_data = image.get_fdata()
+
+# create mayavi scene
+fig = mlab.figure(bgcolor=(1,1,1), size=(500,500))
+
+#display MR data
+source = mlab.pipeline.scalar_field(image_data)
+
+#contour surface
+mlab.pipeline.iso_surface(source, contours = [100,], opacity=1, colormap='black-white')
+
+# fix-up points
+import numpy as np
+temp = np.column_stack((x,y,z))
+
+# rotate yz plane counterclockwise 45 degrees
+yz_temp = temp[:,[1,2]]
+theta = np.radians(45)
+c,s = np.cos(theta), np.sin(theta)
+rotation_matrix = np.array([[c,s], [-s,c]])
+yz_temp = np.dot(yz_temp, rotation_matrix)
+temp[:,[1,2]] = yz_temp
+
+
+temp[:,0] += 70
+temp[:,1] += 140
+temp[:,2] += 90
+
+mlab.points3d(temp[:,0],temp[:,1],temp[:,2], color=(0.5,1,0.2), scale_factor=10)
+mlab.show()
