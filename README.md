@@ -1,6 +1,9 @@
-# Project Title
+# BE 223A Course Project
 
-One Paragraph of project description goes here
+Course name: Bioengineering 223A - Programming Laboratory for Medical and Imaging Informatics I
+Instructor: William Speier 
+
+This course project aims to develop an application that automatically generates 3D brain surfaces with color labeling based on underlying neurological signals. 
 
 ## Getting Started
 
