@@ -53,7 +53,7 @@ def diluteMask(mask):
 
 
 def askUserForMethod(cursor, subject_id):
-    cursor.execute("SELECT DISTINCT method from scores where sid = %s", (subject_id,))
+    cursor.execute("SELECT DISTINCT method FROM scores WHERE sid = %s", (subject_id,))
     methods = [x["method"] for x in cursor.fetchall()]
     print(methods)
     while True:
@@ -82,7 +82,7 @@ def readScore(cursor, subject_id, method):
     # scoreNorm = [s/(score.max)*50000 for s in score] #Normalize the score
 
     # return scoreNorm,scoreNorm.shape
-    cursor.execute("select * from scores where sid = %s and method = %s", (subject_id, method))
+    cursor.execute("SELECT * FROM scores WHERE sid = %s AND method = %s", (subject_id, method))
     scores = cursor.fetchall()
     greatest_score_index = None
     for i in range(100):
@@ -103,7 +103,7 @@ def readPos(cursor, subject_id):
     # return 1d list x,y and z
 
     # return x,y,z
-    cursor.execute("select * from channels where sid = %s", (subject_id,))
+    cursor.execute("SELECT * FROM channels WHERE sid = %s", (subject_id,))
     channels = cursor.fetchall()
     x = [c["x"] for c in channels]
     y = [c["y"] for c in channels]
@@ -112,7 +112,7 @@ def readPos(cursor, subject_id):
 
 
 def getSkullStrippedBrainFile(cursor, subject_id):
-    cursor.execute("select smr_path from subjects where sid = %s", (subject_id,))
+    cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (subject_id,))
     return cursor.fetchone()["smr_path"]  # file of brain
 
 
@@ -241,7 +241,7 @@ class MyModel(HasTraits):
         else:
             self.plot.mlab_source.scalars = heatmap
 
-    @on_trait_change('electrodesType')  # switch electrodes visuliaztion on and off.
+    @on_trait_change('electrodesType')  # switch electrodes visualization on and off.
     def update_points(self):
         electronX = self.posx
         electronY = self.posy

@@ -1,8 +1,8 @@
-#Power Analysis
+'''
+SIGNAL ANALYSIS: Power Analysis (Jake "method 3")
+'''
 
 import os
-import re
-import csv
 
 def run(cursor, filename, startTime, stopTime, interval, startFrequency, stopFrequency):
     os.system("..\\Jake\\Power_Analysis_2.exe" + " " + filename + " " + startTime + " " + stopTime + " " + interval +

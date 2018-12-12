@@ -1,4 +1,6 @@
 """
+SIGNAL ANALYSIS: Channel QC (Amy "method 2")
+
 This allows identification of faulty channels.
 Written with python 3.6. sys.argv[1] is path to file, sys.argv[2] is file name.
 Requires path to csv.
@@ -7,13 +9,11 @@ Good channel arbitrarily set at >0.8.
 Output table will include identification, channels, and binary outcome (1 for good channel, 0 for bad channel).
 
 """
-import os
-import sys
-import csv
+
+import numpy as np
 import pandas as pd
 import scipy
 from scipy import signal
-import numpy as np
 
 METHOD = 2
 
