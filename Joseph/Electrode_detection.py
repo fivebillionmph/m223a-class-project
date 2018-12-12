@@ -1,17 +1,11 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Nov 12 11:01:04 2018
-
-@author: josep
-"""
-# from tkinter import Tk
-# from tkinter.filedialog import askopenfilename
+from tkinter import Tk
+from tkinter.filedialog import askopenfilename
 import SimpleITK as sitk
 # from skimage import measure
 from matplotlib import pyplot as plt
 
-# Tk().withdraw()
-# filename = askopenfilename(title = "Select registered image")
+Tk().withdraw()
+filename = askopenfilename(title = "Select registered image")
 image = sitk.ReadImage(filename)
 
 # fix up some image characteristics
@@ -60,10 +54,10 @@ plt.title("Distribution of Object Sizes")
 plt.xlabel("Size in Pixels")
 plt.ylabel("Number of Objects")
 
-# output electrode locations s tuples
+# output electrode locations as tuples
 electrodes = []
 for l in stats.GetLabels():
-    if (100 < stats.GetNumberOfPixels(l) < 1000):
+    if (100 < stats.GetNumberOfPixels(l) < 700):
         electrodes.append(stats.GetCentroid(l))
 n = len(electrodes)
 print(str(n) + " electrodes found")
@@ -88,7 +82,6 @@ c,s = np.cos(theta), np.sin(theta)
 rotation_matrix = np.array([[c,0,s], [0,1,0], [-s, 0, c]])
 rotated = np.dot(attempt, rotation_matrix)
 
-"""
 # rotate yz plane clockwise 45 degrees
 yz_tempt = rotated[:,[1,2]]
 theta = np.radians(45)
@@ -96,9 +89,10 @@ c,s = np.cos(theta), np.sin(theta)
 rotation_matrix = np.array([[c,-s], [s,c]])
 yz_rotated = np.dot(yz_tempt, rotation_matrix)
 rotated[:,[1,2]] = yz_rotated
-"""
 
-rotated[:, 0] += image.GetWidth()/2
+rotated[:, 0] += image.GetWidth()-30
+rotated[:, 1] -= 75
+rotated[:, 2] += 130
 
 # save electrode locations in csv format
 import csv
