@@ -155,7 +155,6 @@ def run(cursor, subject_id, CT_filename, MR_filename):
     rotation_matrix = np.array([[c, 0, s], [0, 1, 0], [-s, 0, c]])
     rotated = np.dot(attempt, rotation_matrix)
 
-    """
     # rotate yz plane clockwise 45 degrees
     yz_tempt = rotated[:,[1,2]]
     theta = np.radians(45)
@@ -163,9 +162,10 @@ def run(cursor, subject_id, CT_filename, MR_filename):
     rotation_matrix = np.array([[c,-s], [s,c]])
     yz_rotated = np.dot(yz_tempt, rotation_matrix)
     rotated[:,[1,2]] = yz_rotated
-    """
-
-    rotated[:, 0] += image.GetWidth() / 2
+    
+    rotated[:, 0] += image.GetWidth()-30
+    rotated[:, 1] -= 75
+    rotated[:, 2] += 130
 
     # save electrode locations in csv format
     # import csv
