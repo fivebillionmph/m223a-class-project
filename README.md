@@ -15,7 +15,7 @@ These instructions will get you a copy of the project up and running on your loc
 - BrainSuite 18a 
     - Download the most recent version of BrainSuite from their website: http://forums.brainsuite.org/download/
     - Login required for downloading
-- Python 2.7 or above
+- Python 3.6
     - Download Python from their website: https://www.python.org/downloads/
     - Dependencies
         - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, nibabel, mayavi, PyQt5, SimpleITK, math, traits
