@@ -17,7 +17,7 @@ conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cursor = conn.cursor(cursor_factory = psycopg2.extras.DictCursor)
 
 # query brain_db for existing subject name and select subject.
-select_subject = """SELECT * from subjects WHERE name=%s"""
+select_subject = """SELECT * FROM subjects WHERE name=%s"""
 cursor.execute(select_subject, (name,))
 subject_names = cursor.fetchall()
 
@@ -30,8 +30,7 @@ if len(subject_names) == 0:
         if expt_type in ["EEG", "ECoG"]:
             break
         print("Invalid experiment type")
-    # add a 'while' loop to demand only EEG or ECOG as input.
-    
+
     # hard coded path to standard brain MR, standard brain SMR, standard EEG, blank CT.
     mr_path = "data/standard.nii"
     smr_path = "data/standard.cerebrum.mask.nii.gz"
@@ -50,10 +49,9 @@ if len(subject_names) == 0:
         else:
             ct_path = util.inputFilepath("Please enter the file path with ECoG electrode coordinates: ")
 
-
     # insert subject data into subjects relation based on acquisitions from user.
-    insert_subject = """INSERT INTO subjects(name,type,mr_path,ct_path) VALUES(%s,%s,%s,%s) RETURNING sid;"""
-    cursor.execute(insert_subject, (name,expt_type,mr_path,ct_path))        
+    insert_subject = """INSERT INTO subjects(name,type,mr_path,ct_path,smr_path) VALUES(%s,%s,%s,%s,%s) RETURNING sid;"""
+    cursor.execute(insert_subject, (name,expt_type,mr_path,ct_path,smr_path))
     # get subject ID
     sid = cursor.fetchone()["sid"]
 
@@ -79,23 +77,20 @@ else:
 # commit the transaction to add content to subjects relation.
 conn.commit()
 
-
-
 # ELECTRODE REGISTRATION: Talairach ECoG
 # ECoG, don't have CT or MR, need to use Talairach
     # read standard Talairach brain
     # then goes to web to convert to another format called MNI
     # then plot that on standard brain
 
-# if config.is_windows:
 # Joseph.run(cursor, sid, ct_path, mr_path)
 # output x, y, z coordinates to channel table
 # talairach coordinates (to be completed)
 
-# Correct coordinates (Yannan - electrode_position_correction.py)
+# COORDINATE CORRECTION
+    # Yannan - electrode_position_correction.py
     # require smr file path as input
 # electrode_position_correction.run(cursor, sid, smr_path)
-
 
 #### ACQUIRE SIGNAL FILE PATHS
 # request signal file paths and insert them into brain_db. 
@@ -108,7 +103,7 @@ if len(existing_signals) == 0:
 else:
     valid = False
     while not valid:
-        print("You currently have the following existing signal files would you like to add another or use an existing?")
+        print("You currently have the following existing signal files available; would you like to add another or use an existing file?")
         print("\t0: (Add a new path)")
         for i in range(len(existing_signals)):
             print("\t%d: %s" % (i+1, existing_signals[i]))
@@ -125,7 +120,7 @@ else:
             valid = True
             signals.append(existing_signals[select-1])
 if new_signal_path:
-    signal = input("Please enter the first EEG or ECoG signal file path. ")
+    signal = input("Please enter the signal file path. ")
     signals.append(signal)
     insert_signals = """INSERT INTO signals(sid,signal_path) VALUES(%s,%s);"""
     for path in signals:
