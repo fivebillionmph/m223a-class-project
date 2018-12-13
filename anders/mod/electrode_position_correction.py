@@ -125,13 +125,15 @@ def run(cursor, subject_id, smr_path):
                     if dis < min_dist:
                         min_dist = dis
                         min_list = [coord_list[i][0], coord_list[i][1], coord_list[i][2]]
+                        
                 min_coord_list.append(min_list)
                 min_dist_list.append(min_dist)
                 
-                #6.71 is the threshold found from 64 EEG channels
+                #6.71 is the threshold found from 63 EEG channels
                 if min_dist > 6.71:
                     count += 1
-            #calculate the proportion of points that are 6.71 unites off of the surface
+                    
+            #calculate the proportion of points that are 6.71 unitss off of the surface
             proportion = count/len(electrode_coord_list)
             
             #only correct the coordiantes if <5% of them are 6.71 units off of the surface
@@ -139,6 +141,7 @@ def run(cursor, subject_id, smr_path):
                 for i in range(len(electrode_coord_list)):
                     if min_dist_list[i] > 6.71:
                         electrode_coord_list[i] = min_coord_list[i]
+                        
             return electrode_coord_list #format [[x1,y1,z1],[x2,y2,z2]]
 
     # create an object
