@@ -14,7 +14,7 @@ Perform rigid-body registration using MRI as the fixed image and CT as the movin
 **Language:**
   * Python 3.6
 
-Dependencies:
+**Dependencies:**
   * pip install SimpleITK
 
 
