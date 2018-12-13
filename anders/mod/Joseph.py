@@ -10,7 +10,7 @@ Created on Sun Nov 11 16:53:26 2018
 # from tkinter.filedialog import askopenfilename
 # from skimage import measure
 import SimpleITK as sitk
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt
 import os
 
 """ Read images """
@@ -99,13 +99,13 @@ def run(cursor, subject_id, CT_filename, MR_filename):
             for k in range(image.GetDepth()):
                 intensities.append(image_255.GetPixel(i, j, k))
 
-    fig = plt.figure()
-    plt.title('Intensity Histogram')
-    plt.xlabel("Pixel intensity")
-    plt.ylabel("Number of pixels")
-    plt.hist(intensities)
-    plt.show()
-    print("Done getting intensities")
+    #fig = plt.figure()
+    #plt.title('Intensity Histogram')
+    #plt.xlabel("Pixel intensity")
+    #plt.ylabel("Number of pixels")
+    #plt.hist(intensities)
+    #plt.show()
+    #print("Done getting intensities")
 
     # Hard-coded threshold based on intensity histogram results
     thresholded_image = image_255 > 250
@@ -123,10 +123,10 @@ def run(cursor, subject_id, CT_filename, MR_filename):
 
     label_sizes = [stats.GetNumberOfPixels(l) for l in stats.GetLabels()]
 
-    plt.hist(label_sizes)
-    plt.title("Distribution of Object Sizes")
-    plt.xlabel("Size in Pixels")
-    plt.ylabel("Number of Objects")
+    #plt.hist(label_sizes)
+    #plt.title("Distribution of Object Sizes")
+    #plt.xlabel("Size in Pixels")
+    #plt.ylabel("Number of Objects")
 
     # output electrode locations s tuples
     electrodes = []
@@ -182,9 +182,13 @@ def run(cursor, subject_id, CT_filename, MR_filename):
     ###################Update Database###################################
     #####################################################################
 
-    insert_channels = "INSERT channels SET x=%s, y=%s, z=%s WHERE sid = %s;"
+    insert_channels = "INSERT INTO channels SET x=%s, y=%s, z=%s WHERE sid = %s;"
 
+    #for i in range(len(rotated)):
+    #    cursor.execute(insert_channels, (int(rotated.iloc[:, 0][i]),
+    #                                     int(rotated.iloc[:, 1][i]),
+    #                                     int(rotated.iloc[:, 2][i]), subject_id))
     for i in range(len(rotated)):
-        cursor.execute(insert_channels, (int(rotated.iloc[:, 0][i]),
-                                         int(rotated.iloc[:, 1][i]),
-                                         int(rotated.iloc[:, 2][i]), subject_id))
+        cursor.execute(insert_channels, (int(rotated[:, 0][i]),
+                                         int(rotated[:, 1][i]),
+                                         int(rotated[:, 2][i]), subject_id))
