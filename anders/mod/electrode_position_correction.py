@@ -61,7 +61,10 @@ def run(cursor, subject_id, smr_path):
     class ChannelCorrection(object):
         '''
         Function to correct the coordinates of the floating electrodes, if any.
-        For an ECoG subject, skull-stripped MR data needs to be passed in.
+        For an ECoG subject, skull-stripped MR data needs to be passed in. This
+        is a conditional function, it will modify the coordiantes under the
+        condition that less than 5% of the total electrodes are off of the
+        cortical surface, meaning 5% of them are not sitting on the surface.
         
         PointDistance function calculates the distance between the electrode and
         every point on the surface mask.
@@ -69,18 +72,21 @@ def run(cursor, subject_id, smr_path):
         CoordCorrection works to
         1 calculate all the distances between the
         elecrtrode and every point on the surface mask,
-        2 find the nearest point
-        that renders the shorest distance between the electrode and the point on
-        the surface mask,
-        3 compare the shorest distance to a threshold value,
-        4 if the shorest distance is greater than the threshold value, the
-        coordinates of the electrode will be corrected by using the coordinates
-        of the point on the surface mask instead.
+        2 find the nearest point that renders the shorest distance between
+        the electrode and the point on the surface mask,
+        3 calculate the distance between the nearest point on surface and the electrode,
+        4 calculate the proportion of the distance from the electrode to the
+        nearest point on surface that is greater than 6.71 (a pre-defined threshold
+        value), if the proportion is less than 0.05, then replace the original
+        electrode coordinates with the coordinates of the nearest point on surface
         
+        Note:
         Threshold value 6.71 is based on the largest distance of the 63 EEG
         electrodes and only works for mlab.point3d(x,y,z, scale_factor=10).
         If scale_factor changes, the threshold value will need to be adjusted
-        accordingly.
+        accordingly. If the distance from the electrode to the nearest point
+        on surface is greater than 6.71, it looks like floating around or
+        inside the surface rather than sitting on it.
         
         Input and output data format: [[x1,y1,z1],[x2,y2,z2]...]
         
@@ -98,26 +104,41 @@ def run(cursor, subject_id, smr_path):
                         math.pow(z2 - z1, 2)* 1.0)
             return point_dis
         
-        # find the coords of the point that gives the shortest distance
-        def CoordCorrection(self):
-            min_list = []
+        #find the coords of the point that gives the shortest distance
+        def coord_correction(self):
+            min_list = [] #coordiantes of the nearest point on surface to each electrode
+            min_coord_list = []
+            min_dist_list = []
+            count = 0
+        
             for a in range(len(electrode_coord_list)):
                 min_dist = 100000 #reset min_dist to 100000
                 for i in range(len(coord_list)):
-                    dis = self.PointDistance(coord_list[i][0],
+                    dis = self.point_distance(coord_list[i][0],
                                               coord_list[i][1],
                                               coord_list[i][2],
                                               electrode_coord_list[a][0],
                                               electrode_coord_list[a][1],
                                               electrode_coord_list[a][2])
+                    
+                    #get the coordiante of the nearest point on the surface to each electrode
                     if dis < min_dist:
                         min_dist = dis
-                        min_list = []
-                        min_list.append([coord_list[i][0], coord_list[i][1], coord_list[i][2]])
+                        min_list = [coord_list[i][0], coord_list[i][1], coord_list[i][2]]
+                min_coord_list.append(min_list)
+                min_dist_list.append(min_dist)
                 
+                #6.71 is the threshold found from 64 EEG channels
                 if min_dist > 6.71:
-                    electrode_coord_list[a] = min_list[0]
-                # print(electrode_coord_list[a])
+                    count += 1
+            #calculate the proportion of points that are 6.71 unites off of the surface
+            proportion = count/len(electrode_coord_list)
+            
+            #only correct the coordiantes if <5% of them are 6.71 units off of the surface
+            if proportion < 0.05:
+                for i in range(len(electrode_coord_list)):
+                    if min_dist_list[i] > 6.71:
+                        electrode_coord_list[i] = min_coord_list[i]
             return electrode_coord_list #format [[x1,y1,z1],[x2,y2,z2]]
 
     # create an object
