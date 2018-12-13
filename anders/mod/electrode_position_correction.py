@@ -41,7 +41,7 @@ def run(cursor, subject_id, smr_path):
 
     # get SMR data from database - subject table
     #####TO DO#####
-    mr_brain_mask = nib.load(smr_path) ## find the skull-stripped mr data??????
+    mr_brain_mask = nib.load(smr_path)
     mr_brain_mask_data = mr_brain_mask.get_fdata()
     x,y,z = mr_brain_mask_data.shape
 
@@ -62,7 +62,7 @@ def run(cursor, subject_id, smr_path):
         '''
         Function to correct the coordinates of the floating electrodes, if any.
         For an ECoG subject, skull-stripped MR data needs to be passed in. This
-        is a conditional function, it will modify the coordiantes under the
+        is a conditional function, it will modify the coordinates under the
         condition that less than 5% of the total electrodes are off of the
         cortical surface, meaning 5% of them are not sitting on the surface.
         
@@ -71,8 +71,8 @@ def run(cursor, subject_id, smr_path):
         
         CoordCorrection works to
         1 calculate all the distances between the
-        elecrtrode and every point on the surface mask,
-        2 find the nearest point that renders the shorest distance between
+        electrode and every point on the surface mask,
+        2 find the nearest point that renders the shortest distance between
         the electrode and the point on the surface mask,
         3 calculate the distance between the nearest point on surface and the electrode,
         4 calculate the proportion of the distance from the electrode to the
@@ -107,8 +107,8 @@ def run(cursor, subject_id, smr_path):
         #find the coords of the point that gives the shortest distance
         def coord_correction(self):
             min_list = [] #coordiantes of the nearest point on surface to each electrode
-            min_coord_list = []
-            min_dist_list = []
+            min_coord_list = [] #list of coordiantes of nearest points for each elecrode
+            min_dist_list = [] #list of distances between every nearest point and electrode
             count = 0
         
             for a in range(len(electrode_coord_list)):
