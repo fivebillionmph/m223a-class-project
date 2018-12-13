@@ -1,6 +1,6 @@
-# Electrode localization
+# Electrode Localization
 
-## CT->MR registration
+## CT->MR Registration
 
 **Function:**
 Perform rigid-body registration using MRI as the fixed image and CT as the moving image using a series of optimizations and transformations from the SimpleITK toolbox for Python.
@@ -18,7 +18,7 @@ Dependencies:
   * pip install SimpleITK
 
 
-## Electrode detection
+## Electrode Detection
 
 **Function:**
 Finds electrode locations from the registered CT image (produced from the above step) by thresholding, Gaussian blurring, and finding the centroids of connected components filtered by pixel-size.
@@ -37,7 +37,7 @@ Finds electrode locations from the registered CT image (produced from the above 
   * import csv
 
 
-## Talairach->MR registration
+## Talairach->MR Registration
 
 **Function:**
 Converts Talairach coordinates to MNI coordinates using [mni2tal](https://bioimagesuiteweb.github.io/webapp/mni2tal.html) from Yale BioImage Suite in order to to plot in MR space using the open source MNI/ICBM 152 template which can be found [here](http://www.bic.mni.mcgill.ca/ServicesAtlases/ICBM152NLin2009).
