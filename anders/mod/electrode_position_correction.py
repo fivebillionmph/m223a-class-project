@@ -143,7 +143,7 @@ def run(cursor, subject_id, smr_path):
 
     # create an object
     brain = ChannelCorrection(mr_brain_mask_data)
-    electrode_coord_list_update = brain.CoordCorrection()
+    electrode_coord_list_update = brain.coord_correction()
 
     # change format of coordinates before updating database
     x_new = []
