@@ -6,7 +6,7 @@
 Perform rigid-body registration using MRI as the fixed image and CT as the moving image using a series of optimizations and transformations from the SimpleITK toolbox for Python.
 
 **Inputs:**
-  *Preoperative MRI image and Post-operative CT image (both in NIfTI format)
+  * Preoperative MRI image and Post-operative CT image (both in NIfTI format)
 
 **Outputs:**
   * Registered CT image (NIfTI format)
