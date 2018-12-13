@@ -40,7 +40,7 @@ def run(cursor, subject_id, eeg_file):
             if OnsetIndices[i] == 1:
                 f.append(Channels.values[i:i+150, j])
         X_train, X_test, Y_train, Y_test = train_test_split(f, labels, test_size=0.33)
-        clf = RandomForestClassifier(n_estimators=100, max_features=40)
+        clf = RandomForestClassifier(n_estimators=100)
         clf.fit(X_train, Y_train)
         accuracies.append(clf.score(X_test, Y_test))
         print(accuracies)

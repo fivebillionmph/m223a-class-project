@@ -102,25 +102,40 @@ if expt_type == "EEG":
 # commit the transaction to add content to channels table.
 conn.commit()
 
+'''
+MR/CT ELECTRODE REGISTRATION
 
-# ELECTRODE REGISTRATION: Talairach ECoG
-# ECoG, don't have CT or MR, need to use Talairach
-# read standard Talairach brain
-# then goes to web to convert to another format called MNI
-# then plot that on standard brain
+1. CT/MR ECoG registration (Joseph)
+2. Talairach ECoG registration (Joseph)
+    ECoG, don't have CT or MR, need to use Talairach
+    read standard Talairach brain 
+    then goes to web to convert to another format called MNI
+    then plot that on standard brain
+    # output x, y, z coordinates to channel table
+    # talairach coordinates (to be completed)
+3. Coordinate Correction (Yannan)
+    # Yannan - electrode_position_correction.py
+    # require smr file path as input
+'''
 
-# Joseph.run(cursor, sid, ct_path, mr_path)
-# output x, y, z coordinates to channel table
-# talairach coordinates (to be completed)
+# CT/MR ECoG registration (part 1)
+Joseph.run(cursor, sid, ct_path, mr_path)
 
-# COORDINATE CORRECTION
-# Yannan - electrode_position_correction.py
-# require smr file path as input
-# electrode_position_correction.run(cursor, sid, smr_path)
+# Talairach ECoG registration (part 2)
+register_talairach.run(cursor, sid, ct_path, mr_path)
+
+# Coordination correction (part 3)
+electrode_position_correction.run(cursor, sid, smr_path)
 
 
+# select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
+# insert_ecog_channel = """INSERT INTO channels(sid, channel, x, y, z) VALUES(%s,%s,%s,%s,%s);"""
+# for channel in channels:
 
-#### ACQUIRE SIGNAL FILE PATHS
+''' 
+ACQUIRE SIGNAL FILE PATHS
+
+'''
 # request signal file paths and insert them into brain_db. 
 cursor.execute("SELECT signal_path FROM signals WHERE sid = %s", (sid,))
 existing_signals = [x["signal_path"] for x in cursor.fetchall()]
@@ -159,17 +174,6 @@ if new_signal_path:
 
 # commit the transaction to add content to signals relation.
 conn.commit()
-
-
-# select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
-# insert_ecog_channel = """INSERT INTO channels(sid, channel, x, y, z) VALUES(%s,%s,%s,%s,%s);"""
-# for channel in channels:
-
-'''
-MR/CT ELECTRODE REGISTRATION
-
-'''
-
 
 '''
 SIGNAL ANALYSIS
