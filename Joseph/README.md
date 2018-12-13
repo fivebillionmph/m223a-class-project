@@ -58,5 +58,5 @@ This script uses Selenium to automate web browser interaction by the user.
   * install ChromeDriver.exe [here](http://chromedriver.chromium.org/downloads)
 
 **Notes**
-  - Need to set environment PATH variable to where ChromeDriver.exe is
-  - Currently only has been tested in a Windows environment
+- Need to set environment PATH variable to where ChromeDriver.exe is
+- Currently only has been tested in a Windows environment
