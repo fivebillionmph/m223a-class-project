@@ -117,7 +117,8 @@ For the simplest way, just install the [Microsoft Visual Studio 2017](https://vi
 
 ##### 3. Install dependency in the Anaconda virtual enviornment
 - Enter the virtual environment terminal in Anaconda Navigator
-- ```sh
+- Install dependency packages
+    ```sh
     pip install numpy
     pip install scipy
     pip install nibabel
