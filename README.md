@@ -48,14 +48,15 @@ These instructions will help you get the application up and running on your loca
 
 
 ### Running the program
-- run wrapper.py to fill tables with subject data
+- run wrapper.py to fill tables with subject information, experiment details, and file paths, and to call each component
+for image processing and signal analysis
     - requests subject name and experiment type (EEG or ECoG)
-    - if ECoG, requests file paths for mri, ct, channel map files
-    - if EEG, requests 
+    - if ECoG, requests file paths for MR and CT images, signal files
+    - if EEG, requests file paths for MR images and signal files
 
 ### Formats of input and output files
 
-- Signal processing 
+- Signal processing
     - Channel importance
         - Input: EEG CSV file
         - Output: scores list
