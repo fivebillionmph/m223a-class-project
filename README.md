@@ -20,7 +20,7 @@ These instructions will help you get the application up and running on your loca
     - Dependencies
         - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, nibabel, mayavi, PyQt5, SimpleITK, math, traits
 
-### Installing
+### Installation and setup
 
 
 

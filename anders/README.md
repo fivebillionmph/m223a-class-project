@@ -3,7 +3,7 @@
 #### purpose: establish database structure
 
 #### instructions:
-- create 'brain_db' database with create_db.py script (found in /db_setup)
+- create 'brain_db' database with recreate_db.py script in the main folder
     - deletes any currently existing database with the name 'brain_db'
     - all connections to the database must be closed to run this script
 - establish database schema with build_schema.py script (found in /db_setup)
