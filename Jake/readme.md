@@ -1,6 +1,5 @@
 ## Band Power Over Time
 #### Function Name:
-- Power_Analysis.exe
 - Power_Analysis_2.exe (same as above with added interval function)
 
 #### Outline of Function:
