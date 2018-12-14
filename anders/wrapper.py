@@ -71,6 +71,9 @@ if len(subject_names) == 0:
         cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (sid,))
         smr_path = cursor.fetchone()["smr_path"]
         electrode_position_correction.run(cursor, sid, smr_path)
+    elif not mr_path and not ct_path:
+        # Talairach ECoG registration (part 2)
+        register_talairach.run(cursor, sid)
 
 else:
     sid = subject_names[0]["sid"]
@@ -120,9 +123,6 @@ MR/CT ELECTRODE REGISTRATION
 
 # CT/MR ECoG registration (part 1)
 Joseph.run(cursor, sid, ct_path, mr_path)
-
-# Talairach ECoG registration (part 2)
-register_talairach.run(cursor, sid, ct_path, mr_path)
 
 # Coordination correction (part 3)
 electrode_position_correction.run(cursor, sid, smr_path)
