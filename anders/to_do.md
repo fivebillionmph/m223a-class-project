@@ -1,10 +1,5 @@
 ## TASKS TO COMPLETE
 
-#### Electrode registration
-* incorporate Talaraich registration component (Joe)
-    * pass data directly to coordinate correction (no db storage) 
-* run coordinate correction on Talairach coordinates
-
 #### Signal processing
 * incorporate Audio signal processing component (Ge)
 * recompile Jake's signal processing to Python 3.6
