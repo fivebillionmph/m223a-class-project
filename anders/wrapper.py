@@ -17,6 +17,9 @@ conn = psycopg2.connect(dbname='brain_db', user='postgres', password='pass')
 conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
 cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
+# constants
+MNI_MASK_FILE = "data/MNI_mask_template.nii.gz"
+
 '''
 ACQUIRE SUBJECT NAME, EXPT TYPE, FILE INPUTS
 '''
@@ -66,14 +69,15 @@ if len(subject_names) == 0:
         # outputs smr file path (standard.cerebrum.mask.nii)
         # TO DO: have rest of the script pick up after 2 minutes, or when desired file is detected
 
+    cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (sid,))
+    smr_path = cursor.fetchone()["smr_path"]
     if ct_path and mr_path:
-        Joseph.run(cursor, sid, ct_path, mr_path)
-        cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (sid,))
-        smr_path = cursor.fetchone()["smr_path"]
-        electrode_position_correction.run(cursor, sid, smr_path)
+        electrode_data = Joseph.run(cursor, sid, ct_path, mr_path)
+        electrode_position_correction.run(cursor, sid, smr_path, electrode_data)
     elif not mr_path and not ct_path:
         # Talairach ECoG registration (part 2)
-        register_talairach.run(cursor, sid)
+        electrode_data = register_talairach.run(cursor, sid)
+        electrode_position_correction.run(cursor, sid, MNI_MASK_FILE, electrode_data)
 
 else:
     sid = subject_names[0]["sid"]
@@ -120,13 +124,6 @@ MR/CT ELECTRODE REGISTRATION
     # Yannan - electrode_position_correction.py
     # require smr file path as input
 '''
-
-# CT/MR ECoG registration (part 1)
-Joseph.run(cursor, sid, ct_path, mr_path)
-
-# Coordination correction (part 3)
-electrode_position_correction.run(cursor, sid, smr_path)
-
 
 # select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
 # insert_ecog_channel = """INSERT INTO channels(sid, channel, x, y, z) VALUES(%s,%s,%s,%s,%s);"""
