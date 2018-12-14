@@ -166,4 +166,4 @@ All contributors have worked collaboratively on this project.
 
 ## Acknowledgments
 
-We thank Dr. Speier for his guidacne during the course of building this application.  
+We thank Dr. Speier for his guidance during the course of building this application.  
