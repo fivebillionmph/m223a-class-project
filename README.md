@@ -24,8 +24,37 @@ OS-specific to Windows, due to certain dependencies.
     - Dependencies
         - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, 
         nibabel, mayavi, PyQt5, SimpleITK, math, traits
-- Microsoft Virtual Studio (Zhaoqiang Wang to complete)
-- Conda virtual environment (Zhaoqiang Wang to complete)
+        
+### How to install Mayavi on Windows
+##### 1. Install Visual C++ Build Tools
+For the simplest way, just install the [Microsoft Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
+
+##### 2. Install Anaconda
+- Download [Anaconda](https://www.anaconda.com/download/) the Python 3.7 version for Windows. 
+- Install Anaconda
+- Enter Anaconda Navigator and Initialize a new virtual environment with specification on Python 3.6
+
+##### 3. Install dependency in the Anaconda virtual enviornment
+- Enter the virtual environment terminal in Anaconda Navigator
+- Install dependency packages
+    ```sh
+    pip install numpy
+    pip install scipy
+    pip install nibabel
+    pip install mayavi
+    pip install pyqt5
+    ```
+- Test if we installed mayavi successfully
+    ```sh
+    python
+    ```
+    ```python
+    Python 3.6.6 |Anaconda, Inc.| (default, Jun 28 2018, 11:27:44) [MSC v.1900 64 bit (AMD64)] on win32
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> import mayavi
+    >>>
+    ```
+    If no error raises, then we install it successfully.
 
 ### Installation and setup
 - create 'brain_db' database with recreate_db.py script in the main program folder
@@ -106,36 +135,6 @@ Notes:
 1. EEG subjects will use the cerebrum mask from a standard subject to plot. The data has been prestored in the database. 
 2. Electrode coordinates for EEG subjects are predetermined and are prestored in the database. 
 
-### How to install Mayavi on Windows
-##### 1. Install Visual C++ Build Tools
-For the simplest way, just install the [Microsoft Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
-
-##### 2. Install Anaconda
-- Download [Anaconda](https://www.anaconda.com/download/) the Python 3.7 version for Windows. 
-- Install Anaconda
-- Enter Anaconda Navigator and Initialize a new virtual environment with specification on Python 3.6
-
-##### 3. Install dependency in the Anaconda virtual enviornment
-- Enter the virtual environment terminal in Anaconda Navigator
-- Install dependency packages
-    ```sh
-    pip install numpy
-    pip install scipy
-    pip install nibabel
-    pip install mayavi
-    pip install pyqt5
-    ```
-- Test if we installed mayavi successfully
-    ```sh
-    python
-    ```
-    ```python
-    Python 3.6.6 |Anaconda, Inc.| (default, Jun 28 2018, 11:27:44) [MSC v.1900 64 bit (AMD64)] on win32
-    Type "help", "copyright", "credits" or "license" for more information.
-    >>> import mayavi
-    >>>
-    ```
-    If no error raises, then we install it successfully.
     
 ## Authors
 
