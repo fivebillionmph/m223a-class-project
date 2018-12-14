@@ -2,9 +2,10 @@
 
 #### Signal processing
 * incorporate Audio signal processing component (Ge)
-    * add request for audio file from user
     * add component call to the project wrapper as analysis method 5
-* recompile Jake's signal processing to Python 3.6
+    * suggestion: figure out how to get the audio processing running in parallel, as soon as the file is available, given the 
+    extensive amount of time it takes to run this component.
+* ensure that Jake's method runs without update to Python 3.6-specific .exe
 * resolve .dat vs .csv discrepancy (Amy, David, Jake, Mohammad)
     * request .dat file from user and convert to .csv where needed
     * Amy and David (methods 1 and 2) use .csv as input
