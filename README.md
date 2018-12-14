@@ -14,47 +14,44 @@ These instructions will help you get the application up and running on your loca
 
 - BrainSuite 18a 
     - Download the most recent version of BrainSuite from their website: http://forums.brainsuite.org/download/
-    - Login required for downloading
+    - A free login account must be established before downloading
+- PostgreSQL 11
+    - Download the most recent version (11) from the postgresql website: https://www.postgresql.org/
 - Python 3.6
     - Download Python from their website: https://www.python.org/downloads/
     - Dependencies
-        - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, nibabel, mayavi, PyQt5, SimpleITK, math, traits
+        - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, 
+        nibabel, mayavi, PyQt5, SimpleITK, math, traits
+- 
 
 ### Installation and setup
+- create 'brain_db' database with recreate_db.py script in the main program folder
+    - run this script only once! This deletes any currently existing database with the name 'brain_db', allowing a 
+    fresh start on an empty database, if desired.
+    - any connections to the database must be closed to run this script
+    - database specifics:
+        - host='localhost'
+        - dbname='brain_db'
+        - user='postgres'
+        - password='pass'
+- establish database schema with build_schema.py script (found in /db_setup)
+    - run this script only once! This must be a fresh instantiation of the brain_db database, which can be accomplished 
+    by running the previously discussed recreate_db.py script.
+    - creates 5 relations:
+        - subjects: sid, name, type, ct_path, mr_path, rct_path, smr_path
+        - signals: sid, signal_path
+        - channels: sid, channel, eid, x, y, z
+        - scores: sid, channel, method, score[1:100]
+        - eeg: eid, eeg_name, x, y, z
+    - fills eeg relation with standard 10-20 eeg coordinates
 
-
-
-```
-
-```
-
-
-```
-
-```
-
-
-```
-
-```
 
 
 ### Running the program
-
-
-```
-
-```
-
-
-```
-
-```
-
-```
-
-```
-
+- run wrapper.py to fill tables with subject data
+    - requests subject name and experiment type (EEG or ECoG)
+    - if ECoG, requests file paths for mri, ct, channel map files
+    - if EEG, requests 
 
 ### Formats of input and output files
 
