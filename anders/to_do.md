@@ -17,3 +17,8 @@
 * test functionality to display multiple signal analyses 
 * run further tests on classroom computer
 
+#### README updates
+* Zhaoqiang Wang to update README for prerequisites:
+    * Microsoft Virtual Studio
+    * Conda virtual environment
+
