@@ -24,17 +24,19 @@ OS-specific to Windows, due to certain dependencies.
     - Dependencies
         - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, 
         nibabel, mayavi, PyQt5, SimpleITK, math, traits
+- Mayavi, Microsoft Visual Studio, and Conda Virtual Environment 
+    - installation instructions included in the following section.
         
-### How to install Mayavi on Windows
+        
+#### Mayavi installation on Windows OS
 ##### 1. Install Visual C++ Build Tools
-For the simplest way, just install the [Microsoft Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
+ - Download and install [Microsoft Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
 
 ##### 2. Install Anaconda
-- Download [Anaconda](https://www.anaconda.com/download/) the Python 3.7 version for Windows. 
-- Install Anaconda
+- Download and install [Anaconda](https://www.anaconda.com/download/) for Windows. 
 - Enter Anaconda Navigator and Initialize a new virtual environment with specification on Python 3.6
 
-##### 3. Install dependency in the Anaconda virtual enviornment
+##### 3. Install Anaconda virtual environment dependencies
 - Enter the virtual environment terminal in Anaconda Navigator
 - Install dependency packages
     ```sh
@@ -54,11 +56,12 @@ For the simplest way, just install the [Microsoft Visual Studio 2017](https://vi
     >>> import mayavi
     >>>
     ```
-    If no error raises, then we install it successfully.
+    If no error raises, then it has been installed successfully.
 
-### Installation and setup
+## Installation and setup
 - create 'brain_db' database with recreate_db.py script in the main program folder
-    - run this script only once! This deletes any currently existing database with the name 'brain_db', allowing a 
+    - run this script only once! 
+    - this script deletes any currently existing database with the name 'brain_db', allowing a 
     fresh start on an empty database, if desired.
     - any connections to the database must be closed to run this script
     - database specifics:
@@ -137,8 +140,18 @@ Notes:
 
     
 ## Authors
-
-All contributors have worked collaboratively on this project.  
+All contributors have worked collaboratively on this project.
+* Amy Cummings (alcummings@mednet.ucla.edu): Signal Analysis, channel quality control
+* Mohammad Alidoost (maalidoost@ucla.edu): Signal Analysis, PAC
+* Ge Fang (guojifang17@gmail.com): Signal Analysis, audio processing
+* Anders Olav Garlid (aogarlid@gmail.com): Database Integration, File I/O, and UI 
+* James Go (jamescookgo@gmail.com): ECoG Channel Registration
+* David Gordon (d.gordon@ucla.edu): Signal Analysis
+* Jake Pensa (jake.pensa@gmail.com): Signal Analysis, Band Power over Time
+* Joseph Tseung (josephtsung@g.ucla.edu):  ECoG and Talairach Channel Localization
+* Yannan Lyn (allyn1982@ucla.edu): Channel Plotting
+* Z Wang (zqwang9@g.ucla.edu): Heatmap Generation
+  
 
 
 ## Acknowledgments
