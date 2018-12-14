@@ -1,6 +1,6 @@
 ## Band Power Over Time
 #### Function Name:
-- Power_Analysis_2.exe (same as above with added interval function)
+- Power_Analysis_2.exe 
 
 #### Outline of Function:
 - Trims input channel data to desired time interval
@@ -22,7 +22,7 @@
 - Time Interval
   - Start Time
   - Stop Time
-- Number of intervals (only for Power_Analysis_2.exe)
+- Number of intervals
 - Frequency Band
   - Lowest Frequency
   - Highest Frequency
@@ -33,7 +33,7 @@
   - [mxn] Vector for Power_Analysis_2.exe
     - m = number of time intervals
     - n = number of channels
-- Can generate a csv of the same name and location of input file
+- Generates a csv of the same name and location of input file (-3.csv appended to file name)
 
 #### Language:
 - Matlab
