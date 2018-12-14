@@ -33,6 +33,12 @@ These instructions will help you get the application up and running on your loca
 
 ```
 
+
+```
+
+```
+
+
 ### Running the program
 
 
@@ -45,24 +51,29 @@ These instructions will help you get the application up and running on your loca
 
 ```
 
+```
+
+```
+
+
 ### Formats of input and output files
 
 - Signal processing 
     - Channel importance
-        - Input:
-        - Output: 
+        - Input: EEG CSV file
+        - Output: scores list
     - Channel-qc
-        - Input:
-        - Output:
+        - Input: EEG CSV file
+        - Output: channel list with value ranging 0 (bad) - 1 (good)
     - Speech correlation
-        - Input:
-        - Output:
+        - Input: ECoG signal file (.dat)
+        - Output: Time shift for each channel to database
     - Band power over time
-        - Input:
-        - Output:
+        - Input: BCI2000.dat or EDF file
+        - Output: CSV file
     - Phase amplitude coupling (PAC)
-        - Input:
-        - Output:
+    - Input: BCI2000.dat (EEG and ECOG methods), EDF Files
+        - Output: CSV File
         
 - Electrode localization
     - CT->MR registration
@@ -77,17 +88,17 @@ These instructions will help you get the application up and running on your loca
 
 - Surface reconstruction
     - Skull-stripping (only for ECoG subjects)
-        - Input: Preop head MRI in NIfTI format
-        - Output: Skull-stripped cerebrum mask in NIfTI foramt
-    - Eletrode position correction (only for ECoG subjects)
-        - Input: Pull electrode coordinates from the channles table in the database 
-        - Output: Update the database with the corrected coordiantes
+        - Input: Preop head MRI NIfTI file
+        - Output: Skull-stripped cerebrum mask NIfTI file
+    - Electrode position correction (only for ECoG subjects)
+        - Input: electrode coordinates from database 
+        - Output: update the database with the corrected coordinates
     - ECoG labeling:
-        - Input:
-        - Output:
-    - Heat map:
-        - Input:
-        - Output:
+        - Input: JPG file
+        - Output: write channel labels to database
+    - Heatmap generation:
+        - Input: scores (EEG/ECoG), coordinates (EEG/ECoG), brain mask (skull stripped) from database
+        - Output: plot windows
 
 Notes:
 1. EEG subjects will use the cerebrum mask from a standard subject to plot. The data has been prestored in the database. 
