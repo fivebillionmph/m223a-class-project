@@ -8,7 +8,8 @@ This course project aims to develop an application that automatically generates 
 
 ## Getting Started
 
-These instructions will help you get the application up and running on your local machine.
+These instructions will help you get the application up and running on your local machine. Current implementation is 
+OS-specific to Windows, due to certain dependencies.
 
 ### Prerequisites
 
@@ -17,6 +18,7 @@ These instructions will help you get the application up and running on your loca
     - A free login account must be established before downloading
 - PostgreSQL 11
     - Download the most recent version (11) from the postgresql website: https://www.postgresql.org/
+- MATLAB
 - Python 3.6
     - Download Python from their website: https://www.python.org/downloads/
     - Dependencies
