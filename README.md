@@ -33,6 +33,12 @@ These instructions will help you get the application up and running on your loca
 
 ```
 
+
+```
+
+```
+
+
 ### Running the program
 
 
@@ -44,6 +50,11 @@ These instructions will help you get the application up and running on your loca
 ```
 
 ```
+
+```
+
+```
+
 
 ### Formats of input and output files
 
@@ -80,7 +91,7 @@ These instructions will help you get the application up and running on your loca
         - Input: Preop head MRI NIfTI file
         - Output: Skull-stripped cerebrum mask NIfTI file
     - Electrode position correction (only for ECoG subjects)
-        - Input: electrode coordinates from the database 
+        - Input: electrode coordinates from database 
         - Output: update the database with the corrected coordinates
     - ECoG labeling:
         - Input: JPG file
