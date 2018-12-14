@@ -133,7 +133,8 @@ def run(cursor, subject_id):
     temp[:,1] += 140
     temp[:,2] += 90
 
-    insert_channels = "INSERT INTO channels (x,y,z,sid) values(%s, %s, %s, %s)"
+    results = []
+    for i in range(len(rotated)):
+        results.append({"x": temp[:, 0][i], "y": temp[:, 1][i], "z": temp[:, 2][i]})
 
-    for i in range(len(temp)):
-        cursor.execute(insert_channels, (int(temp[:,0][i]), int(temp[:,1][i]), int(temp[:,2][i]), subject_id))
+    return results

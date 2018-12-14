@@ -10,29 +10,20 @@ import nibabel as nib
 import pandas as pd
 import math
 
-def run(cursor, subject_id, smr_path):
+def run(cursor, subject_id, smr_path, coord_data):
 
     #####################################################################
     ###################Grab Data from Database###########################
     #####################################################################
-
-    # get coordiante data from database - channel table
-    cursor.execute("""SELECT * FROM channels WHERE sid = %s""", (subject_id, ))
-    coord_data = cursor.fetchall()
-
-    # get channel
-    channel = []
-    for i in range(len(coord_data)):
-        channel.append(coord_data[i][1])
 
     # get original x, y, z
     x = []
     y = []
     z = []
     for i in range(len(coord_data)):
-        x.append(coord_data[i][3])
-        y.append(coord_data[i][4])
-        z.append(coord_data[i][5])
+        x.append(coord_data[i]["x"])
+        y.append(coord_data[i]["y"])
+        z.append(coord_data[i]["z"])
 
     # format coordinates to a list of [x1,y1,z1]
     electrode_coord_list = []
@@ -168,7 +159,7 @@ def run(cursor, subject_id, smr_path):
     ###################Update Database###################################
     #####################################################################
 
-    update_channels = "UPDATE channels set x=%s, y=%s, z=%s WHERE sid = %s;"
+    update_channels = "insert into channels (x, y, z, sid) values(%s, %s, %s, %s);"
 
     for i in range(len(update_coord)):
         cursor.execute(update_channels, (int(update_coord.iloc[:,0][i]),
