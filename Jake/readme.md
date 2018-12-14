@@ -12,8 +12,7 @@
 - 2nd function repeats the process for the number of specified time intervals
 
 #### Calling function:
-- Currently a Matlab script
-- Plan to convert to executable
+- MATLAB compiled executable
 
 #### Inputs:
 - File
@@ -49,4 +48,4 @@
 
 #### Additional Notes
 - Large data sets can cause function to crash due to lack of memory space
-- edf data rakes a long time to read
+- edf data takes a long time to read
