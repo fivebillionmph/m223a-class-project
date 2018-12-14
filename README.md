@@ -100,10 +100,41 @@ for image processing and signal analysis
     - Heatmap generation:
         - Input: scores (EEG/ECoG), coordinates (EEG/ECoG), brain mask (skull stripped) from database
         - Output: plot windows
+        
 
 Notes:
 1. EEG subjects will use the cerebrum mask from a standard subject to plot. The data has been prestored in the database. 
 2. Electrode coordinates for EEG subjects are predetermined and are prestored in the database. 
+
+### How to install Mayavi on Windows
+##### 1. Install Visual C++ Build Tools
+For the simplest way, just install the [Microsoft Visual Studio 2017](https://visualstudio.microsoft.com/downloads/)
+
+##### 2. Install Anaconda
+- Download [Anaconda](https://www.anaconda.com/download/) the Python 3.7 version for Windows. 
+- Install Anaconda
+- Enter Anaconda Navigator and Initialize a new virtual environment with specification on Python 3.6
+
+##### 3. Install dependency in the Anaconda virtual enviornment
+- Enter the virtual environment terminal in Anaconda Navigator
+- ```sh
+    pip install numpy
+    pip install scipy
+    pip install nibabel
+    pip install mayavi
+    pip install pyqt5
+    ```
+- Test if we installed mayavi successfully
+    ```sh
+    python
+    ```
+    ```python
+    Python 3.6.6 |Anaconda, Inc.| (default, Jun 28 2018, 11:27:44) [MSC v.1900 64 bit (AMD64)] on win32
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> import mayavi
+    >>>
+    ```
+    If no error raises, then we install it successfully.
     
 ## Authors
 
