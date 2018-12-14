@@ -22,7 +22,8 @@ These instructions will help you get the application up and running on your loca
     - Dependencies
         - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, 
         nibabel, mayavi, PyQt5, SimpleITK, math, traits
-- 
+- Microsoft Virtual Studio (Zhaoqiang Wang to complete)
+- Conda virtual environment (Zhaoqiang Wang to complete)
 
 ### Installation and setup
 - create 'brain_db' database with recreate_db.py script in the main program folder
