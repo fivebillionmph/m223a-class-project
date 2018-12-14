@@ -1,8 +1,7 @@
 ## TASKS TO COMPLETE
 
 #### Electrode registration
-* add Talairach standard template to data folder
-* incorporate Tailarach registration component (Joe)
+* incorporate Talaraich registration component (Joe)
     * pass data directly to coordinate correction (no db storage) 
 * run coordinate correction on Talairach coordinates
 

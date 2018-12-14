@@ -66,14 +66,14 @@ These instructions will help you get the application up and running on your loca
         
 - Electrode localization
     - CT->MR registration
-        - Input:
-        - Output:
+        - Input: pre-operative MRI image & post-operative CT image (both in NIfTI format)
+        - Output: registered CT image (NIfTI format)
     - Electrode detection
-        - Input:
-        - Output:
+        - Input: registered CT image (NIfTI format)
+        - Output: channel coordinates in MR space in 3 separate Lists (x,y,z)
     - Talairach->MR registration
-        - Input:
-        - Output:
+        - Input: Talairach channel coordinates in .csv format
+        - Output: channel coordinates in MR space 3 separate Lists (x,y,z)
 
 - Surface reconstruction
     - Skull-stripping (only for ECoG subjects)

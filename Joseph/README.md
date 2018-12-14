@@ -1,37 +1,62 @@
-CT_MR_Registration
+# Electrode Localization
 
-Outline of Function:
-Rigid body registration using MR as the fixed image and CT as the moving image using a series of transformations and interpolation.
+## CT->MR Registration
 
-Inputs:
-Preop MR Nifti file
-Postop CT Nifti file
+**Function:**
+Perform rigid-body registration using MRI as the fixed image and CT as the moving image using a series of optimizations and transformations from the SimpleITK toolbox for Python.
 
-Outputs:
-Registered Nifti file
+**Inputs:**
+  * Preoperative MRI image and Post-operative CT image (both in NIfTI format)
 
-Language:
-Python 3.7.0
+**Outputs:**
+  * Registered CT image (NIfTI format)
 
-Dependencies:
-pip install SimpleITK
+**Language:**
+  * Python 3.6
+
+**Dependencies:**
+  * pip install SimpleITK
 
 
-*** Not complete yet ***
-Electrode Detection
+## Electrode Detection
 
-Outline of Function:
-Finds electrode locations from the registered CT-MR image produced above using simple thresholding and finding centroids of connected components.
+**Function:**
+Finds electrode locations from the registered CT image (produced from the above step) by thresholding, Gaussian blurring, and finding the centroids of connected components filtered by pixel-size.
 
-Inputs:
-Registered CT-MR Nifti file
+**Inputs:**
+  * Registered CT (NIfTI format)
 
-Outputs:
-Electrode locations
+**Outputs:**
+  * Electrode locations in .csv format
 
-Language:
-Python 3.7.0
+**Language:**
+  * Python 3.6
 
-Dependencies:
-pip install SimpleITK
+**Dependencies:**
+  * pip install SimpleITK
+  * import csv
 
+
+## Talairach->MR Registration
+
+**Function:**
+Converts Talairach coordinates to MNI coordinates using [mni2tal](https://bioimagesuiteweb.github.io/webapp/mni2tal.html) from Yale BioImage Suite in order to to plot in MR space using the open source MNI/ICBM 152 template which can be found [here](http://www.bic.mni.mcgill.ca/ServicesAtlases/ICBM152NLin2009).
+This script uses Selenium to automate web browser interaction by the user.
+
+**Inputs:**
+  * Talairach coordinates in .csv format
+
+**Outputs:**
+  * MNI coordinates in .csv format (downloaded from mni2tal)
+
+**Language:**
+  * Python 3.6
+
+**Dependencies:**
+  * pip install SimpleITK
+  * pip install Selenium
+  * install ChromeDriver.exe [here](http://chromedriver.chromium.org/downloads)
+
+**Notes**
+- Need to set environment PATH variable to where ChromeDriver.exe is
+- Currently only has been tested in a Windows environment
