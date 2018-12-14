@@ -182,7 +182,7 @@ def run(cursor, subject_id, CT_filename, MR_filename):
     ###################Update Database###################################
     #####################################################################
 
-    insert_channels = "INSERT INTO channels SET x=%s, y=%s, z=%s WHERE sid = %s;"
+    insert_channels = "INSERT INTO channels (x,y,z,sid) values(%s, %s, %s, %s)"
 
     #for i in range(len(rotated)):
     #    cursor.execute(insert_channels, (int(rotated.iloc[:, 0][i]),

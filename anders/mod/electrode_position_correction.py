@@ -114,7 +114,7 @@ def run(cursor, subject_id, smr_path):
             for a in range(len(electrode_coord_list)):
                 min_dist = 100000 #reset min_dist to 100000
                 for i in range(len(coord_list)):
-                    dis = self.point_distance(coord_list[i][0],
+                    dis = self.PointDistance(coord_list[i][0],
                                               coord_list[i][1],
                                               coord_list[i][2],
                                               electrode_coord_list[a][0],
