@@ -140,9 +140,6 @@ Notes:
 
 All contributors have worked collaboratively on this project.  
 
-## License
-
-
 
 ## Acknowledgments
 
