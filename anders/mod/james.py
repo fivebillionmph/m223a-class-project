@@ -15,7 +15,7 @@ to dos:
 _HEADER = ["sid", "channel", "eid", "x", "y", "z"]
 
 def _readDBChannels(cursor, subject_id):
-    cursor.execute("select * from channels where sid = %s", (subject_id, ))
+    cursor.execute("select * from channels where sid = %s and eid is NULL", (subject_id, ))
     return cursor.fetchall()
 
 def _readDBBrainFile(cursor, subject_id):
@@ -29,18 +29,26 @@ def _channelDataToElectrodes(channel_data):
     return electrodes
 
 def _saveElectrodeNames(cursor, channel_data, electrode_names):
+    skipped = 0
     for i in range(len(channel_data)):
         try:
-            eni = int(electrode_names[i])
-            cursor.execute("update channels set channel = %s where sid = %s and eid = %s", (eni, channel_data["sid"], channel_data["eid"]))
+            if electrode_names[i] == "":
+                skipped += 1
+                continue
+            int_name = int(electrode_names[i])
+            cursor.execute("update channels set channel = %s where sid = %s and x = %s and y = %s and z = %s", (int_name, channel_data[i]["sid"], channel_data[i]["x"], channel_data[i]["y"], channel_data[i]["z"]))
         except:
-            sys.stderr.write("failed to update channel: sid %d, channel %d, eid %d" % (channel_data["sid"], channel_data["channel"], channel_data["eid"]))
+            skipped += 1
+    print("Could not update %d out of %d channels" % (skipped, len(channel_data)))
 
 def run(cursor, subject_id):
     channel_data = _readDBChannels(cursor, subject_id)
     brain_file = _readDBBrainFile(cursor, subject_id)
     electrodes = _channelDataToElectrodes(channel_data)
     electrode_names = []
+
+    if len(electrodes) == 0:
+        return
 
     class Visualization(HasTraits):
         scene = Instance(MlabSceneModel, ())
@@ -84,7 +92,10 @@ def run(cursor, subject_id):
 
         def init_names(self):
             for i in range(len(self.electrodes)):
-                electrode_names.append("")
+                if channel_data[i]["channel"] is not None:
+                    electrode_names.append(str(channel_data[i]["channel"]))
+                else:
+                    electrode_names.append("")
 
         @on_trait_change("select_electrode")
         def update_plot(self):
