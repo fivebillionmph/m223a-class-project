@@ -105,7 +105,7 @@ for image processing and signal analysis
         - Input: BCI2000.dat or EDF file
         - Output: CSV file
     - Phase amplitude coupling (PAC)
-    - Input: BCI2000.dat (EEG and ECOG methods), EDF Files
+        - Input: BCI2000.dat (EEG and ECOG methods), EDF Files
         - Output: CSV File
         
 - Electrode localization
@@ -143,7 +143,7 @@ Notes:
 All contributors have worked collaboratively on this project.
 * Amy Cummings (alcummings@mednet.ucla.edu): 
     * Signal Analysis, channel quality control
-* Mohammad Alidoost (maalidoost@ucla.edu): 
+* Mohammadali Alidoost (maalidoost@ucla.edu): 
     * Signal Analysis, PAC
 * Ge Fang (guojifang17@gmail.com): 
     * Signal Analysis, audio processing
