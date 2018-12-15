@@ -4,7 +4,7 @@
 
 #### Input
 - ECoG coordinates from CT-MR registration: request data from database channel table
-- MR iamge data: request from database subject table
+- MR image data: request from database subject table
 
 #### Output
 - Corrected coordinates for channel plotting: upload corrected coordinates back to database
