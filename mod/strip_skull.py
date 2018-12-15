@@ -1,6 +1,8 @@
-#Course Name: BE 223A 18Fall 
+'''
+#Course Name: BE 223A 18Fall
 #Author Name: Yannan Lin
 #Purpose: Skull-stripping through BrainSuite
+'''
 
 #run brainsuite through command line
 import os

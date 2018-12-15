@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-ECoG Channel Registration (Joseph Tseung)
+ECoG Channel Localization (Joseph Tseung)
 
 Trying SimpleITK
 Created on Sun Nov 11 16:53:26 2018

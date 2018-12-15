@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """
+Talairach electrode localization/registration (Joseph Tseung)
+
 Created on Wed Nov 14 00:04:29 2018
 
 @author: josep

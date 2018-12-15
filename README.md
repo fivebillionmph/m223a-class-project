@@ -148,17 +148,17 @@ Notes:
 ## Authors
 All contributors have worked collaboratively on this project.
 * Amy Cummings (alcummings@mednet.ucla.edu): 
-    * Signal Analysis, channel quality control
+    * Signal Analysis, Channel Quality Control
 * Mohammadali Alidoost (maalidoost@ucla.edu): 
-    * Signal Analysis, PAC
+    * Signal Analysis, Phase Amplitude Coupling
 * Ge Fang (guojifang17@gmail.com): 
-    * Signal Analysis, audio processing
+    * Signal Analysis, Audio processing
 * Anders Olav Garlid (aogarlid@gmail.com): 
-    * Database Integration, File I/O, and UI 
+    * Database Integration, File I/O, and Project Mgr.
 * James Go (jamescookgo@gmail.com): 
     * ECoG Channel Labeling
 * David Gordon (d.gordon@ucla.edu): 
-    * Signal Analysis, channel scores
+    * Signal Analysis, Channel Scores
 * Jake Pensa (jake.pensa@gmail.com): 
     * Signal Analysis, Band Power over Time
 * Joseph Tseung (josephtsung@g.ucla.edu):  
