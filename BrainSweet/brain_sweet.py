@@ -149,7 +149,7 @@ if len(existing_signals) == 0:
 else:
     valid = False
     while not valid:
-        print("You currently have the following existing signal files available; "
+        print("You currently have the following existing signal files available for this subject; "
               "would you like to add another, or use an existing file?")
         print("\t0: (Add a new path)")
         for i in range(len(existing_signals)):
@@ -184,10 +184,11 @@ SIGNAL ANALYSIS
 # choose signal analysis method
 eeg_file = signals[0]
 print("Enter the signal processing method that you would like to use.  Multiple can be entered (eg 23)")
-print("\t(1) David")
-print("\t(2) Amy")
-print("\t(3) Band Power Over Time - Jake")
-print("\t(4) Phase Amplitude Coupling - Mohammad")
+print("\t(1) Channel Scoring (David)")
+print("\t(2) Channel Quality Control (Amy)")
+print("\t(3) Band Power Over Time (Jake)")
+print("\t(4) Phase Amplitude Coupling (Mohammad)")
+print("\t(5) Audio Analysis (Ge)")
 method = input("Choice: ")
 
 if '1' in method:
@@ -268,6 +269,16 @@ if '4' in method:
             l.extend(row)
             cursor.execute(insert_scores, l)
 
+    except Exception as e:
+        print(e)
+
+'''
+Audio Analysis (Ge Fang)
+'''
+if '5' in method:
+    try:
+        method = 5
+        audio_analysis.run(cursor, sid, eeg_file)
     except Exception as e:
         print(e)
 
