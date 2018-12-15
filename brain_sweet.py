@@ -191,8 +191,10 @@ print("\t(4) Phase Amplitude Coupling (Mohammad)")
 print("\t(5) Audio Analysis (Ge)")
 method = input("Choice: ")
 
+if '1' or '2' in method:
+    convert_dat_to_csv.run(sig_file)
+    sig_file_csv = sig_file + ".csv"
 if '1' in method:
-    sig_file_csv = convert_dat_to_csv.run(sig_file)
     David.run(cursor, sid, sig_file_csv)
 if '2' in method:
     Amy.run(cursor, sid, sig_file_csv)
