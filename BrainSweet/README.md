@@ -121,6 +121,9 @@ for image processing and signal analysis
     - Talairach->MR registration
         - Input: Talairach channel coordinates in .csv format
         - Output: channel coordinates in MR space 3 separate Lists (x,y,z)
+    - ECoG Channel Labeling
+        - Input: subject ID
+        - Output: update the channel table in the database with the channel labels
 
 - Surface reconstruction
     - Skull-stripping (only for ECoG subjects)
@@ -153,7 +156,7 @@ All contributors have worked collaboratively on this project.
 * Anders Olav Garlid (aogarlid@gmail.com): 
     * Database Integration, File I/O, and UI 
 * James Go (jamescookgo@gmail.com): 
-    * ECoG Channel Registration
+    * ECoG Channel Labeling
 * David Gordon (d.gordon@ucla.edu): 
     * Signal Analysis, channel scores
 * Jake Pensa (jake.pensa@gmail.com): 

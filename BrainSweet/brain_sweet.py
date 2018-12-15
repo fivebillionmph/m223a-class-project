@@ -183,14 +183,11 @@ SIGNAL ANALYSIS
 '''
 # choose signal analysis method
 eeg_file = signals[0]
-_, file_ext = os.path.splitext(eeg_file)
 print("Enter the signal processing method that you would like to use.  Multiple can be entered (eg 23)")
-if file_ext == ".csv":
-    print("\t(1) David")
-    print("\t(2) Amy")
-elif file_ext == ".dat":
-    print("\t(3) Band Power Over Time - Jake")
-    print("\t(4) Phase Amplitude Coupling - Mohammad")
+print("\t(1) David")
+print("\t(2) Amy")
+print("\t(3) Band Power Over Time - Jake")
+print("\t(4) Phase Amplitude Coupling - Mohammad")
 method = input("Choice: ")
 
 if '1' in method:
