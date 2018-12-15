@@ -7,6 +7,12 @@ Function 1: Finding Channel contributed to vocal cord control by bandpower analy
 
 ## Pipelines
 ### Function 1
+The function of speech correlation(method_5.py) will be run separately by call it on python or cmd. The user can call “method 5” in brainsweet for the command of below:
+
+1. Get the path of The ECoG file the user want to analyse, which will be saved as a local text file ‘method5_ECoG_path.txt’.
+2. Upload the existed result of method 5 to database: if the users is running brainsweet, and they want to update the result they got earlier to the database, they can type in the SID, and also the path of the result CSV file under instruction.
+
+
 **Input**: ECOG001.dat
 
 **Output**: 
