@@ -1,6 +1,8 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
+Electrode Position Correction (Yannan Lin)
+
 Created on Tue Nov 27 22:51:55 2018
 
 @author: yannanlin

@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+'''
+Heat Map and Final Visualization (Zhaoqiang Wang)
+'''
+
+
 
 import numpy as np
 from scipy import ndimage

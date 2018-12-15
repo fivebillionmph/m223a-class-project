@@ -1,3 +1,9 @@
+'''
+Signal Analysis: Audio (Ge Fang "Method 5")
+'''
+
+
+
 #def run(cursor, sid, ECoG_filepath)#
 #output table: channel number - score0#
 #need math, scipy, csv, sys, os

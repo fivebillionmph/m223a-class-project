@@ -1,5 +1,5 @@
 """
-SIGNAL ANALYSIS: Channel QC (Amy "method 2")
+SIGNAL ANALYSIS: Channel QC (Amy Cummings "method 2")
 
 This allows identification of faulty channels.
 Written with python 3.6. sys.argv[1] is path to file, sys.argv[2] is file name.

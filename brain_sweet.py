@@ -1,20 +1,21 @@
 '''
 brain_sweet.py
-BRAINSWEET FILE I/O AND DATABASE INTEGRATION
+BRAINSWEET FILE I/O AND DATABASE INTEGRATION (Anders Olav Garlid)
 '''
 
 import os
 import csv
 import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron, james, audio_analysis
+from mod import config, util, strip_skull, electrode_localization, electrode_position_correction, name_electrodes, \
+    channel_scores, channel_qc, power_analysis, audio_analysis, final_vis
 try:
     from mod.convert_dat_to_csv import convert_dat_to_csv
 except:
     pass
 
 try:
-    from mod.mohammad import pac
+    from mod.pac import pac
 except:
     pass
 
@@ -73,7 +74,7 @@ if len(subject_names) == 0:
 
     if expt_type == "ECoG" and mr == "y":
         # SKULL STRIPPING
-        Yannan.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
+        strip_skull.run(cursor, sid, config.brainsuite_cortical_extraction_script, mr_path)
         # need to feed output file path to "smr" column of subjects table
         # outputs smr file path (standard.cerebrum.mask.nii)
         # TO DO: have rest of the script pick up after 2 minutes, or when desired file is detected
@@ -97,7 +98,7 @@ if len(subject_names) == 0:
     cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (sid,))
     smr_path = cursor.fetchone()["smr_path"]
     if ct_path and mr_path:
-        electrode_data = Joseph.run(cursor, sid, ct_path, mr_path)
+        electrode_data = electrode_localization.run(cursor, sid, ct_path, mr_path)
         electrode_position_correction.run(cursor, sid, smr_path, electrode_data)
     elif not mr_path and not ct_path:
         # Talairach ECoG registration (part 2)
@@ -195,9 +196,9 @@ if '1' or '2' in method:
     convert_dat_to_csv.run(sig_file)
     sig_file_csv = sig_file + ".csv"
 if '1' in method:
-    David.run(cursor, sid, sig_file_csv)
+    channel_scores.run(cursor, sid, sig_file_csv)
 if '2' in method:
-    Amy.run(cursor, sid, sig_file_csv)
+    channel_qc.run(cursor, sid, sig_file_csv)
 if '3' in method:
     try:
         method = 3
@@ -208,7 +209,7 @@ if '3' in method:
         startFrequency = input("Please enter the minimum frequency for the analysis. ")
         stopFrequency = input("Please enter the maximum frequency for the analysis. ")
         if config.is_windows:
-            Jake.run(cursor, sig_file, startTime, stopTime, interval, startFrequency, stopFrequency)
+            power_analysis.run(cursor, sig_file, startTime, stopTime, interval, startFrequency, stopFrequency)
             # outputs .csv with scores for each time interval per channel
             # file will have same name as input file, with "-3.csv" extension
 
@@ -288,7 +289,7 @@ if '5' in method:
 # commit score additions to database
 conn.commit()
 
-james.run(cursor, sid)
+name_electrodes.run(cursor, sid)
 
 '''
 HEATMAP GENERATION
@@ -297,7 +298,7 @@ HEATMAP GENERATION
     show each output sequentially?
     ask user which one they want to view?
 '''
-Aaron.run(cursor, sid)
+final_vis.run(cursor, sid)
 
 # close the cursor and database communication
 cursor.close()

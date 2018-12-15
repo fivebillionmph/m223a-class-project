@@ -1,3 +1,8 @@
+'''
+ECoG Electrode Registration/Naming (James Go)
+'''
+
+
 import nibabel as nib
 from mayavi import mlab
 from traits.api import HasTraits, on_trait_change, Range, Instance, Str, Button
