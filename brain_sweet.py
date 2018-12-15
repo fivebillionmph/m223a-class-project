@@ -187,9 +187,10 @@ print("\t(5) Audio Analysis (Ge)")
 method = input("Choice: ")
 
 if '1' in method:
-    David.run(cursor, sid, eeg_file)
+    convert_dat_to_csv.run(eeg_file)
+    David.run(cursor, sid, eeg_file_csv)
 if '2' in method:
-    Amy.run(cursor, sid, eeg_file)
+    Amy.run(cursor, sid, eeg_file_csv)
 if '3' in method:
     try:
         method = 3
