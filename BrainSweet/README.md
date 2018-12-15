@@ -161,7 +161,7 @@ All contributors have worked collaboratively on this project.
 * Joseph Tseung (josephtsung@g.ucla.edu):  
     * ECoG and Talairach Channel Localization
 * Yannan Lyn (allyn1982@ucla.edu): 
-    * MR image processing and channel plotting
+    * Channel Plotting and Electrode Position Correction
 * Zhaoqiang Wang (zqwang9@g.ucla.edu): 
     * Heatmap Generation
   
