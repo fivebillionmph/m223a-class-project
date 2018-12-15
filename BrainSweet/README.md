@@ -18,7 +18,8 @@ OS-specific to Windows, due to certain dependencies.
     - A free login account must be established before downloading
 - PostgreSQL 11
     - Download the most recent version (11) from the postgresql website: https://www.postgresql.org/
-- MATLAB (Jake and Mohammad to complete)
+- MATLAB
+    - Download the most recent version of MATLAB from the MATLAB website: https://www.mathworks.com/products/matlab.html
 - Python 3.6
     - Download Python from their website: https://www.python.org/downloads/
     - Dependencies
