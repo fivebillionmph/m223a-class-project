@@ -7,7 +7,7 @@ import os
 import csv
 import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron, james
+from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron, james, audio_analysis
 try:
     from mod.mohammad import pac
 except:
@@ -73,6 +73,22 @@ if len(subject_names) == 0:
         # outputs smr file path (standard.cerebrum.mask.nii)
         # TO DO: have rest of the script pick up after 2 minutes, or when desired file is detected
 
+    '''
+    MR/CT ELECTRODE REGISTRATION
+
+    1. CT/MR ECoG registration (Joseph)
+    2. Talairach ECoG registration (Joseph)
+        ECoG, don't have CT or MR, need to use Talairach
+        read standard Talairach brain (MNI_MASK_FILE)
+        then goes to web to convert to another format called MNI
+        then plot that on standard brain
+        # output x, y, z coordinates to channel table
+        # talairach coordinates (to be completed)
+    3. Coordinate Correction (Yannan)
+        # Yannan - electrode_position_correction.py
+        # require smr file path as input
+    '''
+
     cursor.execute("SELECT smr_path FROM subjects WHERE sid = %s", (sid,))
     smr_path = cursor.fetchone()["smr_path"]
     if ct_path and mr_path:
@@ -113,21 +129,7 @@ if expt_type == "EEG":
 # commit the transaction to add content to channels table.
 conn.commit()
 
-'''
-MR/CT ELECTRODE REGISTRATION
 
-1. CT/MR ECoG registration (Joseph)
-2. Talairach ECoG registration (Joseph)
-    ECoG, don't have CT or MR, need to use Talairach
-    read standard Talairach brain 
-    then goes to web to convert to another format called MNI
-    then plot that on standard brain
-    # output x, y, z coordinates to channel table
-    # talairach coordinates (to be completed)
-3. Coordinate Correction (Yannan)
-    # Yannan - electrode_position_correction.py
-    # require smr file path as input
-'''
 
 # select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
 # insert_ecog_channel = """INSERT INTO channels(sid, channel, x, y, z) VALUES(%s,%s,%s,%s,%s);"""
