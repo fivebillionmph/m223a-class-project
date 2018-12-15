@@ -3,11 +3,15 @@ wrapper.py
 PROJECT COMPONENT AND DATABASE INTEGRATION
 '''
 
+import os
 import csv
 import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron, james
-from mod.mohammad import pac
+try:
+    from mod.mohammad import pac
+except:
+    pass
 
 '''
 ESTABLISH DATABASE CONNECTION
@@ -176,14 +180,17 @@ conn.commit()
 SIGNAL ANALYSIS
 '''
 # choose signal analysis method
+eeg_file = signals[0]
+_, file_ext = os.path.splitext(eeg_file)
 print("Enter the signal processing method that you would like to use.  Multiple can be entered (eg 23)")
-print("\t(1) David")
-print("\t(2) Amy")
-print("\t(3) Band Power Over Time - Jake")
-print("\t(4) Phase Amplitude Coupling - Mohammad")
+if file_ext == ".csv":
+    print("\t(1) David")
+    print("\t(2) Amy")
+elif file_ext == ".dat":
+    print("\t(3) Band Power Over Time - Jake")
+    print("\t(4) Phase Amplitude Coupling - Mohammad")
 method = input("Choice: ")
 
-eeg_file = signals[0]
 if '1' in method:
     David.run(cursor, sid, eeg_file)
 if '2' in method:
