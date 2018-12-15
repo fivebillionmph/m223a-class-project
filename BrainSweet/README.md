@@ -25,7 +25,7 @@ OS-specific to Windows, due to certain dependencies.
 - Python 3.6
     - Download Python from their website: https://www.python.org/downloads/
     - Dependencies
-        - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, 
+        - postgresql, psycopg2, psycopg2.extras, psycopg2.extensions, config, os, sys, csv, pandas, scipy, numpy, scikit-learn, 
         nibabel, mayavi, PyQt5, SimpleITK, math, traits
 - Mayavi, Microsoft Visual Studio, and Conda Virtual Environment 
     - installation instructions included in the following section.
@@ -97,10 +97,10 @@ for image processing and signal analysis
 - Signal processing
     - Channel importance
         - Input: EEG CSV file
-        - Output: scores list
+        - Output: Channel scores list
     - Channel-qc
         - Input: EEG CSV file
-        - Output: channel list with value ranging 0 (bad) - 1 (good)
+        - Output: Channel list with value ranging 0 (bad) - 1 (good)
     - Speech correlation
         - Input: ECoG signal file (.dat)
         - Output: Time shift for each channel to database
