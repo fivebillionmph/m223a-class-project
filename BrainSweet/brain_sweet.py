@@ -130,11 +130,6 @@ if expt_type == "EEG":
 conn.commit()
 
 
-
-# select_ecog_channel = """SELECT * FROM channels WHERE sid=%s;"""
-# insert_ecog_channel = """INSERT INTO channels(sid, channel, x, y, z) VALUES(%s,%s,%s,%s,%s);"""
-# for channel in channels:
-
 ''' 
 ACQUIRE SIGNAL FILE PATHS
 
