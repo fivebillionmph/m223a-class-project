@@ -19,7 +19,9 @@ OS-specific to Windows, due to certain dependencies.
 - PostgreSQL 11
     - Download the most recent version (11) from the postgresql website: https://www.postgresql.org/
 - MATLAB
-    - Download the most recent version of MATLAB from the MATLAB website: https://www.mathworks.com/products/matlab.html
+    - Download the most recent version of MATLAB from the MathWorks website: https://www.mathworks.com/products/matlab.html
+    - Third Party Functions required:
+        - load_bcidat.m (including .mex file), edfread.m, edfreadUntilDone.m
 - Python 3.6
     - Download Python from their website: https://www.python.org/downloads/
     - Dependencies
