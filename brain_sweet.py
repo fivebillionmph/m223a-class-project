@@ -9,6 +9,11 @@ import psycopg2.extras
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 from mod import config, util, Yannan, Jake, Joseph, David, Amy, electrode_position_correction, Aaron, james, audio_analysis
 try:
+    from mod.convert_dat_to_csv import convert_dat_to_csv
+except:
+    pass
+
+try:
     from mod.mohammad import pac
 except:
     pass
@@ -177,7 +182,7 @@ conn.commit()
 SIGNAL ANALYSIS
 '''
 # choose signal analysis method
-eeg_file = signals[0]
+sig_file = signals[0]
 print("Enter the signal processing method that you would like to use.  Multiple can be entered (eg 23)")
 print("\t(1) Channel Scoring (David)")
 print("\t(2) Channel Quality Control (Amy)")
@@ -187,10 +192,10 @@ print("\t(5) Audio Analysis (Ge)")
 method = input("Choice: ")
 
 if '1' in method:
-    convert_dat_to_csv.run(eeg_file)
-    David.run(cursor, sid, eeg_file_csv)
+    sig_file_csv = convert_dat_to_csv.run(sig_file)
+    David.run(cursor, sid, sig_file_csv)
 if '2' in method:
-    Amy.run(cursor, sid, eeg_file_csv)
+    Amy.run(cursor, sid, sig_file_csv)
 if '3' in method:
     try:
         method = 3
@@ -201,11 +206,11 @@ if '3' in method:
         startFrequency = input("Please enter the minimum frequency for the analysis. ")
         stopFrequency = input("Please enter the maximum frequency for the analysis. ")
         if config.is_windows:
-            Jake.run(cursor, eeg_file, startTime, stopTime, interval, startFrequency, stopFrequency)
+            Jake.run(cursor, sig_file, startTime, stopTime, interval, startFrequency, stopFrequency)
             # outputs .csv with scores for each time interval per channel
             # file will have same name as input file, with "-3.csv" extension
 
-        with open(eeg_file + '-3.csv') as jakecsv:
+        with open(sig_file + '-3.csv') as jakecsv:
             reader = csv.reader(jakecsv)
             for row in reader:
                 columns = len(row)
@@ -246,9 +251,9 @@ if '4' in method:
                   "you want to process entire range of time). "))
         sigtime_window = float(input("Please enter the short time window you would like to process (in minutes). "))
         sigtime_step = float(input("Please enter the short time step you would like to process (in minutes). "))
-        pac.run(eeg_file, band_lo, band_hi, ch_count, ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
+        pac.run(sig_file, band_lo, band_hi, ch_count, ch_first, ch_last, sigtime_total, sigtime_window, sigtime_step)
 
-        with open(eeg_file + '-4.csv') as mocsv:
+        with open(sig_file + '-4.csv') as mocsv:
             reader = csv.reader(mocsv)
             for row in reader:
                 columns = len(row)
@@ -274,7 +279,7 @@ Audio Analysis (Ge Fang)
 if '5' in method:
     try:
         method = 5
-        audio_analysis.run(cursor, sid, eeg_file)
+        audio_analysis.run(cursor, sid, sig_file)
     except Exception as e:
         print(e)
 
